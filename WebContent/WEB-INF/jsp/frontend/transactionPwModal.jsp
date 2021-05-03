@@ -28,15 +28,15 @@
 	</div>
 	<script>
 		$(document).ready(() => {
-			//$("#transactionPwModal").modal("toggle");
+			$("#transactionPwModal").modal("toggle");
 			
 			$("#transactionPw").keyup(function () {
 				let tpw = $(this).val();
 				if(tpw.length === 6){
 					let dataJSON = {};
-					dataJSON["transactionPw"] = tpw;
+					dataJSON["transactionPwd"] = tpw;
 
-					instance.post("/api/checkTransactionPw", dataJSON)
+					instance.post("/api/checkTransactionPwd", dataJSON)
 					.then(res => {
 						const {valid} = res.data;
 						if(!valid){

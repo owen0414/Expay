@@ -78,7 +78,7 @@ const showBankAccountIconName = base_url => {
 
 //axios設定
 const instance = axios.create({
-	baseURL: "http://localhost",
+	baseURL: "http://172.19.35.97/",
 	Headers: {
 		"Content-Type": "application/json"
 	}

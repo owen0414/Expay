@@ -119,9 +119,9 @@
 				
 				var requestURL = 'http://172.19.35.31/api/updateTPassword'
 				var dataJSON = {}
-				dataJSON['e_account'] = 
+				dataJSON['e_account'] = '0215215'
 				dataJSON['transactionPwd'] = password.val()
-	
+				
 				$.ajax({
 					url: requestURL,
 					data: JSON.stringify(dataJSON),
@@ -129,7 +129,6 @@
 					dataType: 'json',
 					contentType: 'application/json;charset=utf-8',
 					success: function (returnData) {
-						console.log("設定支付密碼成功")
 						console.log(returnData)
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
@@ -137,6 +136,7 @@
 						console.log(thrownError)
 					},
 				})
+				
 			}else{
 				return result;
 			}	

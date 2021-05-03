@@ -28,7 +28,8 @@
 						</div>
 						<div class="row justify-content-start"> 
 							<div class="col-10 col-md-8 mt-2 mx-auto">
-								<input type="text" class="form-control" id="identity" name="identity">
+								<input type="text" class="form-control" id="identity" name="identity" maxlength="10">
+								<p class="is_error"><i class="fas fa-exclamation mr-1"></i>身分證不能為空白</p>
 							</div>
 						</div>
 						<div class="row justify-content-start mt-4 mx-auto mx-md-5"> 
@@ -36,8 +37,9 @@
 						</div>
 						<div class="row"> 
 							<div class="col-10 col-md-8 mt-2 mx-auto">
-								<input type="password" class="form-control input_password" id="mem_pwd" name="mem_pwd"> 
+								<input type="password" class="form-control input_password" id="mem_pwd" name="mem_pwd" maxlength="16"> 
 								<i class="far fa-eye toggle_password"></i>
+								<p class="is_error"><i class="fas fa-exclamation mr-1"></i>密碼不能為空白</p>
 							</div>
 						</div>
 						<div class="row justify-content-start mt-4 mx-auto mx-md-5"> 
@@ -84,6 +86,7 @@
 						<div class="row justify-content-start"> 
 							<div class="col-10 col-md-8 mt-2 mx-auto">
 								<input type="text" class="form-control" id="id" name="id">
+								<p class="is_error"><i class="fas fa-exclamation mr-1"></i>帳號不能為空白</p>
 							</div>
 						</div>
 						<div class="row justify-content-start mt-4 mx-auto mx-md-5"> 
@@ -91,8 +94,9 @@
 						</div>
 						<div class="row"> 
 							<div class="col-10 col-md-8 mt-2 mx-auto">
-								<input type="password" class="form-control input_password" id="shop_pwd" name="shop_pwd"> 
+								<input type="password" class="form-control input_password" id="shop_pwd" name="shop_pwd" maxlength="16"> 
 								<i class="far fa-eye toggle_password"></i>
+								<p class="is_error"><i class="fas fa-exclamation mr-1"></i>密碼不能為空白</p>
 							</div>
 						</div>
 						<div class="row justify-content-start mt-4 mx-auto mx-md-5"> 
@@ -164,6 +168,120 @@
 			$(".input_password").attr("type", "password");
 			$("#shop_login_form")[0].reset();
 		});
+		
+		//一般使用者登入
+		
+		$("#mem_login_form").submit(function(){
+			
+			var identity = $('#identity')
+			var password = $('#mem_pwd')
+			var result = true
+			
+			//檢查身分證有沒有填
+			
+			if(identity.val().length < 1){
+				identity.next('.is_error').show();
+				result = result && false;	
+			}else{
+				identity.next('.is_error').hide();
+				result = result && true;
+			}
+			
+			//檢查密碼有沒有填
+			
+			if(password.val().length < 1){
+				password.siblings('.is_error').show();
+				result = result && false;
+			}else{
+				password.siblings('.is_error').hide();
+				result = result && true;
+			}
+			
+			if(result){
+				
+				var requestURL = 'http://172.19.35.31/api/user/login'
+				var dataJSON = {}
+				dataJSON['identity'] = identity.val()
+				dataJSON['password'] = password.val()
+				dataJSON['remember'] = $("#mem_remember").prop('checked')
+				
+				$.ajax({
+					url: requestURL,
+					data: JSON.stringify(dataJSON),
+					type: 'POST',
+					dataType: 'json',
+					contentType: 'application/json;charset=utf-8',
+					success: function (returnData) {
+						console.log(returnData)
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+						console.log(xhr.status)
+						console.log(thrownError)
+					},
+				})
+				
+			}
+			
+			return false;
+		})
+		
+		
+		//商家登入
+		
+		$("#shop_login_form").submit(function(){
+			
+			var id = $('#id')
+			var password = $('#shop_pwd')
+			var result = true
+			
+			//檢查帳號有沒有填
+			
+			if(id.val().length < 1){
+				id.next('.is_error').show();
+				result = result && false;	
+			}else{
+				id.next('.is_error').hide();
+				result = result && true;
+			}
+			
+			//檢查密碼有沒有填
+			
+			if(password.val().length < 1){
+				password.siblings('.is_error').show();
+				result = result && false;
+			}else{
+				password.siblings('.is_error').hide();
+				result = result && true;
+			}
+			
+			if(result){
+				
+				var requestURL = 'http://172.19.35.31/api/shop/login'
+				var dataJSON = {}
+				dataJSON['identity'] = id.val()
+				dataJSON['password'] = password.val()
+				dataJSON['remember'] = $("#shop_remember").prop('checked')
+				
+				$.ajax({
+					url: requestURL,
+					data: JSON.stringify(dataJSON),
+					type: 'POST',
+					dataType: 'json',
+					contentType: 'application/json;charset=utf-8',
+					success: function (returnData) {
+						console.log(returnData)
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+						console.log(xhr.status)
+						console.log(thrownError)
+					},
+				})
+	
+			}
+			
+			return false;
+		})
+	
 		
 	</script>
 </body>

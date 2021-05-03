@@ -435,15 +435,15 @@
 				
 				var requestURL = 'http://172.19.35.31/api/user/signup'
 				var dataJSON = {}
-				dataJSON['identity'] = $('#identity').val()
-				dataJSON['password'] = $('#pwd').val()
-				dataJSON['name'] = $('#name').val()
-				dataJSON['birthday'] =  $('#birthday').val()
-				dataJSON['phone'] =  $('#phone').val()
-				dataJSON['email'] =  $('#email').val()
-				dataJSON['issue_date'] =  $('#issue_year').val() + $('#issue_month').val() + $('#issue_day').val()
-				dataJSON['issue_city'] =  $('#issue_city').val()
-				dataJSON['issue_type'] =  $('#issue_type').val()
+				dataJSON['identity'] = identity.val()
+				dataJSON['password'] = password.val()
+				dataJSON['name'] = name.val()
+				dataJSON['birthday'] =  birthday.val()
+				dataJSON['phone'] =  phone.val()
+				dataJSON['email'] =  email.val()
+				dataJSON['issue_date'] =  issue_year.val() + issue_month.val() + issue_day.val()
+				dataJSON['issue_city'] =  issue_city.val()
+				dataJSON['issue_type'] =  issue_type.val()
 				
 				$.ajax({
 					url: requestURL,
@@ -452,7 +452,7 @@
 					dataType: 'json',
 					contentType: 'application/json;charset=utf-8',
 					success: function (returnData) {
-						console.log("註冊成功")
+						console.log("一般使用者註冊成功")
 						console.log(returnData)
 					},
 					error: function (xhr, ajaxOptions, thrownError) {

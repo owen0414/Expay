@@ -167,6 +167,7 @@
 			var email = $('#email')
 			var tax_id = $('#tax_id')
 			var county = $('#county')
+			var district = $('#district')
 			var address = $('#address')
 			var result = true
 			
@@ -272,13 +273,13 @@
 				
 				var requestURL = 'http://172.19.35.31/api/shop/signup'
 				var dataJSON = {}
-				dataJSON['id'] = $('#id').val()
-				dataJSON['password'] = $('#pwd').val()
-				dataJSON['shop_name'] = $('#shop_name').val()
-				dataJSON['tax_id'] =  $('#tax_id').val()
-				dataJSON['phone'] =  $('#phone').val()
-				dataJSON['email'] =  $('#email').val()
-				dataJSON['address'] =  $('#county').val() + $('#district').val() + $('#address').val()
+				dataJSON['id'] = id.val()
+				dataJSON['password'] = password.val()
+				dataJSON['shop_name'] = shop_name.val()
+				dataJSON['tax_id'] =  tax_id.val()
+				dataJSON['phone'] =  phone.val()
+				dataJSON['email'] =  email.val()
+				dataJSON['address'] =  county.val() + district.val() + address.val()
 	
 				$.ajax({
 					url: requestURL,
@@ -287,7 +288,7 @@
 					dataType: 'json',
 					contentType: 'application/json;charset=utf-8',
 					success: function (returnData) {
-						console.log("註冊成功")
+						console.log("商家註冊成功")
 						console.log(returnData)
 					},
 					error: function (xhr, ajaxOptions, thrownError) {

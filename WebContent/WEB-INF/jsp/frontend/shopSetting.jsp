@@ -53,13 +53,14 @@
 		</div>
 	</div>
 
-	<!-- Modal -->
+	<!-- ResultModal -->
 	<%@ include file="/WEB-INF/jsp/frontend/resultModal.jsp"%>
 	
 	<!-- Footer -->
 	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 	<script>
 		$(document).ready(() => {
+			//取得當前商店資料
 			instance.get("/api/shopInfo/")
 			.then(res => {
 				const {name, tax_id, address, phone, email} = res.data;
@@ -70,6 +71,7 @@
 				$("#email").val(email);
 			});
 			
+			//修改商店資料
 			$("#shop-btn").click(()=> {
 				let dataJSON = {};
 				dataJSON['name'] = $("#name").val();
@@ -80,34 +82,13 @@
 
 				instance.put("/api/shopInfo/", dataJSON)
 				.then(res => {
-					renderModalBody(res.data);
+					renderModalBody(res.data, ({status, message, timestamp}) => {
+						return `\${message}<br>`;
+					}, ({status, message, timestamp}) => {
+						return `\${message}<br>`;
+					});
 				});
 			});
-
-			function renderModalBody(res){
-				const {status, message, timestamp} = res;
-			
-				let resultAreaClass, resultTitle, resultBody;
-				
-				if(status === 200){
-					resultAreaClass = "alert-success";
-					resultTitle = "修改商店資料成功!";
-					resultBody = `
-						\${message}<br>
-					`;
-				} else {
-					resultAreaClass = "alert-danger";
-					resultTitle = "修改商店資料失敗!";
-					resultBody = `
-						\${message}<br>
-					`;
-				}
-				
-				$("#resultModalLabel").text(resultTitle);
-				$("#result-area").addClass(resultAreaClass);
-				$("#result-area").html(resultBody);
-				$("#resultModal").modal("toggle");
-			}
 		});
 	</script>
 </body>

@@ -42,13 +42,14 @@
 		</div>
 	</div>
 	
-	<!-- Modal -->
+	<!-- ResultModal -->
 	<%@ include file="/WEB-INF/jsp/frontend/resultModal.jsp"%>
 	
 	<!-- Footer -->
 	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 	<script>
 		$(document).ready(()=>{
+			//修改密碼
 			$("#pw-btn").click(() => {
 				const oldPassword = $("#old_password").val();
 				const password = $("#password").val();
@@ -65,35 +66,14 @@
 
 					instance.put("/api/updatePassword/", dataJSON)
 					.then(res => {
-						renderModalBody(res.data);
+						renderModalBody(res.data, ({status, message, timestamp}) => {
+							return `\${message}<br>`;
+						}, ({status, message, timestamp}) => {
+							return `\${message}<br>`;
+						});
 					});
 				}
 			});
-			
-			function renderModalBody(res){
-				const {status, message, timestamp} = res;
-			
-				let resultAreaClass, resultTitle, resultBody;
-				
-				if(status === 200){
-					resultAreaClass = "alert-success";
-					resultTitle = "修改密碼成功!";
-					resultBody = `
-						\${message}<br>
-					`;
-				} else {
-					resultAreaClass = "alert-danger";
-					resultTitle = "修改密碼失敗!";
-					resultBody = `
-						\${message}<br>
-					`;
-				}
-				
-				$("#resultModalLabel").text(resultTitle);
-				$("#result-area").addClass(resultAreaClass);
-				$("#result-area").html(resultBody);
-				$("#resultModal").modal("toggle");
-			}
 		});
 	</script>
 </body>

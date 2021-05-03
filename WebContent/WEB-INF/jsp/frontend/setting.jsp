@@ -49,7 +49,7 @@
 		</div>
 	</div>
 	
-	<!-- Modal -->
+	<!-- ResultModal -->
 	<%@ include file="/WEB-INF/jsp/frontend/resultModal.jsp"%>
 	
 	<!-- Footer -->
@@ -66,6 +66,7 @@
 				$("#birthday").val(birthday);
 			});
 
+			//修改個人資料
 			$("#setting-btn").click(() => {
 				let dataJSON = {};
 				dataJSON["name"] = $("#name").val();
@@ -75,34 +76,13 @@
 
 				instance.put("/api/personalInfo/", dataJSON)
 				.then(res => {
-					renderModalBody(res.data);
+					renderModalBody(res.data, ({status, message, timestamp}) => {
+						return `\${message}<br>`;
+					}, ({status, message, timestamp}) => {
+						return `\${message}<br>`;
+					});
 				});
 			});
-			
-			function renderModalBody(res){
-				const {status, message, timestamp} = res;
-			
-				let resultAreaClass, resultTitle, resultBody;
-				
-				if(status === 200){
-					resultAreaClass = "alert-success";
-					resultTitle = "修改個人資料成功!";
-					resultBody = `
-						\${message}<br>
-					`;
-				} else {
-					resultAreaClass = "alert-danger";
-					resultTitle = "修改個人資料失敗!";
-					resultBody = `
-						\${message}<br>
-					`;
-				}
-				
-				$("#resultModalLabel").text(resultTitle);
-				$("#result-area").addClass(resultAreaClass);
-				$("#result-area").html(resultBody);
-				$("#resultModal").modal("toggle");
-			}
 		});
 	</script>
 </body>

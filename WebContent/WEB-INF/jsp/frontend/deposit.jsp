@@ -77,13 +77,13 @@
 		</div>
 	</div>
 	
-	<!-- Modal -->
-	<%@ include file="/WEB-INF/jsp/frontend/resultModal.jsp"%>
-	
 	<!-- Footer -->
 	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
+	
+	<!-- ResultModal -->
+	<%@ include file="/WEB-INF/jsp/frontend/resultModal.jsp"%>
 
-	<!--交易密碼-->
+	<!-- 交易密碼 -->
 	<%@ include file="/WEB-INF/jsp/frontend/transactionPwModal.jsp"%>
 	<script>
 		// 儲值填寫設定
@@ -162,36 +162,17 @@
 				
 				instance.post("/api/bank/transaction", dataJSON)
 				.then(res => {
-					renderModalBody(res.data);
+					renderModalBody(res.data, ({status, message, timestamp, bankCode, amount, balance}) => {
+						return `
+							儲值銀行: \${bankList[bankCode]}<br>
+							儲值金額: NT\$\${amount}<br>
+							儲值後餘額: NT\$\${balance}
+						`;
+					}, () => {
+						return "儲值失敗!";
+					});
 				});
 			});
-			
-			function renderModalBody(res){
-				const {status, message, timestamp, bankCode, amount, balance} = res;
-			
-				let resultAreaClass, resultTitle, resultBody;
-				
-				if(status === 200){
-					resultAreaClass = "alert-success";
-					resultTitle = "儲值成功!";
-					resultBody = `
-						儲值銀行: \${bankList[bankCode]}<br>
-						儲值金額: NT\$\${amount}<br>
-						儲值後餘額: NT\$\${balance}
-					`;
-				} else {
-					resultAreaClass = "alert-danger";
-					resultTitle = "儲值失敗!";
-					resultBody = `
-						失敗!<br>
-					`;
-				}
-				
-				$("#resultModalLabel").text(resultTitle);
-				$("#result-area").addClass(resultAreaClass);
-				$("#result-area").html(resultBody);
-				$("#resultModal").modal("toggle");
-			}
 		});
 	</script>
 </body>

@@ -71,12 +71,12 @@
 			</div>
 		</div>
 	</div>
-	
-	<!-- Modal -->
-	<%@ include file="/WEB-INF/jsp/frontend/resultModal.jsp"%>
-	
+		
 	<!-- Footer -->
 	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
+	
+	<!-- ResultModal -->
+	<%@ include file="/WEB-INF/jsp/frontend/resultModal.jsp"%>
 
 	<!--交易密碼-->
 	<%@ include file="/WEB-INF/jsp/frontend/transactionPwModal.jsp"%>
@@ -132,36 +132,17 @@
 
 				instance.post("/api/E2E", dataJSON)
 				.then(res => {
-					renderModalBody(res.data);
+					renderModalBody(res.data, ({status, message, timestamp, name, amount, balance}) => {
+						return `
+							付款者大名: \${name}<br>
+							收款金額: NT\$\${amount}<br>
+							預計收款後餘額: NT\$\${balance}
+						`;
+					}, () => {
+						return "收款通知失敗!";
+					});
 				});
 			});
-			
-			function renderModalBody(res){
-				const {status, message, timestamp, name, amount, balance} = res;
-			
-				let resultAreaClass, resultTitle, resultBody;
-				
-				if(status === 200){
-					resultAreaClass = "alert-success";
-					resultTitle = "收款通知成功!";
-					resultBody = `
-						付款者大名: \${name}<br>
-						收款金額: NT\$\${amount}<br>
-						預計收款後餘額: NT\$\${balance}
-					`;
-				} else {
-					resultAreaClass = "alert-danger";
-					resultTitle = "收款通知失敗!";
-					resultBody = `
-						失敗!<br>
-					`;
-				}
-				
-				$("#resultModalLabel").text(resultTitle);
-				$("#result-area").addClass(resultAreaClass);
-				$("#result-area").html(resultBody);
-				$("#resultModal").modal("toggle");
-			}
 		});
 	</script>
 </body>

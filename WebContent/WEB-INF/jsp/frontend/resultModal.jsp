@@ -19,3 +19,25 @@
 	    </div>
 	  </div>
 	</div>
+	
+	<script>
+	function renderModalBody(res, successHint, failedHint){
+		const { status } = res;
+		let resultAreaClass, resultTitle, resultBody;
+		
+		if(status === 200){
+			resultAreaClass = "alert-success";
+			resultTitle = "成功!";
+			resultBody = successHint(res);
+		} else {
+			resultAreaClass = "alert-danger";
+			resultTitle = "失敗!";
+			resultBody = failedHint(res);
+		}
+		
+		$("#resultModalLabel").text(resultTitle);
+		$("#result-area").addClass(resultAreaClass);
+		$("#result-area").html(resultBody);
+		$("#resultModal").modal("toggle");
+	}
+	</script>

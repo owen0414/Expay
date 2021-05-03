@@ -59,16 +59,35 @@
 	<!-- Footer -->
 	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 	<script>
-		$(document).ready(() => {
-			//取得當前商店資料
-			instance.get("/api/shopInfo/")
-			.then(res => {
-				const {name, tax_id, address, phone, email} = res.data;
+		store.subscribe(() => {
+			const state = store.getState();
+			console.log(state);
+			
+			if(state.request){
+				const {name, tax_id, address, phone, email} = state.request;
 				$("#name").val(name);
 				$("#tax_id").val(tax_id);
 				$("#address").val(address);
 				$("#phone").val(phone);
 				$("#email").val(email);
+			}
+			
+			if(state.response){
+				renderModalBody(state.response, ({status, message, timestamp}) => {
+					return `\${message}<br>`;
+				}, ({status, message, timestamp}) => {
+					return `\${message}<br>`;
+				});
+			}
+		});
+		$(document).ready(() => {
+			//取得當前商店資料
+			instance.get("/api/shopInfo/")
+			.then(res => {
+				store.dispatch({
+					type: "FETCH",
+					payload: res.data
+				});
 			});
 			
 			//修改商店資料
@@ -82,10 +101,9 @@
 
 				instance.put("/api/shopInfo/", dataJSON)
 				.then(res => {
-					renderModalBody(res.data, ({status, message, timestamp}) => {
-						return `\${message}<br>`;
-					}, ({status, message, timestamp}) => {
-						return `\${message}<br>`;
+					store.dispatch({
+						type: "SUBMIT",
+						payload: res.data
 					});
 				});
 			});

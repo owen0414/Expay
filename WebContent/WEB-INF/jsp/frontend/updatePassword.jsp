@@ -48,6 +48,18 @@
 	<!-- Footer -->
 	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 	<script>
+		store.subscribe(() => {
+			const state = store.getState();
+			console.log(state);
+			
+			if(state.response){
+				renderModalBody(state.response, ({status, message, timestamp}) => {
+					return `\${message}<br>`;
+				}, ({status, message, timestamp}) => {
+					return `\${message}<br>`;
+				});
+			}
+		});
 		$(document).ready(()=>{
 			//修改密碼
 			$("#pw-btn").click(() => {
@@ -66,10 +78,9 @@
 
 					instance.put("/api/updatePassword/", dataJSON)
 					.then(res => {
-						renderModalBody(res.data, ({status, message, timestamp}) => {
-							return `\${message}<br>`;
-						}, ({status, message, timestamp}) => {
-							return `\${message}<br>`;
+						store.dispatch({
+							type: "SUBMIT",
+							payload: res.data
 						});
 					});
 				}

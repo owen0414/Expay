@@ -55,15 +55,34 @@
 	<!-- Footer -->
 	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 	<script>
-		$(document).ready(() => {
-			//取得個人資料
-			instance.get("/api/personalInfo/")
-			.then(res => {
-				const { name, phone, email, birthday } = res.data;
+		store.subscribe(() => {
+			const state = store.getState();
+			console.log(state);
+			
+			if(state.request){
+				const { name, phone, email, birthday } = state.request;
 				$("#fullname").val(name);
 				$("#phone").val(phone);
 				$("#email").val(email);
 				$("#birthday").val(birthday);
+			}
+			
+			if(state.response){
+				renderModalBody(state.response, ({status, message, timestamp}) => {
+					return `\${message}<br>`;
+				}, ({status, message, timestamp}) => {
+					return `\${message}<br>`;
+				});
+			}
+		});
+		$(document).ready(() => {
+			//取得個人資料
+			instance.get("/api/personalInfo/")
+			.then(res => {
+				store.dispatch({
+					type: "FETCH",
+					payload: res.data
+				});
 			});
 
 			//修改個人資料
@@ -76,10 +95,9 @@
 
 				instance.put("/api/personalInfo/", dataJSON)
 				.then(res => {
-					renderModalBody(res.data, ({status, message, timestamp}) => {
-						return `\${message}<br>`;
-					}, ({status, message, timestamp}) => {
-						return `\${message}<br>`;
+					store.dispatch({
+						type: "SUBMIT",
+						payload: res.data
 					});
 				});
 			});

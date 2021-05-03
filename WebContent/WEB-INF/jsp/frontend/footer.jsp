@@ -10,11 +10,11 @@
 </div>
 
 <!-- Jquery JS -->
-<%--<script type="text/javascript" src="<c:url value="/resources/js/jquery-3.3.1.js"/>"></script>--%>
+<script src="<c:url value="/resources/js/jquery-3.3.1.js"/>"></script>
 <!-- Vendor JS Files -->
-<script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
+<%-- <script src="<c:url value="/resources/js/jquery.min.js"/>"></script> --%>
 <script src="<c:url value="/resources/js/bootstrap.bundle.min.js"/>"></script>
-<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+<%-- <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script> --%>
 <script src="<c:url value="/resources/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"/>"></script>
 <script src="<c:url value="/resources/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.zh-TW.min.js"/>"></script>
 <script src="<c:url value="/resources/js/jquery.twzipcode.min.js"/>"></script>

@@ -86,6 +86,33 @@
 	<!-- 交易密碼 -->
 	<%@ include file="/WEB-INF/jsp/frontend/transactionPwModal.jsp"%>
 	<script>
+		initFetch();
+		
+		store.subscribe(() => {
+			const state = store.getState();
+			console.log(store.getState());
+			
+			if(state.request){
+				const {banks, e_account_info:{ balance }} = state.request;
+			    banks.forEach(({bankCode, bankAddress}) => { 
+			        $("#bank_account").append(`<option value=\${bankCode},\${bankAddress}>\${bankList[bankCode]} \${last5Address(bankAddress)}</option>`);
+			    });
+			    $("#current-balance").text(balance);
+			}
+			
+			if(state.response){
+				renderModalBody(state.response, ({status, message, timestamp, bankCode, amount, balance}) => {
+					return `
+						儲值銀行: \${bankList[bankCode]}<br>
+						儲值金額: NT\$\${amount}<br>
+						儲值後餘額: NT\$\${balance}
+					`;
+				}, () => {
+					return "儲值失敗!";
+				});
+			}
+		});
+	
 		// 儲值填寫設定
 		const setDepositAmount = (value) => {
 			let currentBalance = parseInt($("#current-balance").text());
@@ -131,22 +158,6 @@
 				updateAfterDepositBalance();
 			});
 			
-			//抓取目前使用者已綁定的銀行帳號
-			let dataJSON = {};
-			dataJSON["e_account"] = "0210000001";//TODO 抓使用者真實的e_account
-
-			instance
-			.post("/api/getLinkedBank", dataJSON)
-			.then(res => {
-				const {banks, e_account_info:{ balance }} = res.data;
-			    banks.forEach(({bankCode, bankAddress}) => { 
-			        $("#bank_account").append(`<option value=\${bankCode},\${bankAddress}>\${bankList[bankCode]} \${last5Address(bankAddress)}</option>`);
-			    });
-			    $("#current-balance").text(balance);
-			});
-			
-			showBankAccountIconName("${pageContext.request.contextPath}");
-			
 			// 儲值按鈕 TODO
 			$("#deposit-btn").click(() => {
 				let [bankCode, bankAddress] = $("#bank_account").val().split(",");//銀行代碼和帳戶
@@ -154,7 +165,7 @@
 				
 				let dataJSON = {};
 				
-				dataJSON["e_account"] = "0210000001";//TODO 抓使用者真實的e_account
+				dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.e_account : "0210000001";//TODO 抓使用者真實的e_account
 				dataJSON["bankCode"] = bankCode;
 				dataJSON["bankAddress"] = bankAddress;
 				dataJSON["amount"] = amount;
@@ -162,18 +173,35 @@
 				
 				instance.post("/api/bank/transaction", dataJSON)
 				.then(res => {
-					renderModalBody(res.data, ({status, message, timestamp, bankCode, amount, balance}) => {
-						return `
-							儲值銀行: \${bankList[bankCode]}<br>
-							儲值金額: NT\$\${amount}<br>
-							儲值後餘額: NT\$\${balance}
-						`;
-					}, () => {
-						return "儲值失敗!";
+					store.dispatch({
+						type: "SUBMIT",
+						payload: res.data
 					});
 				});
 			});
 		});
+		
+		async function initFetch(){
+			//取得當前的使用者
+			let res = await instance.get("/api/getCurrentUser");
+			store.dispatch({
+				type: "FETCH_USER",
+				payload: res.data
+			});
+			
+			//抓取目前使用者已綁定的銀行帳號
+			let dataJSON = {};
+			dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.e_account : "0210000001";//TODO 抓使用者真實的e_account
+
+			res = await instance.post("/api/getLinkedBank", dataJSON);
+			const {banks, e_account_info} = res.data;
+			store.dispatch({
+				type: "FETCH",
+				payload: {banks, e_account_info}
+			});
+			
+			showBankAccountIconName("${pageContext.request.contextPath}");
+		} 
 	</script>
 </body>
 </html>

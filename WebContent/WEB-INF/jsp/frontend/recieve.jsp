@@ -81,6 +81,30 @@
 	<!--交易密碼-->
 	<%@ include file="/WEB-INF/jsp/frontend/transactionPwModal.jsp"%>
 	<script>
+		initFetch();
+		
+		store.subscribe(() => {
+			const state = store.getState();
+			console.log(state);
+			
+			if(state.request){
+				const {name} = state.request.from;
+			    $("#e_account-name").text(name);
+			}
+			
+			if(state.response){
+				renderModalBody(state.response, ({status, message, timestamp, name, amount, balance}) => {
+					return `
+						付款者大名: \${name}<br>
+						收款金額: NT\$\${amount}<br>
+						預計收款後餘額: NT\$\${balance}
+					`;
+				}, () => {
+					return "收款通知失敗!";
+				});
+			}
+		});
+		
 		//收款金額
 		const setRecieveAmount = (value) => {
 			if(value > 50000){
@@ -115,7 +139,10 @@
 					instance.post("/api/getEAccount", dataJSON)
 					.then(res => {
 						const { name } = res.data;
-					    $("#e_account-name").text(name);
+						store.dispatch({
+							type: "FETCH",
+							payload: {from: {name}}
+						});
 					});
 				} else{
 					console.log("x");
@@ -126,24 +153,26 @@
 			$("#recieve-btn").click(() => {
 				let dataJSON = {};
 				dataJSON["remitter"] = $("#from_phone").val();
-				dataJSON["receiver"] = "0912345678";//TODO 抓使用者真實的手機
+				dataJSON["receiver"] = store.getState().e_account ? store.getState().e_account.phone : "0912345678";//TODO 抓使用者真實的手機
 				dataJSON["amount"] = parseInt($("#recieve_amount").val());
 				dataJSON["type"] = "R";
 
-				instance.post("/api/E2E", dataJSON)
+				instance.post("/api/ePay/transaction", dataJSON)
 				.then(res => {
-					renderModalBody(res.data, ({status, message, timestamp, name, amount, balance}) => {
-						return `
-							付款者大名: \${name}<br>
-							收款金額: NT\$\${amount}<br>
-							預計收款後餘額: NT\$\${balance}
-						`;
-					}, () => {
-						return "收款通知失敗!";
+					store.dispatch({
+						type: "SUBMIT",
+						payload: res.data
 					});
 				});
 			});
 		});
+		async function initFetch(){
+			let res = await instance.get('/api/getCurrentUser');
+			store.dispatch({
+				type: 'FETCH_USER',
+				payload: res.data
+			});
+		}
 	</script>
 </body>
 </html>

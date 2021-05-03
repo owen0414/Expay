@@ -83,3 +83,23 @@ const instance = axios.create({
 		"Content-Type": "application/json"
 	}
 });
+
+// redux
+const { createStore } = Redux;
+
+// reducer
+const reducer = (state = {e_account: null, request: null, response: null}, action) => {
+	switch(action.type){
+	case "FETCH_USER":
+		return {...state, e_account: {...state.e_account, ...action.payload}};
+	case "FETCH":
+		return {...state, request: {...state.request, ...action.payload}};
+	case "SUBMIT":
+		return {...state, response: {...state.response, ...action.payload}};
+	default:
+		return state;
+	}
+};
+
+// createStore
+const store = createStore(reducer);

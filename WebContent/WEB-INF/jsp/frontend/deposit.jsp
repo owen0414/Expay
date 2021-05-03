@@ -177,30 +177,39 @@
 						type: "SUBMIT",
 						payload: res.data
 					});
+					
+					initFetch();
+				})
+				.catch(error => {
+					console.log(error);
 				});
 			});
 		});
 		
 		async function initFetch(){
-			//取得當前的使用者
-			let res = await instance.get("/api/getCurrentUser");
-			store.dispatch({
-				type: "FETCH_USER",
-				payload: res.data
-			});
-			
-			//抓取目前使用者已綁定的銀行帳號
-			let dataJSON = {};
-			dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.e_account : "0210000001";//TODO 抓使用者真實的e_account
-
-			res = await instance.post("/api/getLinkedBank", dataJSON);
-			const {banks, e_account_info} = res.data;
-			store.dispatch({
-				type: "FETCH",
-				payload: {banks, e_account_info}
-			});
-			
-			showBankAccountIconName("${pageContext.request.contextPath}");
+			try{
+				//取得當前的使用者
+				let res = await instance.get("/api/getCurrentUser");
+				store.dispatch({
+					type: "FETCH_USER",
+					payload: res.data
+				});
+				
+				//抓取目前使用者已綁定的銀行帳號
+				let dataJSON = {};
+				dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.e_account : "0210000001";//TODO 抓使用者真實的e_account
+	
+				res = await instance.post("/api/getLinkedBank", dataJSON);
+				const {banks, e_account_info} = res.data;
+				store.dispatch({
+					type: "FETCH",
+					payload: {banks, e_account_info}
+				});
+				
+				showBankAccountIconName("${pageContext.request.contextPath}");
+			}catch(error){
+				console.log(error);
+			}
 		} 
 	</script>
 </body>

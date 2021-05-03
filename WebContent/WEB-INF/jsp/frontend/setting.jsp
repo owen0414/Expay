@@ -83,6 +83,9 @@
 					type: "FETCH",
 					payload: res.data
 				});
+			})
+			.catch(error => {
+				console.log(error);
 			});
 
 			//修改個人資料
@@ -99,6 +102,9 @@
 						type: "SUBMIT",
 						payload: res.data
 					});
+				})
+				.catch(error => {
+					console.log(error);
 				});
 			});
 		});

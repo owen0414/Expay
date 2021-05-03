@@ -143,6 +143,9 @@
 							type: "FETCH",
 							payload: {from: {name}}
 						});
+					})
+					.catch(error => {
+						console.log(error);
 					});
 				} else{
 					console.log("x");
@@ -163,15 +166,22 @@
 						type: "SUBMIT",
 						payload: res.data
 					});
+				})
+				.catch(error => {
+					console.log(error);
 				});
 			});
 		});
 		async function initFetch(){
-			let res = await instance.get('/api/getCurrentUser');
-			store.dispatch({
-				type: 'FETCH_USER',
-				payload: res.data
-			});
+			try{
+				let res = await instance.get('/api/getCurrentUser');
+				store.dispatch({
+					type: 'FETCH_USER',
+					payload: res.data
+				});
+			}catch(error){
+				
+			}
 		}
 	</script>
 </body>

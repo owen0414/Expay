@@ -423,4 +423,9 @@ h2{
 	border-radius: 3px;
 }
 
-/* 設定 */
+/* 勾勾svg */
+svg{
+	width: 100px;
+	height: auto;
+	margin-bottom: 10px;
+}

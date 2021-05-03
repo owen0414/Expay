@@ -199,7 +199,7 @@
 			
 			if(result){
 				
-				var requestURL = 'http://172.19.35.31/api/user/login'
+				var requestURL = 'http://172.19.35.97/api/user/login'
 				var dataJSON = {}
 				dataJSON['identity'] = identity.val()
 				dataJSON['password'] = password.val()

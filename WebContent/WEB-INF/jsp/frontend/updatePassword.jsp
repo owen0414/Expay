@@ -82,6 +82,9 @@
 							type: "SUBMIT",
 							payload: res.data
 						});
+					})
+					.catch(error => {
+						console.log(error);
 					});
 				}
 			});

@@ -88,6 +88,9 @@
 					type: "FETCH",
 					payload: res.data
 				});
+			})
+			.catch(error => {
+				console.log(error);
 			});
 			
 			//修改商店資料
@@ -105,6 +108,9 @@
 						type: "SUBMIT",
 						payload: res.data
 					});
+				})
+				.catch(error => {
+					console.log(error);
 				});
 			});
 		});

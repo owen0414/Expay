@@ -163,6 +163,9 @@
 							type: "FETCH",
 							payload: {to:{name}}
 						});
+					})
+					.catch(error => {
+						console.log(error);
 					});
 				} else{
 					console.log("x");
@@ -183,27 +186,36 @@
 						type: "SUBMIT",
 						payload: res.data
 					});
+					
+					initFetch();
+				})
+				.catch(error => {
+					console.log(error);
 				});
 			});
 		});
 		
 		async function initFetch(){
-			let res = await instance.get("/api/getCurrentUser");
-			store.dispatch({
-				type: "FETCH_USER",
-				payload: res.data
-			});
-			
-			//先抓自己的餘額
-			let dataJSON = {};
-			dataJSON["phone"] = store.getState().e_account ? store.getState().e_account.phone : "0912345678";//TODO 抓使用者真實的手機
-
-			res = await instance.post("/api/getMyEAccount", dataJSON)
-			const {balance} = res.data;
-			store.dispatch({
-				type: "FETCH",
-				payload: {from: {balance}}
-			});
+			try{
+				let res = await instance.get("/api/getCurrentUser");
+				store.dispatch({
+					type: "FETCH_USER",
+					payload: res.data
+				});
+				
+				//先抓自己的餘額
+				let dataJSON = {};
+				dataJSON["phone"] = store.getState().e_account ? store.getState().e_account.phone : "0912345678";//TODO 抓使用者真實的手機
+	
+				res = await instance.post("/api/getMyEAccount", dataJSON)
+				const {balance} = res.data;
+				store.dispatch({
+					type: "FETCH",
+					payload: {from: {balance}}
+				});
+			}catch(error){
+				console.log(error);
+			}
 		}
 	</script>
 </body>

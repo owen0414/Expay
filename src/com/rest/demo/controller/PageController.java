@@ -65,4 +65,60 @@ public class PageController {
 	public String personalPage() {
 		return "frontend/personalPage";
 	}
+	
+	@GetMapping("history")
+	public String History() {
+		
+		return "frontend/history";
+		
+	}
+	
+	@GetMapping("quota")
+	public String Quota() {
+		
+		return "frontend/quota";
+		
+	}
+	
+	@GetMapping("payment_notification")
+	public String PaymentNotification() {
+		
+		return "frontend/paymentNotification";
+		
+	}
+	
+	@GetMapping("user/login")
+	public String Login() {
+		
+		return "frontend/login";
+		
+	}
+	
+	@GetMapping("user/register")
+	public String Register() {
+		
+		return "frontend/register";
+		
+	}
+	
+	@GetMapping("user/register/member")
+	public String memberRegister() {
+		
+		return "frontend/memberRegister";
+		
+	}
+	
+	@GetMapping("user/register/shop")
+	public String shopRegister() {
+		
+		return "frontend/shopRegister";
+		
+	}
+	
+	@GetMapping("user/payment_password")
+	public String paymentPassword() {
+		
+		return "frontend/payment_password";
+		
+	}
 }

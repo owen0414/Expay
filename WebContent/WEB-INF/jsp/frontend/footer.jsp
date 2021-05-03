@@ -15,6 +15,9 @@
 <script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
 <script src="<c:url value="/resources/js/bootstrap.bundle.min.js"/>"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+<script src="<c:url value="/resources/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"/>"></script>
+<script src="<c:url value="/resources/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.zh-TW.min.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery.twzipcode.min.js"/>"></script>
 <!-- axios -->
 <script src="<c:url value="/resources/js/axios.min.js"/>"></script>
 <!-- redux -->

@@ -11,8 +11,8 @@
 		<ul class="navbar-nav mr-auto">
 		</ul>
 		<ul class="navbar-nav">
-			<li class="nav-item"><a href="#" class="nav-link">登入</a></li>
-			<li class="nav-item"><a href="#" class="nav-link">註冊</a></li>
+			<li class="nav-item"><a href="${pageContext.request.contextPath}/user/login" class="nav-link">登入</a></li>
+			<li class="nav-item"><a href="${pageContext.request.contextPath}/user/register" class="nav-link">註冊</a></li>
 		</ul>
 	</div>
 </nav>

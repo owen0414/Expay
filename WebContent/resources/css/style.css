@@ -9,8 +9,7 @@ del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
 b, u, i, center,
 dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
+fieldset, form, label, legend, caption,
 article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
@@ -49,6 +48,14 @@ table {
 img{
 	max-width: 100%;
 	height:auto;
+}
+
+h1{
+	font-size:2rem;
+}
+
+h4{
+	font-size:1.5rem;
 }
 
 /* navbar */
@@ -143,6 +150,262 @@ img{
 	background-color:#007bff;
 	color:#fff;
 	border-radius: 300px;
+}
+
+/* Tab */
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #35414c;
+    background-color: transparent;
+    border-color: transparent transparent #f3f3f3;
+    border-bottom: 3px solid !important;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    color: black;
+    font-size: 1.1rem;
+}
+
+.btn:hover{
+	color:#fff;
+}
+
+/* Font Color */
+
+.font-red{
+	color:#f75959;
+}
+
+.font-blue{
+	color:#1474de;
+}
+
+.font-lightblue{
+	color:#4599d6;
+}
+
+.font-green{
+	color:#0e982e;
+}
+
+.font-lightgreen{
+	color:#77a88d;
+}
+
+/* History */
+
+.tab-content p{
+	font-size:0.8rem;
+}
+
+@media (min-width: 576px){
+	.tab-content p{
+		font-size:0.9rem;
+	}
+}
+
+.account_number{
+	border:1px solid black;
+	line-height:30px;
+}
+
+.tab_content{
+	border:1px solid #adb5bd;	
+}
+
+
+.history_order{
+	border:1px solid black;
+}
+
+.transaction_history,.account_history {
+	line-height:50px;
+	border:1px solid gray;
+	border-radius:6px;
+	cursor: pointer;
+	transition-duration: 0.3s;
+	transition-property: box-shadow, transform;
+}
+
+.payment_item{
+	line-height:50px;
+	border:1px solid gray;
+	border-radius:6px;
+}
+
+.transaction_history:hover,.account_history:hover{
+	box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
+.modal-body p{
+	font-size:0.78rem;
+}
+
+.transaction_hr{
+	border-top: 1px dashed #0000004a;
+}
+
+.account_condition{
+	border:2px solid #e86b3b;
+	border-radius:60px;
+	line-height:40px;
+	cursor:pointer;
+}
+
+.account_condition:hover{
+	background: #e86b3b;
+	color:#fff;
+}
+
+.condition_item > .active{
+	background:#e86b3b;
+	color:#fff;
+}
+
+/* Quota */
+
+.quota_item {
+	line-height:40px;
+	border:1px solid gray;
+	border-radius:6px;
+}
+
+.quota_item p{
+	font-size:0.9rem;
+}
+
+.quota_hr{
+	border-top: 1px dashed #0000004a;
+}
+
+/* Login */
+
+.toggle_password{
+   position: absolute;
+   top: 35%;
+   right: 8%;
+   cursor:pointer;
+}
+
+.forget_password{
+	line-height: 30px;
+    color: #949aa1;
+    margin: 17px 0;
+    display: block;
+    font-size: 16px;
+}
+
+.login_item{
+	line-height:40px;
+	border:1px solid gray;
+	border-radius:6px;
+}
+
+.login_hr{
+	border-top: 1px solid #0000004a;
+}
+
+.btn_memlogin{
+	font-size: 1.1rem;
+    color: #FFFFFF;
+    background-color: #4599d6;
+    border: none;
+    width: 100%;
+}
+
+.btn_shoplogin{
+	font-size: 1.1rem;
+    color: #FFFFFF;
+    background-color: #77a88d;
+    border: none;
+    width: 100%;
+}
+
+.btn_register{
+	font-size: 1.1rem;
+    color: #FFFFFF;
+    background-color: #bfc5ce;
+    border: none;
+    height: 40px;
+    width: 100%;
+}
+
+.shop_lg{
+	position: absolute;
+    right: 20px;
+    top: 0px;
+    color: #FFF;
+    background-color: #4599d6;
+    font-size:0.9rem;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 0px 0px 12px 12px;
+   	cursor:pointer;
+}
+
+.mem_lg{
+	position: absolute;
+    right: 20px;
+    top: 0px;
+    color: #FFF;
+    background-color: #77a88d;
+    font-size:0.9rem;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 0px 0px 12px 12px;
+    cursor: pointer;
+}
+
+/* Register */
+
+.register_item {
+	line-height:40px;
+	border:1px solid gray;
+	border-radius:4px;
+}
+
+.register_item p{
+	font-size:0.9rem;
+}
+
+.register_item .mem_ul li{
+	text-indent: -.7em;
+}
+
+.register_item .mem_ul li:before{
+	content: "• ";
+    color: #4599d6;
+}
+
+.register_item .shop_ul li{
+	text-indent: -.7em;
+}
+
+.register_item .shop_ul li:before{
+	content: "• ";
+    color: #77a88d;
+}
+
+/* Shop Register */
+
+.toggle_regpassword{
+   position: absolute;
+   top: 7%;
+   right: 8%;
+   cursor:pointer;
+}
+
+.is_error{
+	color:#be0000;
+	display:none;
 }
 
 /* 儲值 */

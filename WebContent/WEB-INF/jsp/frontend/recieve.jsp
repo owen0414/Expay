@@ -116,6 +116,10 @@
 		
 		//按鈕
 		$(document).ready(()=>{
+			$("#recieve_amount").change(function(e) {
+				let amount = parseInt(e.target.value);
+				setRecieveAmount(amount);
+			});
 			$("#plus-100").click(function(){
 				let amount = parseInt($("#recieve_amount").val()) + 100;
 				setRecieveAmount(amount);
@@ -135,6 +139,7 @@
 				if(fromPhone.length == 10){
 					let dataJSON = {};
 					dataJSON["phone"] = fromPhone;
+					dataJSON["role"] = "M";
 
 					instance.post("/api/getEAccount", dataJSON)
 					.then(res => {

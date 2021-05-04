@@ -55,6 +55,8 @@
 	<!-- Footer -->
 	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 	<script>
+		initFetch();
+		
 		store.subscribe(() => {
 			const state = store.getState();
 			console.log(state);
@@ -76,22 +78,11 @@
 			}
 		});
 		$(document).ready(() => {
-			//取得個人資料
-			instance.get("/api/personalInfo/")
-			.then(res => {
-				store.dispatch({
-					type: "FETCH",
-					payload: res.data
-				});
-			})
-			.catch(error => {
-				console.log(error);
-			});
-
 			//修改個人資料
 			$("#setting-btn").click(() => {
 				let dataJSON = {};
-				dataJSON["name"] = $("#name").val();
+				dataJSON["e_account"] = store.getState().e_account.e_account;
+				dataJSON["name"] = $("#fullname").val();
 				dataJSON["phone"] = $("#phone").val();
 				dataJSON["email"] = $("#email").val();
 				dataJSON["birthday"] = $("#birthday").val();
@@ -102,12 +93,34 @@
 						type: "SUBMIT",
 						payload: res.data
 					});
+					
+					initFetch();
 				})
 				.catch(error => {
 					console.log(error);
 				});
 			});
 		});
+		
+		async function initFetch(){
+			try{
+				//取得目前的使用者
+				let res = await instance.get('/api/getCurrentUser');
+				store.dispatch({
+					type: "FETCH_USER",
+					payload: res.data
+				});
+				
+				//取得個人資料
+				res = await instance.get("/api/personalInfo/")
+				store.dispatch({
+					type: "FETCH",
+					payload: res.data
+				});
+			}catch(error){
+				console.log(error);
+			}
+		}
 	</script>
 </body>
 </html>

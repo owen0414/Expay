@@ -48,7 +48,9 @@ $('.back-to-top').click(function() {
 });
 
 // BASE_URL
-const BASE_URL = "http://172.19.35.133/api/";
+//const BASE_URL = "http://172.19.35.133/api/";
+// base url
+//const BASE_URL = "http://172.19.35.97/";
 
 //儲值 提領
 //抓取銀行帳號及餘額

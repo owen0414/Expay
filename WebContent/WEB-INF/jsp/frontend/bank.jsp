@@ -414,8 +414,7 @@
 
         <script type="text/javascript">
             function init() {
-                //getBankAccount();//測試用
-                getLinkedBank() //正式用
+                getLinkedBank() //取得卡片
             }
 
             function bankInit() {
@@ -457,12 +456,21 @@
                 $('#nextBtn').hide() //隱藏下一步
             }
 
+            //編輯卡片btn
+            function modalEditBankBtnInit(status) {
+                if (status) {
+                    $('#modalEditBank').show()
+                } else {
+                    $('#modalEditBank').hide()
+                }
+            }
             //編輯卡片
             function unlinkInit() {
                 $('#allCards').show()
                 $('.successUnlinkPage').hide() //隱藏成功頁面與成功字樣
                 $('.fadeIn').hide()
             }
+
             function successUnlinkInit() {
                 $('#allCards').hide() //卡片s隱藏
                 $('.successUnlinkPage').show() //顯示成功頁面
@@ -472,10 +480,7 @@
             //getLinkedBank(真實所有卡片資料)
             async function getLinkedBank() {
                 try {
-                    const response = await instance.post('/getLinkedBank', {
-                        //測資
-                        e_account: '0210000001',
-                    })
+                    const response = await instance.get('/getLinkedBank')
                     console.log(response.data)
 
                     //初始讀取卡片陣列
@@ -491,12 +496,13 @@
             //linkBank(真實卡片綁定)
             async function linkBank(bank_code, account, birth, e_account) {
                 try {
+                    const currentUser = await instance.get('/getCurrentUser')
                     const response = await instance.post('/linkBank', {
                         //測資
                         bank_code,
                         account,
                         birth,
-                        e_account, //目前寫死
+                        e_account: currentUser.data.e_account,
                     })
 
                     console.log('linkBank綁定: ' + response.data)
@@ -513,22 +519,24 @@
                         successInit() //顯示成功
                     }
                 } catch (error) {
-                    console.log('error: ' + error)
+                    $('.responseMessage').html(
+                        '<p style="font-weight:bold">' +
+                            error.response.data.status +
+                            error.response.data.message +
+                            '</p><p style="text-align:center">請稍後在試</p>'
+                    )
+                    console.log('catch error： ' + error.response.data.message)
+                    failInit() //顯示失敗
                 }
-                // .then(function (response) {
-                //     console.log('linkBank綁定: ' + response.data)
-                // })
-                // .catch(function (error) {
-                //     console.log('error: ' + error)
-                // })
             }
 
             //unlinkBank(真實卡片解綁)
             async function unlinkBank(bank_account) {
                 try {
+                    const currentUser = await instance.get('/getCurrentUser')
                     const response = await instance.put('/unlinkBank', {
-                        //測資
                         bank_account,
+                        e_account: currentUser.data.e_account,
                     })
 
                     console.log('unlinkBank: ' + response.data)
@@ -552,7 +560,7 @@
             //若資料為[] 渲染假資料
             function createCards(data) {
                 if (data.length == 0) {
-                    console.log('你的資料是空的!' + data)
+                    console.log('no data!' + data)
 
                     //範例檔
                     var cardHtml =
@@ -588,6 +596,9 @@
                     $('.cardDefault').hide()
                     $('.indicatorDefault').hide()
                 } else {
+                    //顯示編輯卡片
+                    modalEditBankBtnInit(true)
+
                     //範例檔
 
                     var cardHtml =
@@ -713,8 +724,8 @@
             //獲取驗證碼
             function getCaptcha() {
                 $.ajax({
-                    //url: 'http://172.19.35.133/api/getCode',
-                    url: 'http://172.19.35.133/exPay/api/getCode',
+                    url: 'http://172.19.35.133/api/getCode',
+                    //url: 'http://172.19.35.133/exPay/api/getCode',
                     xhrFields: {
                         responseType: 'blob',
                         withCredentials: true,
@@ -739,8 +750,8 @@
                 var pwd1 = $('#captchaInput').val()
                 if (pwd1.length == '4') {
                     $.ajax({
-                        //url: 'http://172.19.35.133/api/checkCode/' + pwd1,
-                        url: 'http://172.19.35.133/exPay/api/checkCode/' + pwd1,
+                        url: 'http://172.19.35.133/api/checkCode/' + pwd1,
+                        //url: 'http://172.19.35.133/exPay/api/checkCode/' + pwd1,
                         xhrFields: {
                             withCredentials: true,
                         },
@@ -861,6 +872,9 @@
 
                 //後端資料渲染
                 init()
+
+                //預設隱藏編輯卡片
+                modalEditBankBtnInit(false)
 
                 //啟動新增卡片modal時
                 $('#modalBank').click(function () {

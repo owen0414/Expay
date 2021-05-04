@@ -180,7 +180,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body history_modal">
 						<div class="container-fluid">
 							<div class="col-12 font-weight-bold">711</div>
 							<div class="col-12 mt-4">
@@ -235,7 +235,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body history_modal">
 						<div class="container-fluid">
 							<div class="col-12 mt-2">
 								<p>交易類別   <span class="font-weight-bold px-2">轉帳</span></p>
@@ -281,7 +281,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body history_modal">
 						<div class="container-fluid">
 							<div class="col-12 mt-2">
 								<p>交易類別   <span class="font-weight-bold px-2">轉帳</span></p>

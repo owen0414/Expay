@@ -47,6 +47,9 @@ $('.back-to-top').click(function() {
   return false;
 });
 
+// base url
+const BASE_URL = "http://172.19.35.31/";
+
 //儲值 提領
 //抓取銀行帳號及餘額
 const last5Address = (address) => {
@@ -78,7 +81,7 @@ const showBankAccountIconName = base_url => {
 
 //axios設定
 const instance = axios.create({
-	baseURL: "http://172.19.35.97/",
+	baseURL: BASE_URL,
 	Headers: {
 		"Content-Type": "application/json"
 	}

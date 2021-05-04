@@ -1,4 +1,4 @@
-$('body').css('padding-top', $('.navbar').outerHeight() + 'px')
+// $('body').css('padding-top', $('.navbar').outerHeight() + 'px')
 
 // detect scroll top or down
 if ($('.smart-scroll').length > 0) { // check if element exists

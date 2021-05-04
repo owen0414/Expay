@@ -51,6 +51,8 @@ $('.back-to-top').click(function() {
 //const BASE_URL = "http://172.19.35.133/api/";
 // base url
 //const BASE_URL = "http://172.19.35.97/";
+//base url
+const BASE_URL = "http://172.19.35.31/";
 
 //儲值 提領
 //抓取銀行帳號及餘額
@@ -108,3 +110,9 @@ const reducer = (state = {e_account: null, request: null, response: null}, actio
 
 // createStore
 const store = createStore(reducer);
+
+//將數字加上千分位
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

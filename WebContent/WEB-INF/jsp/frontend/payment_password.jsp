@@ -129,6 +129,10 @@
 					dataType: 'json',
 					contentType: 'application/json;charset=utf-8',
 					success: function (returnData) {
+						if(returnData.status == 200){
+							alert('設定密碼成功')
+							location.href = "/Expay"
+						}
 						console.log(returnData)
 					},
 					error: function (xhr, ajaxOptions, thrownError) {

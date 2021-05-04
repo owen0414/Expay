@@ -271,7 +271,7 @@
 
 				event.preventDefault();
 				
-				var requestURL = 'http://172.19.35.31/api/shop/signup'
+				var requestURL = `${BASE_URL}/api/shop/signup`
 				var dataJSON = {}
 				dataJSON['id'] = id.val()
 				dataJSON['password'] = password.val()

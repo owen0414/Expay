@@ -212,6 +212,9 @@
 					dataType: 'json',
 					contentType: 'application/json;charset=utf-8',
 					success: function (returnData) {
+						if(returnData.status == 200){
+							location.href = "/Expay"
+						}
 						console.log(returnData)
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
@@ -256,7 +259,7 @@
 			
 			if(result){
 				
-				var requestURL = 'http://172.19.35.31/api/shop/login'
+				var requestURL = `${BASE_URL}/api/shop/login`
 				var dataJSON = {}
 				dataJSON['identity'] = id.val()
 				dataJSON['password'] = password.val()
@@ -269,6 +272,9 @@
 					dataType: 'json',
 					contentType: 'application/json;charset=utf-8',
 					success: function (returnData) {
+						if(returnData.status == 200){
+							location.href = "/Expay"
+						}
 						console.log(returnData)
 					},
 					error: function (xhr, ajaxOptions, thrownError) {

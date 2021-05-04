@@ -117,7 +117,7 @@
 
 				event.preventDefault();
 				
-				var requestURL = 'http://172.19.35.31/api/updateTPassword'
+				var requestURL = `${BASE_URL}/api/updateTPassword`
 				var dataJSON = {}
 				dataJSON['e_account'] = '0215215'
 				dataJSON['transactionPwd'] = password.val()

@@ -433,7 +433,7 @@
 
 				event.preventDefault();
 				
-				var requestURL = 'http://172.19.35.31/api/user/signup'
+				var requestURL = `${BASE_URL}/api/user/signup`
 				var dataJSON = {}
 				dataJSON['identity'] = identity.val()
 				dataJSON['password'] = password.val()

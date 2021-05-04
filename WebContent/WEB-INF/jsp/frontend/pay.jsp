@@ -47,7 +47,7 @@
 										<div class="input-group-prepend">
 											<span class="input-group-text">NT$</span>
 										</div>
-										<input type="number" id="pay_amount" name="pay_amount" min="1" max="50000" value="1" class="form-control" />
+										<input type="number" id="pay_amount" name="pay_amount" min="0" max="50000" value="0" class="form-control" />
 									</div>
 								</li>
 								<li class="mb-1">
@@ -99,16 +99,14 @@
 			const state = store.getState();
 			console.log(state);
 			
+			if(state.e_account){
+				const {balance} = state.e_account;
+				$("#current-balance").text(balance);
+			}
+			
 			if(state.request){
-				if(state.request.from){
-					const {balance} = state.request.from;
-					$("#current-balance").text(balance);
-				}
-				
-				if(state.request.to){
-					const {name} = state.request.to;
-			    	$("#e_account-name").text(name);
-				}
+				const {name} = state.request.to;
+			    $("#e_account-name").text(name);
 			}
 			
 			if(state.response){
@@ -136,6 +134,10 @@
 		
 		//按鈕
 		$(document).ready(()=>{
+			$("#pay_amount").change(function(e){
+				let amount = parseInt(e.target.value);
+				setPayWithDrawAmount(amount);
+			});
 			$("#plus-100").click(function(){
 				let amount = parseInt($("#pay_amount").val()) + 100;
 				setPayWithDrawAmount(amount);
@@ -155,6 +157,7 @@
 				if(storePhone.length == 10){
 					let dataJSON = {};
 					dataJSON["phone"] = storePhone;
+					dataJSON["role"] = "S";
 
 					instance.post("/api/getEAccount", dataJSON)
 					.then(res => {
@@ -201,17 +204,6 @@
 				store.dispatch({
 					type: "FETCH_USER",
 					payload: res.data
-				});
-				
-				//先抓自己的餘額
-				let dataJSON = {};
-				dataJSON["phone"] = store.getState().e_account ? store.getState().e_account.phone : "0912345678";//TODO 抓使用者真實的手機
-	
-				res = await instance.post("/api/getMyEAccount", dataJSON)
-				const {balance} = res.data;
-				store.dispatch({
-					type: "FETCH",
-					payload: {from: {balance}}
 				});
 			}catch(error){
 				console.log(error);

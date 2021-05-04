@@ -14,4 +14,4 @@
 <link type="text/css" rel="stylesheet" href="<c:url value="/resources/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"/>" />
 <!-- 勾勾 -->
 <link rel="stylesheet/less" type="text/css" href="<c:url value="/resources/css/style.less"/>" />
-<script src="//cdn.jsdelivr.net/npm/less@3.13" ></script>
+<script src="<c:url value="/resources/js/less.min.js"/>" ></script>

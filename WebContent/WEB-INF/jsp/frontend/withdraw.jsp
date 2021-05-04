@@ -92,12 +92,16 @@
 			const state = store.getState();
 			console.log(state);
 			
+			if(state.e_account){
+				const { balance } = state.e_account;
+				$("#current-balance").text(balance);
+			}
+			
 			if(state.request){
-				const {banks, e_account_info:{ balance }} = state.request;
+				const {banks} = state.request;
 			    banks.forEach(({bankCode, bankAddress}) => { 
 			        $("#bank_account").append(`<option value=\${bankCode},\${bankAddress}>\${bankList[bankCode]} \${last5Address(bankAddress)}</option>`);
 			    });
-			    $("#current-balance").text(balance);
 			}
 			
 			if(state.response){
@@ -193,15 +197,11 @@
 					payload: res.data
 				});
 				
-				//要api
-				let dataJSON = {};
-				dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.e_account : "0210000001";//TODO 抓使用者真實的e_account
-	
-				res = await instance.post("/api/getLinkedBank", dataJSON)
-				const {banks, e_account_info} = res.data;
+				//抓取目前使用者已綁定的銀行帳號	
+				res = await instance.get("/api/getLinkedBank")
 				store.dispatch({
 					type: "FETCH",
-					payload: {banks, e_account_info}
+					payload: {...res.data}
 				});
 				
 				showBankAccountIconName("${pageContext.request.contextPath}");

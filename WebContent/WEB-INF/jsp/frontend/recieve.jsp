@@ -96,8 +96,8 @@
 				renderModalBody(state.response, ({status, message, timestamp, name, amount, balance}) => {
 					return `
 						付款者大名: \${name}<br>
-						收款金額: NT\$\${amount}<br>
-						預計收款後餘額: NT\$\${balance}
+						收款金額: NT\$\${numberWithCommas(amount)}<br>
+						預計收款後餘額: NT\$\${numberWithCommas(balance)}
 					`;
 				}, () => {
 					return "收款通知失敗!";

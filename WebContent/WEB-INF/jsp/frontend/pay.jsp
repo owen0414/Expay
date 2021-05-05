@@ -101,7 +101,7 @@
 			
 			if(state.e_account){
 				const {balance} = state.e_account;
-				$("#current-balance").text(balance);
+				$("#current-balance").text(numberWithCommas(balance));
 			}
 			
 			if(state.request){
@@ -113,8 +113,8 @@
 				renderModalBody(state.response, ({status, message, timestamp, name, amount, balance}) => {
 					return `
 						付款商家: \${name}<br>
-						付款金額: NT\$\${amount}<br>
-						付款後餘額: NT\$\${balance}
+						付款金額: NT\$\${numberWithCommas(amount)}<br>
+						付款後餘額: NT\$\${numberWithCommas(balance)}
 					`;
 				}, () => {
 					return "付款失敗!";
@@ -124,7 +124,7 @@
 	
 		//付款金額
 		const setPayWithDrawAmount = (value) => {
-			let currentBalance = parseInt($("#current-balance").text());
+			let currentBalance = parseInt(undoNumberWithCommas($("#current-balance").text()));
 			if(value > currentBalance){
 				$("#pay_amount").val(currentBalance);
 			} else {

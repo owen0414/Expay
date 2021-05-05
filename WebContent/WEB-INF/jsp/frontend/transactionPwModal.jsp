@@ -30,21 +30,31 @@
 		$(document).ready(() => {
 			$("#transactionPwModal").modal("toggle");
 			
-			$("#transactionPw").keyup(function () {
+			$("#transactionPw").keyup(async function () {
 				let tpw = $(this).val();
 				if(tpw.length === 6){
-					let dataJSON = {};
-					dataJSON["transactionPwd"] = tpw;
-
-					instance.post("/api/checkTransactionPwd", dataJSON)
-					.then(res => {
+					try{
+						let res = await instance.get("/api/getCurrentUser");
+						const {login, info:{role}} = res.data;
+						if(!login){
+							alert("尚未登入!");
+							throw new Error("尚未登入!");
+						}
+						
+						let dataJSON = {};
+						dataJSON["transactionPwd"] = tpw;
+						dataJSON["role"] = role;
+	
+						res = await instance.post("/api/checkTransactionPwd", dataJSON)
 						const {valid} = res.data;
 						if(!valid){
 							$("#hint").html("交易密碼錯誤").css("color", "red");
 						} else {
 							$("#transactionPwModal").modal("hide");
 						}
-					});
+					}catch(error){
+						console.log(error);
+					}
 				}
 			});
 		});

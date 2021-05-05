@@ -93,7 +93,7 @@
 			console.log(store.getState());
 			
 			if(state.e_account){
-				const { balance } = state.e_account;
+				const { info: {balance} } = state.e_account;
 				$("#current-balance").text(numberWithCommas(balance));
 			}
 			
@@ -169,7 +169,7 @@
 				
 				let dataJSON = {};
 				
-				dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.e_account : "0210000001";//TODO 抓使用者真實的e_account
+				dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.info.e_account : "0210000001";//TODO 抓使用者真實的e_account
 				dataJSON["bankCode"] = bankCode;
 				dataJSON["bankAddress"] = bankAddress;
 				dataJSON["amount"] = amount;
@@ -194,6 +194,12 @@
 			try{
 				//取得當前的使用者
 				let res = await instance.get("/api/getCurrentUser");
+				const { login } = res.data;
+				if(!login){
+					alert("尚未登入!");
+					throw new Error("尚未登入!");
+				}
+
 				store.dispatch({
 					type: "FETCH_USER",
 					payload: res.data

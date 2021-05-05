@@ -100,7 +100,7 @@
 			console.log(state);
 			
 			if(state.e_account){
-				const {balance} = state.e_account;
+				const { info: {balance}} = state.e_account;
 				$("#current-balance").text(numberWithCommas(balance));
 			}
 			
@@ -178,7 +178,7 @@
 			//付款
 			$("#pay-btn").click(() => {
 				let dataJSON = {};
-				dataJSON["remitter"] = store.getState().e_account ? store.getState().e_account.phone : "0912345678";//TODO 抓使用者真實的手機
+				dataJSON["remitter"] = store.getState().e_account ? store.getState().e_account.info.phone : "0912345678";//TODO 抓使用者真實的手機
 				dataJSON["receiver"] = $("#store_phone").val();
 				dataJSON["amount"] = parseInt($("#pay_amount").val());
 				dataJSON["type"] = "S";
@@ -201,6 +201,12 @@
 		async function initFetch(){
 			try{
 				let res = await instance.get("/api/getCurrentUser");
+				const { login } = res.data;
+				if(!login){
+					alert("尚未登入!");
+					throw new Error("尚未登入!");
+				}
+
 				store.dispatch({
 					type: "FETCH_USER",
 					payload: res.data

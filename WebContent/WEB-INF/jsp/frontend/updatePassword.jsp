@@ -101,7 +101,7 @@
 					alert("兩次新登入密碼不相同!");
 				} else {
 					let dataJSON = {};
-					dataJSON["e_account"] = store.getState().e_account.e_account;
+					dataJSON["e_account"] = store.getState().e_account.info.e_account;
 					dataJSON["old_password"] = oldPassword;
 					dataJSON["password"] = password;
 
@@ -132,7 +132,7 @@
 					alert("兩次新交易密碼不相同!");
 				} else {
 					let dataJSON = {};
-					dataJSON["e_account"] = store.getState().e_account.e_account;
+					dataJSON["e_account"] = store.getState().e_account.info.e_account;
 					dataJSON["transactionPwd"] = tPassword;
 					
 					instance.put("/api/updateTransactionPwd", dataJSON)
@@ -151,6 +151,12 @@
 		async function initFetch() {
 			try{
 				const res = await instance.get("/api/getCurrentUser");
+				const { login } = res.data;
+				if(!login){
+					alert("尚未登入!");
+					throw new Error("尚未登入!");
+				}
+
 				store.dispatch({
 					type: "FETCH_USER",
 					payload: res.data

@@ -161,7 +161,7 @@
 			$("#recieve-btn").click(() => {
 				let dataJSON = {};
 				dataJSON["remitter"] = $("#from_phone").val();
-				dataJSON["receiver"] = store.getState().e_account ? store.getState().e_account.phone : "0912345678";//TODO 抓使用者真實的手機
+				dataJSON["receiver"] = store.getState().e_account ? store.getState().e_account.info.phone : "0912345678";//TODO 抓使用者真實的手機
 				dataJSON["amount"] = parseInt($("#recieve_amount").val());
 				dataJSON["type"] = "R";
 
@@ -180,6 +180,12 @@
 		async function initFetch(){
 			try{
 				let res = await instance.get('/api/getCurrentUser');
+				const { login } = res.data;
+				if(!login){
+					alert("尚未登入!");
+					throw new Error("尚未登入!");
+				}
+
 				store.dispatch({
 					type: 'FETCH_USER',
 					payload: res.data

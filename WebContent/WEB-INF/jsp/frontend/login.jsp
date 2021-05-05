@@ -274,7 +274,7 @@
 			
 			if(result){
 				
-				var requestURL = `${BASE_URL}/api/user/login`;
+				var requestURL = `\${BASE_URL}/api/user/login`;
 				var dataJSON = {}
 				dataJSON['identity'] = identity.val()
 				dataJSON['password'] = password.val()
@@ -337,7 +337,7 @@
 			
 			if(result){
 				
-				var requestURL = `${BASE_URL}/api/shop/login`
+				var requestURL = `\${BASE_URL}/api/shop/login`
 				var dataJSON = {}
 				dataJSON['identity'] = id.val()
 				dataJSON['password'] = password.val()

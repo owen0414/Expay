@@ -81,7 +81,7 @@
 			//修改個人資料
 			$("#setting-btn").click(() => {				
 				let dataJSON = {};
-				dataJSON["e_account"] = store.getState().e_account.e_account;
+				dataJSON["e_account"] = store.getState().e_account.info.e_account;
 				dataJSON["name"] = $("#name").val();
 				dataJSON["phone"] = $("#phone").val();
 				dataJSON["email"] = $("#email").val();
@@ -112,6 +112,12 @@
 			try{
 				//取得目前的使用者
 				let res = await instance.get('/api/getCurrentUser');
+				const { login } = res.data;
+				if(!login){
+					alert("尚未登入!");
+					throw new Error("尚未登入!");
+				}
+
 				store.dispatch({
 					type: "FETCH_USER",
 					payload: res.data

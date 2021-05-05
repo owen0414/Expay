@@ -146,9 +146,6 @@
         <!-- 交易密碼 -->
         <%@ include file="/WEB-INF/jsp/frontend/transactionPwModal.jsp"%>
         <script>
-            //儲存當前使用者電話
-            const phone = '0931367907'
-
             const setTransferAmount = (value) => {
                 if (value > 50000) {
                     $('#transfer_amount').val(50000)
@@ -185,50 +182,51 @@
                 $('#second-block').hide()
                 $('#loading').hide()
 
-                //按下確定
+                //按下確定，獲取接收方資訊
                 $('#postBtn').click(function () {
                     isCompleted(false)
+
+                    //將接收方電話寫入cookie
                     $.cookie('receiver_phone', $('#phoneInput').val())
+
+                    // 取接收方資訊
                     getEAccount()
                 })
 
-                //getEAccount(對方)
+                //getEAccount(接受方)
                 async function getEAccount() {
-                    //getCurrentUser balance
                     try {
-                        const currentUser = await instance.get('/getCurrentUser')
-                        $('#current-balance').html(currentUser.data.info.balance)
+                        const currentUser = await instance.get('/api/getCurrentUser')
+                        //對方電話號碼讀取
+                        const receiver_phone = $.cookie('receiver_phone')
+                        if (receiver_phone.length == '10') {
+                            try {
+                                const receiverUser = await instance.post('/api/getEAccount', {
+                                    phone: receiver_phone,
+                                    role: 'M',
+                                })
+                                const timeoutID = window.setTimeout(() => isCompleted(true), 2000)
+
+                                //dom渲染
+                                $('#current-balance').html(receiverUser.data.info.balance)
+                                $('#remitter_eAccount').html(receiverUser.data.info.e_account)
+                                $('#remitter_name').html('張O凱')
+                                $('#receiver_eAccount').html('xxxx' + receiverUser.data.info.slice(-4))
+                                $('#receiver_name').html(eAccount.data.name)
+                            } catch (error) {}
+                        } else {
+                            // $('#second-block').hide()
+                            // $('#postBtn').show()
+                        }
                     } catch (error) {
                         console.log(error)
-                    }
-
-                    //對方電話號碼
-                    const receiver_phone = $.cookie('receiver_phone')
-
-                    if (receiver_phone.length == '10') {
-                        try {
-                            const eAccount = await instance.post('/getEAccount', {
-                                phone: receiver_phone,
-                                role: 'M',
-                            })
-                            console.log(eAccount.data)
-                            const timeoutID = window.setTimeout(() => isCompleted(true), 2000)
-
-                            $('#remitter_eAccount').html('xxxx0000')
-                            $('#remitter_name').html('張O凱')
-                            $('#receiver_eAccount').html('xxxx' + eAccount.data.e_account.slice(-4))
-                            $('#receiver_name').html(eAccount.data.name)
-                        } catch (error) {}
-                    } else {
-                        // $('#second-block').hide()
-                        // $('#postBtn').show()
                     }
                 }
 
                 async function transfer(price) {
                     try {
-                        const currentUser = await instance.get('/getCurrentUser')
-                        const transferRes = await instance.post('/ePay/transaction', {
+                        const currentUser = await instance.get('/api/getCurrentUser')
+                        const transferRes = await instance.post('/api/ePay/transaction', {
                             remitter: currentUser.data.info.phone,
                             receiver: $.cookie('receiver_phone'),
                             amount: price,

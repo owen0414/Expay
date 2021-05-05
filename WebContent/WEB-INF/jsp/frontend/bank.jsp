@@ -187,8 +187,8 @@
                                     <div>
                                         <img id="captcha" />
                                     </div>
-                                    <div class="captchaLoading"></div>
-                                    <p style="font-size: 10px; font-weight: bold">點選更換驗證碼</p>
+                                    <div class="captchaLoading d-flex justify-content-center"></div>
+                                    <p class="mt-1" style="font-size: 10px; font-weight: bold">點選更換驗證碼</p>
                                 </div>
                             </div>
 
@@ -517,7 +517,7 @@
             async function getLinkedBank() {
                 try {
                     loadingCard()
-                    const response = await instance.get('/getLinkedBank')
+                    const response = await instance.get('/api/getLinkedBank')
                     console.log(response.data)
 
                     //初始讀取卡片陣列
@@ -534,8 +534,8 @@
             async function linkBank(bank_code, account, birth, e_account) {
                 try {
                     loadingForm()
-                    const currentUser = await instance.get('/getCurrentUser')
-                    const response = await instance.post('/linkBank', {
+                    const currentUser = await instance.get('/api/getCurrentUser')
+                    const response = await instance.post('/api/linkBank', {
                         //測資
                         bank_code,
                         account,
@@ -571,8 +571,8 @@
             //unlinkBank(真實卡片解綁)
             async function unlinkBank(bank_account) {
                 try {
-                    const currentUser = await instance.get('/getCurrentUser')
-                    const response = await instance.put('/unlinkBank', {
+                    const currentUser = await instance.get('/api/getCurrentUser')
+                    const response = await instance.put('/api/unlinkBank', {
                         bank_account,
                         e_account: currentUser.data.e_account,
                     })
@@ -628,6 +628,7 @@
                     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
                 )
             }
+
             //建立卡片s(由getLinkedBank呼叫)
             //若資料為[] 渲染假資料
             function createCards(data) {
@@ -853,93 +854,7 @@
                 }
             }
 
-            function createSingleCard(bank, userName, bank_Id, institution) {
-                //複製前先顯示default資料
-                $('.cardDefault').show()
-                $('.indicatorDefault').show()
-
-                //確認當前卡片張數(減去default)
-                var count = checkCount()
-                var new_index = count + 1
-                if (count !== 0) {
-                    //新增卡片(非第一張卡)
-                    $('.cardDefault')
-                        .clone()
-                        .removeClass('active cardDefault')
-                        .addClass('card' + new_index)
-                        .appendTo('.carousel-inner')
-                    $('.indicatorDefault')
-                        .clone()
-                        .removeClass('active indicatorDefault')
-                        .addClass('indicator' + new_index)
-                        .appendTo('.carousel-indicators')
-                    $('.indicator' + new_index).attr('data-slide-to', new_index)
-                } else {
-                    //第一張新增active
-                    $('.cardDefault')
-                        .clone()
-                        .removeClass('cardDefault')
-                        .addClass('card' + new_index)
-                        .appendTo('.carousel-inner')
-                    $('.indicatorDefault')
-                        .clone()
-                        .removeClass('indicatorDefault')
-                        .addClass('indicator' + new_index)
-                        .appendTo('.carousel-indicators')
-                    $('.indicator' + new_index).attr('data-slide-to', new_index)
-                }
-
-                $('.cardDefault').hide()
-                $('.indicatorDefault').hide()
-
-                //持卡人(留第一位與最後位)
-                var trim_Name = userName.slice(0, 1) + '*' + userName.slice(-1)
-                $('.card' + new_index)
-                    .find('.card__info')
-                    .html(trim_Name)
-
-                //卡號(去識別化)
-                var trim_Id = '********' + bank_Id.slice(10)
-                $('.card' + new_index)
-                    .find('.card_numer')
-                    .html(trim_Id)
-
-                //銀行logo
-                if (bank == '012') {
-                    $('.card' + new_index)
-                        .find('.card__front-square')
-                        .attr('src', '${imgUrl_fubon}')
-                } else if (bank == '808') {
-                    $('.card' + new_index)
-                        .find('.card__front-square')
-                        .attr('src', '${imgUrl_esun}')
-                } else {
-                    $('.card' + new_index)
-                        .find('.card__front-square')
-                        .attr('src', '')
-                }
-
-                //機構logo
-                if (institution == 'masterCard') {
-                    $('.card' + new_index)
-                        .find('.institution')
-                        .attr('src', '${imgUrl_masterCard}')
-                } else if (institution == 'visa') {
-                    $('.card' + new_index)
-                        .find('.institution')
-                        .attr('src', '${imgUrl_visa}')
-                } else {
-                    $('.card' + new_index)
-                        .find('.institution')
-                        .attr('src', '')
-                }
-            }
-
             $(document).ready(function () {
-                $('#exampleModalScrollable,#editCardModal').on('hidden.bs.modal', function () {
-                    location.reload()
-                })
-
                 //當按下刪除卡片時
                 $(document).on('click', '.unlinkBankBtn', function (event) {
                     //刪除雙重確認(modal)
@@ -987,7 +902,7 @@
                     bankInit()
                 })
 
-                //監測到輸入驗證碼時
+                //監測到輸入驗證碼時，進行驗證
                 document.getElementById('captchaInput').onkeyup = function () {
                     validate()
                 }
@@ -1002,7 +917,6 @@
                 //確認當前卡片張數(減去default)
                 function checkCount() {
                     var count = $('.carousel-inner').children().length - 1
-                    console.log('當前卡片張數(扣掉default) :  ' + count)
                     return count
                 }
 
@@ -1026,6 +940,11 @@
 
                     //重整form
                     $('#addBankAccountForm')[0].reset()
+                })
+
+                //每次關閉modal重整
+                $('#exampleModalScrollable,#editCardModal').on('hidden.bs.modal', function () {
+                    location.reload()
                 })
             })
         </script>

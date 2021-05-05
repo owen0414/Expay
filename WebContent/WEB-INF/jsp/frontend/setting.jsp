@@ -21,8 +21,8 @@
 								<h2>設定</h2>
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center">
-								<label for="fullname" class="d-block">姓名</label>
-								<input type="text" name="fullname" id="fullname" class="form-control w-auto" value="彭小翔" readonly="readonly" />
+								<label for="name" class="d-block">姓名</label>
+								<input type="text" name="name" id="name" class="form-control w-auto" value="彭小翔" readonly="readonly" />
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center">
 								<label for="phone" class="d-block">手機</label>
@@ -63,7 +63,7 @@
 			
 			if(state.request){
 				const { name, phone, email, birthday } = state.request;
-				$("#fullname").val(name);
+				$("#name").val(name);
 				$("#phone").val(phone);
 				$("#email").val(email);
 				$("#birthday").val(birthday);
@@ -79,26 +79,32 @@
 		});
 		$(document).ready(() => {
 			//修改個人資料
-			$("#setting-btn").click(() => {
+			$("#setting-btn").click(() => {				
 				let dataJSON = {};
-				dataJSON["e_account"] = store.getState().e_account.e_account;
-				dataJSON["name"] = $("#fullname").val();
+				dataJSON["e_account"] = store.getState().e_account.info.e_account;
+				dataJSON["name"] = $("#name").val();
 				dataJSON["phone"] = $("#phone").val();
 				dataJSON["email"] = $("#email").val();
 				dataJSON["birthday"] = $("#birthday").val();
-
-				instance.put("/api/personalInfo/", dataJSON)
-				.then(res => {
-					store.dispatch({
-						type: "SUBMIT",
-						payload: res.data
-					});
-					
-					initFetch();
-				})
-				.catch(error => {
-					console.log(error);
-				});
+				
+				if(!checkPhone($("#phone").val())){
+					alert("手機不符格式!");
+				} else if(!checkEmail($("#email").val())){
+					alert("Email不符格式!");
+				} else {
+					instance.put("/api/personalInfo/", dataJSON)
+					.then(res => {
+						store.dispatch({
+							type: "SUBMIT",
+							payload: res.data
+						});
+						
+						initFetch();
+					})
+					.catch(error => {
+						console.log(error);
+					});	
+				}
 			});
 		});
 		
@@ -106,6 +112,12 @@
 			try{
 				//取得目前的使用者
 				let res = await instance.get('/api/getCurrentUser');
+				const { login } = res.data;
+				if(!login){
+					alert("尚未登入!");
+					throw new Error("尚未登入!");
+				}
+
 				store.dispatch({
 					type: "FETCH_USER",
 					payload: res.data

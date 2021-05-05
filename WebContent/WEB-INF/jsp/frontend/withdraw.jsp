@@ -93,8 +93,8 @@
 			console.log(state);
 			
 			if(state.e_account){
-				const { balance } = state.e_account;
-				$("#current-balance").text(balance);
+				const { info: {balance} } = state.e_account;
+				$("#current-balance").text(numberWithCommas(balance));
 			}
 			
 			if(state.request){
@@ -108,8 +108,8 @@
 				renderModalBody(state.response, ({status, message, timestamp, bankCode, amount, balance}) => {
 					return `
 						提領銀行: \${bankList[bankCode]}<br>
-						提領金額: NT\$\${amount}<br>
-						提領後餘額: NT\$\${balance}
+						提領金額: NT\$\${numberWithCommas(amount)}<br>
+						提領後餘額: NT\$\${numberWithCommas(balance)}
 					`;
 				}, () => {
 					return "提領失敗!";
@@ -119,7 +119,7 @@
 	
 		//提領值設定
 		const setWithDrawAmount = (value) => {
-			let currentBalance = parseInt($("#current-balance").text());
+			let currentBalance = parseInt(undoNumberWithCommas($("#current-balance").text()));
 			if(value > currentBalance){
 				$("#withdraw_amount").val(currentBalance);
 			} else {
@@ -128,12 +128,12 @@
 		};
 		//提領後餘額欄位
 		const updateAfterWithDrawBalance = ()=>{
-			let currentBalance = parseInt($("#current-balance").text());
+			let currentBalance = parseInt(undoNumberWithCommas($("#current-balance").text()));
 			let amount = currentBalance - parseInt($("#withdraw_amount").val());
 			if(amount < 0){
-				$("#after-withdraw-balance").text(0);
+				$("#after-withdraw-balance").text(numberWithCommas(0));
 			} else {
-				$("#after-withdraw-balance").text(amount);
+				$("#after-withdraw-balance").text(numberWithCommas(amount));
 			}
 		};
 		
@@ -167,7 +167,7 @@
 				
 				let dataJSON = {};
 				
-				dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.e_account : "0210000001";//TODO 抓使用者真實的e_account
+				dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.info.e_account : "0210000001";//TODO 抓使用者真實的e_account
 				dataJSON["bankCode"] = bankCode;
 				dataJSON["bankAddress"] = bankAddress;
 				dataJSON["amount"] = amount;
@@ -192,6 +192,12 @@
 			try{
 				//取得當前的使用者
 				let res = await instance.get("/api/getCurrentUser");
+				const { login } = res.data;
+				if(!login){
+					alert("尚未登入!");
+					throw new Error("尚未登入!");
+				}
+
 				store.dispatch({
 					type: "FETCH_USER",
 					payload: res.data

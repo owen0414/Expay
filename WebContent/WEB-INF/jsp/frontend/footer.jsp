@@ -11,6 +11,9 @@
 
 <!-- Jquery JS -->
 <script src="<c:url value="/resources/js/jquery-3.3.1.js"/>"></script>
+<!-- Jquery cookie -->
+<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <!-- Vendor JS Files -->
 <%-- <script src="<c:url value="/resources/js/jquery.min.js"/>"></script> --%>
 <script src="<c:url value="/resources/js/bootstrap.bundle.min.js"/>"></script>
@@ -22,5 +25,6 @@
 <script src="<c:url value="/resources/js/axios.min.js"/>"></script>
 <!-- redux -->
 <script src="<c:url value="/resources/js/redux.min.js"/>"></script>
+
 <!-- Custom JS -->
 <script type="text/javascript" src="<c:url value="/resources/js/custom.js"/>"></script>

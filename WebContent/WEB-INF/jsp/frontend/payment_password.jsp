@@ -117,7 +117,7 @@
 
 				event.preventDefault();
 				
-				var requestURL = 'http://172.19.35.31/api/updateTPassword'
+				var requestURL = `${BASE_URL}/api/updateTPassword`
 				var dataJSON = {}
 				dataJSON['e_account'] = '0215215'
 				dataJSON['transactionPwd'] = password.val()
@@ -129,6 +129,10 @@
 					dataType: 'json',
 					contentType: 'application/json;charset=utf-8',
 					success: function (returnData) {
+						if(returnData.status == 200){
+							alert('設定密碼成功')
+							location.href = "/Expay"
+						}
 						console.log(returnData)
 					},
 					error: function (xhr, ajaxOptions, thrownError) {

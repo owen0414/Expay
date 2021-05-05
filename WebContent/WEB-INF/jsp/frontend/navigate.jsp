@@ -14,6 +14,7 @@
 			<li class="nav-item"><a href="${pageContext.request.contextPath}/user/login" class="nav-link">登入</a></li>
 			<li class="nav-item"><a href="${pageContext.request.contextPath}/user/register" class="nav-link">註冊</a></li>
 			<li class="nav-item"><a href="${pageContext.request.contextPath}/personalPage" class="nav-link">個人頁面</a></li>
+			<li class="nav-item"><a href="${pageContext.request.contextPath}/user/logout" class="nav-link">登出</a></li>
 		</ul>
 	</div>
 </nav>

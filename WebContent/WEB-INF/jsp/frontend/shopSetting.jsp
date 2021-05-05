@@ -21,12 +21,12 @@
 								<h2>設定</h2>
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center">
-								<label for="name" class="d-block">商店名稱</label>
-								<input type="text" name="name" id="name" class="form-control w-auto" />
+								<label for="shop_name" class="d-block">商店名稱</label>
+								<input type="text" name="shop_name" id="shop_name" class="form-control w-auto" />
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center">
 								<label for="tax_id" class="d-block">商店統編</label>
-								<input type="text" name="tax_id" id="tax_id" class="form-control w-auto" />
+								<input type="text" name="tax_id" id="tax_id" maxlength="8" class="form-control w-auto" />
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center">
 								<label for="address" class="d-block">商店地址</label>
@@ -64,8 +64,8 @@
 			console.log(state);
 			
 			if(state.request){
-				const {name, tax_id, address, phone, email} = state.request;
-				$("#name").val(name);
+				const {shop_name, tax_id, address, phone, email} = state.request;
+				$("#shop_name").val(shop_name);
 				$("#tax_id").val(tax_id);
 				$("#address").val(address);
 				$("#phone").val(phone);
@@ -95,23 +95,33 @@
 			
 			//修改商店資料
 			$("#shop-btn").click(()=> {
+				const taxIdRegExp = /[0-9]{8}/;
+				
 				let dataJSON = {};
-				dataJSON['name'] = $("#name").val();
+				dataJSON['shop_name'] = $("#shop_name").val();
 				dataJSON['tax_id'] = $("#tax_id").val();
 				dataJSON['address'] = $("#address").val();
 				dataJSON['phone'] = $("#phone").val();
 				dataJSON['email'] = $("#email").val();
-
-				instance.put("/api/shopInfo/", dataJSON)
-				.then(res => {
-					store.dispatch({
-						type: "SUBMIT",
-						payload: res.data
+				
+				if(!taxIdRegExp.test($("#tax_id").val())){
+					alert("統編須為長度8字元及全數字!");
+				} else if(!checkPhone($("#phone").val())){
+					alert("手機不符格式!");
+				} else if(!checkEmail($("#email").val())){
+					alert("Email不符格式!");
+				} else {
+					instance.put("/api/shopInfo/", dataJSON)
+					.then(res => {
+						store.dispatch({
+							type: "SUBMIT",
+							payload: res.data
+						});
+					})
+					.catch(error => {
+						console.log(error);
 					});
-				})
-				.catch(error => {
-					console.log(error);
-				});
+				}
 			});
 		});
 	</script>

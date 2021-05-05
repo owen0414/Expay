@@ -94,7 +94,7 @@
 			
 			if(state.e_account){
 				const { balance } = state.e_account;
-				$("#current-balance").text(balance);
+				$("#current-balance").text(numberWithCommas(balance));
 			}
 			
 			if(state.request){
@@ -108,8 +108,8 @@
 				renderModalBody(state.response, ({status, message, timestamp, bankCode, amount, balance}) => {
 					return `
 						儲值銀行: \${bankList[bankCode]}<br>
-						儲值金額: NT\$\${amount}<br>
-						儲值後餘額: NT\$\${balance}
+						儲值金額: NT\$\${numberWithCommas(amount)}<br>
+						儲值後餘額: NT\$\${numberWithCommas(balance)}
 					`;
 				}, () => {
 					return "儲值失敗!";
@@ -119,7 +119,7 @@
 	
 		// 儲值填寫設定
 		const setDepositAmount = (value) => {
-			let currentBalance = parseInt($("#current-balance").text());
+			let currentBalance = parseInt(undoNumberWithCommas($("#current-balance").text()));
 			let upperBound = 50000 - currentBalance;
 			if(value > upperBound){
 				$("#deposit_amount").val(upperBound);
@@ -130,12 +130,12 @@
 
 		// 儲值後餘額設定
 		const updateAfterDepositBalance = ()=>{
-			let currentBalance = parseInt($("#current-balance").text());
+			let currentBalance = parseInt(undoNumberWithCommas($("#current-balance").text()));
 			let amount = parseInt($("#deposit_amount").val()) + currentBalance;
 			if(amount > 50000){
-				$("#after-deposit-balance").text(50000);
+				$("#after-deposit-balance").text(numberWithCommas(50000));
 			} else {
-				$("#after-deposit-balance").text(amount);
+				$("#after-deposit-balance").text(numberWithCommas(amount));
 			}
 		};
 		

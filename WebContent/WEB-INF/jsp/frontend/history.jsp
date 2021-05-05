@@ -50,47 +50,21 @@
 								</select>
 							</div>
 						</div>
-						<div class="row justify-content-start">
-							<div
-								class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 transaction_history">
-								<div class="row">
-									<div class="col-12 col-sm-6">
-										<p>2021/04/20 13：25</p>
-										<p>統一超商 ( 711 )</p>
-									</div>
-									<div class="col-12 col-sm-6 text-sm-right">
-										<p>付款</p>
-										<p>NT$ 60</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row justify-content-start">
-							<div
-								class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 transaction_history">
-								<div class="row">
-									<div class="col-12 col-sm-6">
-										<p>2021/04/15 15：20</p>
-										<p>50嵐(輔大店)</p>
-									</div>
-									<div class="col-12 col-sm-6 text-sm-right">
-										<p>付款</p>
-										<p>NT$ 50</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row justify-content-start">
-							<div
-								class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 transaction_history">
-								<div class="row">
-									<div class="col-12 col-sm-6">
-										<p>2021/03/31 09：24</p>
-										<p>momo購物網</p>
-									</div>
-									<div class="col-12 col-sm-6 text-sm-right">
-										<p>付款</p>
-										<p>NT$ 306</p>
+						<div id="transaction_history_area">
+							<div class="row justify-content-start" id="transaction_history_item">
+								<div
+									class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 transaction_history">
+									<div class="row">
+										<div class="col-12 col-sm-6">
+											<p id="transaction_history_time"></p>
+											<p id="transaction_history_shopname"></p>
+										</div>
+										<div class="col-12 col-sm-6 text-sm-right">
+											<p>付款</p>
+											<p>
+												NT$ <span id="transaction_history_amount"></span>
+											</p>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -113,54 +87,23 @@
 								</select>
 							</div>
 						</div>
-						<div class="row justify-content-start">
-							<div
-								class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 account_history account_history1">
-								<div class="row">
-									<div class="col-12 col-sm-6">
-										<p>2021/04/20 13：25：30</p>
-										<p>統一超商 (711)</p>
-									</div>
-									<div class="col-12 col-sm-6 text-sm-right">
-										<p class="font-red">付款</p>
-										<p class="font-red">NT$ -50</p>
-										<p>餘額 NT $300</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row justify-content-start">
-							<div
-								class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 account_history account_history2">
-								<div class="row">
-									<div class="col-12 col-sm-6">
-										<p>2021/04/03 12：14：21</p>
-										<p>張  * 程</p>
-									</div>
-									<div class="col-12 col-sm-6 text-sm-right">
-										<p class="font-red">轉帳</p>
-										<p class="font-red">NT$ -73</p>
-										<p>餘額 NT $350</p>
+						<div id="account_history_area">
+							<div class="row justify-content-start" id="account_history_item">
+								<div
+ 									class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 account_history account_history1">
+									<div class="row">
+										<div class="col-12 col-sm-6">
+											<p id="account_history_time"></p>
+											<p id="account_history_name"></p>
+										</div>
+										<div class="col-12 col-sm-6 text-sm-right">
+											<p id="account_history_type"></p>
+											<p>NT$ <span id="account_history_amount"></span></p>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row justify-content-start">
-							<div
-								class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 account_history account_history3">
-								<div class="row">
-									<div class="col-12 col-sm-6">
-										<p>2021/04/02 21：50：15</p>
-										<p>呂 * 昊</p>
-									</div>
-									<div class="col-12 col-sm-6 text-sm-right">
-										<p>轉帳</p>
-										<p>NT$ 102</p>
-										<p>餘額 NT $423</p>
-									</div>
-								</div>
-							</div>
-						</div>
+						</div>	
 					</div>
 				</div>
 			</div>
@@ -186,35 +129,15 @@
 							<div class="col-12 mt-4">
 								<p>付款日期<span class="font-weight-bold mx-2">2021/04/20 13：25</span></p>
 							</div>
-							<div class="col-12 mt-2">
-								<p>交易完成日期<span class="font-weight-bold  mx-2">2021/04/21 12：18</span></p>
-							</div>
 							<hr class="transaction_hr">
 							<div class="col-12 mt-2">
 								<p>交易號碼<span class="font-lightblue font-weight-bold  mx-2">2021042057399988010</span></p>
-							</div>
-							<div class="col-12 mt-2">
-								<p>付款方法<span class="font-weight-bold mx-2">EX Money</span></p>
 							</div>
 							<div class="col-12 mt-2">
 								<p>商品價格<span class="font-weight-bold mx-2">NT$ 60</span></p>
 							</div>
 							<div class="col-12 mt-2">
 								<p>合計金額<span class="font-blue font-weight-bold  mx-2">NT$ 60</span></p>
-							</div>
-							<hr class="transaction_hr">
-							<div class="col-12 font-weight-bold">資訊來源為特約機構</div>
-							<div class="col-12 mt-4">
-								<p>訂單編號<span class="font-weight-bold  mx-2">20210420960535028937194132500</span></p>
-							</div>
-							<div class="col-12 mt-2">
-								<p>品牌名稱<span class="font-weight-bold  mx-2">統一超商</span></p>
-							</div>
-							<div class="col-12 mt-2">
-								<p>電子郵件帳號<span class="font-weight-bold  mx-2">public@mail.7-11.com.tw</span></p>
-							</div>
-							<div class="col-12 mt-2">
-								<p>電話<span class="font-weight-bold  mx-2">0800008711</span></p>
 							</div>
 						</div>
 					</div>
@@ -247,13 +170,7 @@
 								<p>交易序號  <span class="font-lightblue font-weight-bold px-2">e103620210403121421353</span></p>
 							</div>
 							<div class="col-12 mt-2">
-								<p>交易方式   <span class="font-weight-bold px-2">EX Money</span></p>
-							</div>
-							<div class="col-12 mt-2">
 								<p>交易金額  <span class="font-red font-weight-bold px-2">NT$ -73</span></p>
-							</div>
-							<div class="col-12 mt-2">
-								<p>交易後餘額 <span class="font-weight-bold px-2">NT$ 350</span></p>
 							</div>
 							<hr class="transaction_hr">
 							<div class="col-12 mt-2">
@@ -343,6 +260,69 @@
 			$(this).addClass('active');
 			$(this).siblings().removeClass('active');
 		})
+		
+		$(document).ready(function () {
+		 
+			var requestURL1 = `${BASE_URL}/api/transactionHistory`;
+			
+			$.ajax({
+				url: requestURL1,
+				type: 'GET',
+				dataType: 'json',
+				contentType: 'application/json;charset=utf-8',
+				success: function (returnData) {			
+					console.log(returnData)
+					for(var i = 0; i < returnData.length ; i++){
+						$("#transaction_history_time").html(returnData[i].time)
+						$("#transaction_history_shopname").html(returnData[i].shop_name)
+						$("#transaction_history_amount").html(numberWithCommas(returnData[i].amount))
+						if(i != returnData.length - 1 ){
+							$("#transaction_history_item").clone().appendTo('#transaction_history_area')
+						}
+					}
+				
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					console.log(xhr.status)
+					console.log(thrownError)
+				},
+			})
+			
+			var requestURL2 = `${BASE_URL}/api/eAccountHistory`;
+			
+			$.ajax({
+				url: requestURL2,
+				type: 'GET',
+				dataType: 'json',
+				contentType: 'application/json;charset=utf-8',
+				success: function (returnData) {			
+					console.log(returnData)
+					for(var j = 0; j < returnData.length ; j++){
+						if(returnData[j].type == 'S'){
+							returnData[j].type = '付款'
+						}else if(returnData[j].type == 'T'){
+							returnData[j].type = '轉帳'
+						}else if(returnData[j].type == 'D'){
+							returnData[j].type = '儲值'
+						}else{
+							returnData[j].type = '提領'
+						}
+						
+						$("#account_history_time").html(returnData[j].time)
+						$("#account_history_name").html(returnData[j].name)
+						$("#account_history_type").html(returnData[j].type)
+						$("#account_history_amount").html(numberWithCommas(returnData[j].amount))
+						if(j != returnData.length - 1 ){
+							$("#account_history_item").clone().appendTo('#account_history_area')
+						}
+					}
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					console.log(xhr.status)
+					console.log(thrownError)
+				},
+			})
+	 })
 		
 	</script>
 </body>

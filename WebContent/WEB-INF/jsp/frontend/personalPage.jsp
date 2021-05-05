@@ -33,7 +33,7 @@
 				<ul style="list-style: disc; font-size: 28px; line-height: 1.1;">
 					<li><a href="${pageContext.request.contextPath}/setting">個人資料維護</a></li>
 					<li>銀行帳戶管理</li>
-					<li>本月額度</li>
+					<li><a href="${pageContext.request.contextPath}/quota">本月額度</a></li>
 					<li><a href="${pageContext.request.contextPath}/help">幫助</a></li>
 				</ul>
 			</div>

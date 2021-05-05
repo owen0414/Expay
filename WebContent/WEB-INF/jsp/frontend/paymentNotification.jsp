@@ -27,6 +27,7 @@
 									<img alt="對方電支帳戶"
 										src="<c:url value="/resources/img/person.jpg"/>">
 								</p>
+								<p>呂 * 昊</p>
 								<p>0912******</p>
 							</div>
 							<div class="col-9">
@@ -50,6 +51,7 @@
 									<img alt="對方電支帳戶"
 										src="<c:url value="/resources/img/person.jpg"/>">
 								</p>
+								<p>林 * 萩</p>
 								<p>0914******</p>
 							</div>
 							<div class="col-9">

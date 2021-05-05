@@ -106,3 +106,10 @@ const reducer = (state = {e_account: null, request: null, response: null}, actio
 
 // createStore
 const store = createStore(reducer);
+
+//手機、email正則表達
+const phoneRegExp = /09[0-9]{8}/;
+const emailRegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+const checkPhone = value => phoneRegExp.test(value);
+const checkEmail = value => emailRegExp.test(value);

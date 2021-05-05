@@ -187,6 +187,8 @@
                                     <div>
                                         <img id="captcha" />
                                     </div>
+                                    <div class="captchaLoading"></div>
+                                    <p style="font-size: 10px; font-weight: bold">點選更換驗證碼</p>
                                 </div>
                             </div>
 
@@ -393,6 +395,38 @@
             </div>
         </div>
 
+        <!--Modal 刪除雙重確認 -->
+        <div
+            class="modal fade"
+            id="confirm-delete"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="myModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">
+                            <b>刪除卡片</b>
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+
+                    <div class="h4 modal-body">
+                        <p>您將刪除卡片, 此操作無法回復.</p>
+                        <p>您確定要繼續嗎?</p>
+                        <p class="debug-url"></p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <a class="btn btn-danger btn-ok">刪除卡片</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer -->
         <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 
@@ -414,6 +448,8 @@
 
         <script type="text/javascript">
             function init() {
+                $('#captcha').hide() //驗證碼區隱藏
+                $('.captchaLoading').hide()
                 getLinkedBank() //取得卡片
             }
 
@@ -480,6 +516,7 @@
             //getLinkedBank(真實所有卡片資料)
             async function getLinkedBank() {
                 try {
+                    loadingCard()
                     const response = await instance.get('/getLinkedBank')
                     console.log(response.data)
 
@@ -496,6 +533,7 @@
             //linkBank(真實卡片綁定)
             async function linkBank(bank_code, account, birth, e_account) {
                 try {
+                    loadingForm()
                     const currentUser = await instance.get('/getCurrentUser')
                     const response = await instance.post('/linkBank', {
                         //測資
@@ -556,6 +594,40 @@
                 }
             }
 
+            //loading相關
+            function loadingCard() {
+                //範例檔
+                var cardHtml =
+                    '<div class="d-flex justify-content-center align-items-center h-100"><div class="col-12 pt-5 col-sm-12 py-sm-0 d-flex justify-content-center"style="width: 100vw"><div id="loading_spinner"></div></div></div>'
+
+                $('.cardDefault').html(cardHtml)
+                $('.carousel-indicators').html('')
+
+                //複製前先顯示default資料
+                $('.cardDefault').show()
+                $('.indicatorDefault').show()
+            }
+
+            function loadingCaptcha() {
+                $('.captchaLoading').html('<div id="loading_spinner"></div>')
+                $('.captchaLoading').fadeIn(500)
+                $('#captcha').hide()
+            }
+
+            function loadedCaptcha() {
+                $('#captcha').fadeIn(300)
+                $('.captchaLoading').hide()
+            }
+
+            function loadingForm() {
+                $('#bank_Id').attr('disabled', true)
+                $('#birthday').attr('disabled', true)
+                $('#captchaInput').attr('disabled', true)
+                //按鈕loading
+                $('#nextBtn').html(
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
+                )
+            }
             //建立卡片s(由getLinkedBank呼叫)
             //若資料為[] 渲染假資料
             function createCards(data) {
@@ -704,7 +776,7 @@
 
                     //範例檔
                     var cardHtml =
-                        '<div id="editCardsdefault" class="unlinkBankBtn m-2 col-12 d-flex justify-content-center"> <button type="button" class="btn btn-secondary btn-block" style="text-align: left; width: 90%" > <i class="far fa-trash-alt"></i> xxxxxxxxxxxxxxxx </button> </div>'
+                        '<div id="editCardsdefault" class="unlinkBankBtn m-2 col-12 d-flex justify-content-center"> <button type="button" class="btn btn-secondary btn-block"  data-toggle="modal" data-id="#" data-target="#confirm-delete" style="text-align: left; width: 90%" > <i class="far fa-trash-alt"></i> xxxxxxxxxxxxxxxx </button> </div>'
                     $('#allCards').html(cardHtml)
 
                     var num = data.length
@@ -713,6 +785,7 @@
                         $('#editCardsdefault').clone().attr('id', data[i].bankAddress).appendTo('#allCards')
                         $('#' + data[i].bankAddress)
                             .children()
+                            .attr('data-id', data[i].bankAddress)
                             .html('<i class="far fa-trash-alt"></i> ' + data[i].bankAddress)
                     }
                     $('#editCardsdefault').remove()
@@ -723,6 +796,7 @@
 
             //獲取驗證碼
             function getCaptcha() {
+                loadingCaptcha()
                 $.ajax({
                     url: 'http://172.19.35.133/api/getCode',
                     //url: 'http://172.19.35.133/exPay/api/getCode',
@@ -735,8 +809,10 @@
                         console.log('驗證碼載入失敗!')
                     },
                     success(data) {
+                        loadedCaptcha()
                         const url = window.URL || window.webkitURL
                         const src = url.createObjectURL(data)
+                        $('.captchaLoading').hide()
                         $('#captcha').attr('src', src)
                     },
                     complete() {
@@ -866,6 +942,16 @@
 
                 //當按下刪除卡片時
                 $(document).on('click', '.unlinkBankBtn', function (event) {
+                    //刪除雙重確認(modal)
+                    // $('#confirm-delete').on('show.bs.modal', function (e) {
+                    //     //取data-xxx的值並塞屬性給(.btn_ok)
+                    //     $(this).find('.btn-ok').attr('id', $(e.relatedTarget).data('id'))
+                    //     //塞文字到(.debug-url)
+                    //     $('.debug-url').html('銀行卡號:  <strong>' + $(e.relatedTarget).data('id') + '</strong>')
+
+                    //     console.log($(e.relatedTarget).data('id'))
+                    // })
+
                     //解綁api
                     unlinkBank($(this).attr('id'))
                 })
@@ -938,8 +1024,7 @@
                         '0210000001'
                     )
 
-                    //successInit() //顯示成功(test用)
-
+                    //重整form
                     $('#addBankAccountForm')[0].reset()
                 })
             })

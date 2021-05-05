@@ -1,3 +1,11 @@
+//使用axios前請先設定
+// BASE_URL
+const BASE_URL = "http://172.19.35.133/api/";
+// base url
+//const BASE_URL = "http://172.19.35.97/";
+
+
+
 // $('body').css('padding-top', $('.navbar').outerHeight() + 'px')
 
 // detect scroll top or down
@@ -47,10 +55,6 @@ $('.back-to-top').click(function() {
   return false;
 });
 
-// BASE_URL
-//const BASE_URL = "http://172.19.35.133/api/";
-// base url
-//const BASE_URL = "http://172.19.35.97/";
 
 //儲值 提領
 //抓取銀行帳號及餘額

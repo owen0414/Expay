@@ -45,11 +45,19 @@
 						<div class="row justify-content-start mt-4 mx-auto mx-md-5"> 
 							<div class="col-12 mx-3 mx-md-5 px-md-0">驗證碼</div>
 						</div>
-						<div class="row justify-content-start">
-							<div class="col-10 col-md-8 mt-2 mx-auto">
-								<input type="text" class="form-control">
+						<div class="row justify-content-center"> 
+							<div class="col-10 col-md-5 mt-2">
+								<input id="captchaInput" name="captchaInput" type="text"
+									class="form-control" maxlength="4" placeholder="請輸入驗證碼"
+									pattern="[0-9A-Z]{4}" />
+								<div class="mt-2" id="tishi"></div>
 							</div>
-						</div>
+						  	<div class="col-10 col-md-3">
+                                  <div>
+                                      <img id="captcha" />
+                                 </div>
+                            </div>
+						</div>	
 						<div class="row justify-content-center mt-2"> 
 							<div class="col-10 col-md-8">
 								<div class="form-check form-check-inline">
@@ -144,7 +152,7 @@
 		<div class="modal-dialog modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalScrollableTitle">提示</h5>
+					<h5 class="modal-title" id="exampleModalScrollableTitle">通知</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -155,7 +163,7 @@
 					<div class="row errorPage">
 						<div class="col-12 d-flex justify-content-center">
 							<div class="m-2 text-center">
-								<p class="h5" style="font-weight: bold">登入失敗</p>
+								<p class="h5 responseMessage" style="font-weight: bold"></p>
 							</div>
 						</div>
 						<div class="col-12 d-flex justify-content-center">
@@ -189,15 +197,8 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-12 d-flex justify-content-center">
-							<div class="fadeIn d-flex justify-content-center">
-								<p class="responseMessage"></p>
-							</div>
-						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					</div>
 			</div>
 		</div>
 	</div>
@@ -368,6 +369,57 @@
 			
 			return false;
 		})
+		
+		$(document).ready(function () {
+
+              $.ajax({
+                  url: 'http://172.19.35.31/api/getCode',
+                  xhrFields: {
+                      responseType: 'blob',
+                      withCredentials: true,
+                  },
+                  crossDomain: true,
+                  error() {
+                      console.log('驗證碼載入失敗!')
+                  },
+                  success(data) {
+                      const url = window.URL || window.webkitURL
+                      const src = url.createObjectURL(data)
+                      $('#captcha').attr('src', src)
+                  },
+                  complete() {
+                      console.log('驗證碼載入結束')
+                  },
+              })
+         })
+
+            //驗證
+            function validate() {
+                var pwd1 = $('#captchaInput').val()
+                if (pwd1.length == '4') {
+                    $.ajax({
+                        url: 'http://172.19.35.31/api/checkCode/' + pwd1,
+                        xhrFields: {
+                            withCredentials: true,
+                        },
+                        crossDomain: true,
+                        error() {
+                            console.log('錯誤!')
+                        },
+                        success(data) {
+                            if (data.valid) {
+                                $('#tishi').html('驗證碼正確')
+                                $('#tishi').css('color', 'green')
+                            } else {
+                                $('#tishi').html('驗證碼錯誤')
+                                $('#tishi').css('color', 'red')
+                            }
+                        },
+                    })
+                } else {
+                    $('#tishi').html('')
+                }
+            }
 	
 		
 	</script>

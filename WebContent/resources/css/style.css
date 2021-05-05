@@ -248,8 +248,8 @@ body{
     transform: scale(1.1);
 }
 
-.history_modal p{
-	font-size:0.78rem;
+.history_modal,.pay_modal,.transfer_modal,.deposit_modal,.withdraw_modal p{
+	font-size:0.8rem;
 }
 
 .transaction_hr{

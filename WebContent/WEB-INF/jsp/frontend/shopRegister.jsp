@@ -123,11 +123,10 @@
 				</div>
 			</div>
 	</div>
-	
+
 	<!-- Modal -->
-	<div class="modal fade" id="errorModal" tabindex="-1"
-		role="dialog" aria-labelledby="exampleModalScrollableTitle"
-		aria-hidden="true">
+	<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -142,7 +141,7 @@
 					<div class="row errorPage">
 						<div class="col-12 d-flex justify-content-center">
 							<div class="m-2 text-center">
-								<p class="h5" style="font-weight: bold">登入失敗</p>
+								<p class="h5 responseMessage" style="font-weight: bold"></p>
 							</div>
 						</div>
 						<div class="col-12 d-flex justify-content-center">
@@ -176,22 +175,16 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-12 d-flex justify-content-center">
-							<div class="fadeIn d-flex justify-content-center">
-								<p class="responseMessage">a</p>
-							</div>
-						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					</div>
 			</div>
 		</div>
 	</div>
-	
+
+
 	<!-- Footer -->
-	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
-	<script>
+		<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
+		<script>
 
 		$("#pwd1").click(function() {
 			
@@ -363,8 +356,11 @@
 					success: function (returnData) {
 						if(returnData.status == 200){
 							location.href = "payment_password"
+						}else if(returnData.status == 400){
+						 $('.responseMessage').html(returnData.message)
+	                       console.log(returnData.message)
+	                       failInit() //顯示失敗
 						}
-						console.log(returnData)
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
 						console.log(xhr.status)

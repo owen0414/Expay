@@ -23,10 +23,9 @@
 	<script>
 	function renderModalBody(res, successHint, failedHint){
 		const { status } = res;
-		let resultAreaClass, resultTitle, resultBody;
+		let resultTitle, resultBody;
 		
 		if(status === 200){
-			resultAreaClass = "alert-success";
 			resultTitle = "成功!";
 			resultBody = `
 			<svg viewBox="0 0 87 87" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -39,8 +38,9 @@
 				</g>
 			</svg>
 			` + successHint(res);
+			$("#result-area").addClass("alert-success");
+			$("#result-area").removeClass("alert-danger");
 		} else {
-			resultAreaClass = "alert-danger";
 			resultTitle = "失敗!";
 			resultBody = `
 			<svg  viewBox="0 0 87 87" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -54,10 +54,11 @@
 				</g>
 			</svg>
 			` + failedHint(res);
+			$("#result-area").addClass("alert-danger");
+			$("#result-area").removeClass("alert-success");
 		}
 		
 		$("#resultModalLabel").text(resultTitle);
-		$("#result-area").addClass(resultAreaClass);
 		$("#result-area").html(resultBody);
 		$("#resultModal").modal("toggle");
 	}

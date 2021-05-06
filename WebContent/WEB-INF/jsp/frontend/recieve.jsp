@@ -25,7 +25,7 @@
 						</div>
 					</div>
 					<div class="mb-3 mybox container">
-						<div class="row">
+						<div class="row mb-3">
 							<ul class="col d-flex flex-column align-items-center">
 								<li class="mb-1 align-self-start"><label for="recieve_amount">收款金額<label></li>
 								<li class="mb-1">
@@ -42,6 +42,11 @@
 									<button type="button" value="10000" class="btn btn-secondary" id="plus-10000">+10000</button>
 								</li>
 							</ul>
+						</div>
+						<div class="row mb-3">
+							<div class="col">
+								<textarea id="note" class="form-control" rows="3" placeholder="收款備註" maxlength="50"></textarea>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col">
@@ -93,11 +98,18 @@
 			}
 			
 			if(state.response){
-				renderModalBody(state.response, ({status, message, timestamp, name, amount, balance}) => {
+				const { from: {name} } = state.request;
+				const { info: {balance}} = state.e_account;
+				const amount = parseInt($("#recieve_amount").val());
+				const afterBalance = amount + balance;
+				const note = $("#note").val();
+				
+				renderModalBody(state.response, ({status, message, timestamp}) => {
 					return `
 						付款者大名: \${name}<br>
 						收款金額: NT\$\${numberWithCommas(amount)}<br>
-						預計收款後餘額: NT\$\${numberWithCommas(balance)}
+						預計收款後餘額: NT\$\${numberWithCommas(afterBalance)}<br>
+						收款備註: \${note}
 					`;
 				}, () => {
 					return "收款通知失敗!";
@@ -136,20 +148,25 @@
 			//根據輸入的手機號碼抓取對方大名
 			$("#from_phone").keyup(function() {
 				let fromPhone = $("#from_phone").val();
-				if(fromPhone.length == 10){
+				if(checkPhone(fromPhone)){
 					let dataJSON = {};
 					dataJSON["phone"] = fromPhone;
 					dataJSON["role"] = "M";
 
 					instance.post("/api/getEAccount", dataJSON)
 					.then(res => {
-						const { name } = res.data;
-						store.dispatch({
-							type: "FETCH",
-							payload: {from: {name}}
-						});
+						if(res.data.status === 200){
+							const { name } = res.data;
+							store.dispatch({
+								type: "FETCH",
+								payload: {from: {name}}
+							});
+						}else{
+							alert("手機不存在!");
+						}
 					})
 					.catch(error => {
+						handleError(error.response.data);
 						console.log(error);
 					});
 				} else{
@@ -159,22 +176,36 @@
 			
 			//收款
 			$("#recieve-btn").click(() => {
-				let dataJSON = {};
-				dataJSON["remitter"] = $("#from_phone").val();
-				dataJSON["receiver"] = store.getState().e_account ? store.getState().e_account.info.phone : "0912345678";//TODO 抓使用者真實的手機
-				dataJSON["amount"] = parseInt($("#recieve_amount").val());
-				dataJSON["type"] = "R";
+				const remitter = $("#from_phone").val();
+				const amount = parseInt($("#recieve_amount").val());
+				const note = $('#note').val();
+				
+				if(!checkPhone(remitter)){
+					alert("付款方手機不符格式!");
+				} else if(amount < 0 || amount > 50000){
+					alert("收款金額必須0~50000");
+				} else if(note.length == 0 || note.length > 50){
+					alert("收款備註字元需介於1~50字之間!");
+				} else {
+					let dataJSON = {};
+					dataJSON["remitter"] = remitter;
+					dataJSON["receiver"] = store.getState().e_account ? store.getState().e_account.info.phone : "0912345678";//TODO 抓使用者真實的手機
+					dataJSON["amount"] = amount;
+					dataJSON["note"] = note;
+					dataJSON["type"] = "R";
 
-				instance.post("/api/ePay/transaction", dataJSON)
-				.then(res => {
-					store.dispatch({
-						type: "SUBMIT",
-						payload: res.data
+					instance.post("/api/ePay/transaction", dataJSON)
+					.then(res => {
+						store.dispatch({
+							type: "SUBMIT",
+							payload: res.data
+						});
+					})
+					.catch(error => {
+						handleError(error.response.data);
+						console.log(error);
 					});
-				})
-				.catch(error => {
-					console.log(error);
-				});
+				}
 			});
 		});
 		async function initFetch(){
@@ -182,7 +213,7 @@
 				let res = await instance.get('/api/getCurrentUser');
 				const { login } = res.data;
 				if(!login){
-					alert("尚未登入!");
+					location.href=`${pageContext.request.contextPath}/user/login`;
 					throw new Error("尚未登入!");
 				}
 
@@ -191,7 +222,8 @@
 					payload: res.data
 				});
 			}catch(error){
-				
+				handleError(error.response.data);
+				console.log(error);
 			}
 		}
 	</script>

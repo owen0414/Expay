@@ -90,6 +90,7 @@
 				});
 			})
 			.catch(error => {
+				handleError(error.response.data);
 				console.log(error);
 			});
 			
@@ -119,6 +120,7 @@
 						});
 					})
 					.catch(error => {
+						handleError(error.response.data);
 						console.log(error);
 					});
 				}

@@ -17,7 +17,7 @@
                         <b>轉帳</b>
                     </h2>
 
-                    <form>
+                    <form onkeydown="return event.key != 'Enter';">
                         <div id="first-block" class="mb-3 mybox">
                             <label for="phone" class="d-block mb-1">收款方手機號碼:</label>
                             <input
@@ -50,7 +50,7 @@
                         </div>
                     </div>
 
-                    <form>
+                    <form onkeydown="return event.key != 'Enter';">
                         <div id="second-block">
                             <div class="mb-3 mybox container">
                                 <div id="transferPage">
@@ -106,8 +106,7 @@
                                             </p>
                                         </div>
                                         <div class="col d-flex justify-content-center">
-                                            <img alt="箭頭" src="<c:url value="/resources/img/arrow.png" />"
-                                            class="align-self-center">
+                                            <i class="fas fa-angle-double-right fa-2x align-self-center"></i>
                                         </div>
                                         <div class="col" style="width: 30px; height: auto">
                                             <img alt="名字" src="<c:url value="/resources/img/person_1.jpg" />">
@@ -143,9 +142,13 @@
         <!-- Footer -->
         <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 
+        <!-- ResultModal -->
+        <%@ include file="/WEB-INF/jsp/frontend/resultModal.jsp"%>
+
         <!-- 交易密碼 -->
         <%@ include file="/WEB-INF/jsp/frontend/transactionPwModal.jsp"%>
         <script>
+            //限制加總不超過餘額及上限
             const setTransferAmount = (value) => {
                 if (value > 50000) {
                     $('#transfer_amount').val(50000)
@@ -154,41 +157,72 @@
                 }
             }
 
+            //預先隱藏second-block與loading
+            const initRender = () => {
+                $('#second-block').hide()
+                $('#loading').hide()
+            }
+
+            //是否完成載入
+            const isCompleted = (num) => {
+                if (num) {
+                    $('#second-block').fadeIn(500)
+                    $('#loading').hide()
+                } else {
+                    //尚未完成
+                    $('#second-block').hide()
+                    $('#loading').fadeIn(500)
+                }
+            }
+
+            //送出轉帳時進行
+            function loadingForm(status) {
+                if (status) {
+                    $('#phoneInput').attr('disabled', true)
+                    $('#transfer_amount').attr('disabled', true)
+                    $('#post2Btn').html(
+                        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
+                    )
+                } else {
+                    $('#phoneInput').attr('disabled', false)
+                    $('#transfer_amount').attr('disabled', false)
+                    $('#post2Btn').html('轉帳')
+                }
+            }
+
             $(document).ready(() => {
+                initRender()
+
+                // keyup event
+                // $('#transfer_amount').on('keyup', function () {
+                //     $(this).attr(max)
+                // })
+
                 //按下快捷鍵
                 $('#plus-100').click(function () {
                     let amount = parseInt($('#transfer_amount').val()) + 100
                     setTransferAmount(amount)
                 })
 
-                //是否完成載入
-                const isCompleted = (num) => {
-                    if (num) {
-                        $('#second-block').show()
-                        $('#loading').hide()
-                    } else {
-                        //尚未完成
-                        $('#second-block').hide()
-                        $('#loading').fadeIn(500)
-                    }
-                }
-
                 //現在時間
                 setInterval(() => {
                     $('#nowtime').text(new Date())
                 }, 1000)
 
-                //預先隱藏second-block與loading
-                $('#second-block').hide()
-                $('#loading').hide()
-
                 //按下確定，獲取接收方資訊
                 $('#postBtn').click(function () {
                     isCompleted(false)
-
                     //將接收方電話寫入cookie
                     $.cookie('receiver_phone', $('#phoneInput').val())
+                    // 取接收方資訊
+                    getEAccount()
+                })
 
+                //關閉resultModal時執行
+                $('#resultModal').on('hidden.bs.modal', function (event) {
+                    isCompleted(false)
+                    //將接收方電話寫入cookie
+                    $.cookie('receiver_phone', $('#phoneInput').val())
                     // 取接收方資訊
                     getEAccount()
                 })
@@ -233,15 +267,34 @@
                             amount: price,
                             type: 'T',
                         })
-                        console.log('轉帳結果: ' + transferRes.data)
+                        if (transferRes.data) {
+                            renderModalBody(
+                                transferRes.data,
+                                ({ amount, balance, message, name, status, timestamp }) => {
+                                    return `
+                                        訊息: \${message}<br>
+                                        轉帳金額: NT\$\${numberWithCommas(amount)}<br>
+                                        轉帳後餘額: NT\$\${numberWithCommas(balance)}
+                                    `
+                                },
+                                ({ amount, balance, message, name, status, timestamp }) => {
+                                    return `
+                                        訊息: \${message}<br>
+                                        轉帳失敗
+                                    `
+                                }
+                            )
+                        }
+                        // console.log('轉帳結果: ' + transferRes.data)
                     } catch (error) {}
                 }
 
                 //當form觸發時
                 $('form').on('submit', function (event) {
                     event.preventDefault()
+                    loadingForm(true)
                     //轉帳api
-                    transfer($('input[name="transfer_amount"]').val())
+                    transfer($('input[name="transfer_amount"]').val()).then((res) => loadingForm(false))
                 })
             })
         </script>

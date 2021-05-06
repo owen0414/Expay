@@ -64,6 +64,9 @@ contentType="text/html; charset=UTF-8"%>
     <!-- Footer -->
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 
+    <!-- PaymentNotification -->
+    <%@ include file="/WEB-INF/jsp/frontend/paymentNotificationModal.jsp"%>
+
     <script>
       instance.get("/api/getCurrentUser").then((res) => {
         if (!res.data.login) {

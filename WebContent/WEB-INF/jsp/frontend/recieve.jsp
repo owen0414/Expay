@@ -102,14 +102,12 @@
 				const { info: {balance}} = state.e_account;
 				const amount = parseInt($("#recieve_amount").val());
 				const afterBalance = amount + balance;
-				const note = $("#note").val();
 				
 				renderModalBody(state.response, ({status, message, timestamp}) => {
 					return `
 						付款者大名: \${name}<br>
 						收款金額: NT\$\${numberWithCommas(amount)}<br>
-						預計收款後餘額: NT\$\${numberWithCommas(afterBalance)}<br>
-						收款備註: \${note}
+						預計收款後餘額: NT\$\${numberWithCommas(afterBalance)}
 					`;
 				}, () => {
 					return "收款通知失敗!";

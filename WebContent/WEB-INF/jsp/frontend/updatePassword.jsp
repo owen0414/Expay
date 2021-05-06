@@ -153,7 +153,7 @@
 				const res = await instance.get("/api/getCurrentUser");
 				const { login } = res.data;
 				if(!login){
-					alert("尚未登入!");
+					location.href=`${pageContext.request.contextPath}/user/login`;
 					throw new Error("尚未登入!");
 				}
 

@@ -165,26 +165,31 @@
 				let [bankCode, bankAddress] = $("#bank_account").val().split(",");//銀行代碼和帳戶
 				let amount = parseInt($("#withdraw_amount").val());//提領金額
 				
-				let dataJSON = {};
+				if(amount < 0 || amount > 50000){
+					alert("提款金額必須0~50000");
+				} else {
+					let dataJSON = {};
 				
-				dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.info.e_account : "0210000001";//TODO 抓使用者真實的e_account
-				dataJSON["bankCode"] = bankCode;
-				dataJSON["bankAddress"] = bankAddress;
-				dataJSON["amount"] = amount;
-				dataJSON["type"] = "W";
+					dataJSON["e_account"] = store.getState().e_account ? store.getState().e_account.info.e_account : "0210000001";//TODO 抓使用者真實的e_account
+					dataJSON["bankCode"] = bankCode;
+					dataJSON["bankAddress"] = bankAddress;
+					dataJSON["amount"] = amount;
+					dataJSON["type"] = "W";
 
-				instance.post("/api/bank/transaction", dataJSON)
-				.then(res => {
-					store.dispatch({
-						type: "SUBMIT",
-						payload: res.data
+					instance.post("/api/bank/transaction", dataJSON)
+					.then(res => {
+						store.dispatch({
+							type: "SUBMIT",
+							payload: res.data
+						});
+						
+						initFetch();
+						updateAfterWithDrawBalance();
+					})
+					.catch(error => {
+						console.log(error);
 					});
-					
-					initFetch();
-				})
-				.catch(error => {
-					console.log(error);
-				});
+				}
 			});
 		});
 		
@@ -194,7 +199,7 @@
 				let res = await instance.get("/api/getCurrentUser");
 				const { login } = res.data;
 				if(!login){
-					alert("尚未登入!");
+					location.href=`${pageContext.request.contextPath}/user/login`;
 					throw new Error("尚未登入!");
 				}
 

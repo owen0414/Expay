@@ -166,7 +166,7 @@
             //是否完成載入
             const isCompleted = (num) => {
                 if (num) {
-                    $('#second-block').show()
+                    $('#second-block').fadeIn(500)
                     $('#loading').hide()
                 } else {
                     //尚未完成
@@ -175,18 +175,38 @@
                 }
             }
 
+            //送出轉帳時進行
+            function loadingForm(status) {
+                if (status) {
+                    $('#phoneInput').attr('disabled', true)
+                    $('#transfer_amount').attr('disabled', true)
+                    $('#post2Btn').html(
+                        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
+                    )
+                } else {
+                    $('#phoneInput').attr('disabled', false)
+                    $('#transfer_amount').attr('disabled', false)
+                    $('#post2Btn').html('轉帳')
+                }
+            }
+
             $(document).ready(() => {
                 initRender()
 
                 // keyup event
-                $('#transfer_amount').on('keyup', function () {
-                    $(this).attr(max)
-                })
+                // $('#transfer_amount').on('keyup', function () {
+                //     $(this).attr(max)
+                // })
 
                 //按下快捷鍵
                 $('#plus-100').click(function () {
                     let amount = parseInt($('#transfer_amount').val()) + 100
                     setTransferAmount(amount)
+                })
+
+                //按下轉帳鍵
+                $('#post2Btn').click(function () {
+                    loadingForm(true)
                 })
 
                 //現在時間
@@ -278,7 +298,7 @@
                 $('form').on('submit', function (event) {
                     event.preventDefault()
                     //轉帳api
-                    transfer($('input[name="transfer_amount"]').val())
+                    transfer($('input[name="transfer_amount"]').val()).then((res) => loadingForm(false))
                 })
             })
         </script>

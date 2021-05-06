@@ -18,5 +18,3 @@
 		</ul>
 	</div>
 </nav>
-
-<a href="#" class="back-to-top" style="text-decoration: none;"><i class="fas fa-arrow-up"></i></a>

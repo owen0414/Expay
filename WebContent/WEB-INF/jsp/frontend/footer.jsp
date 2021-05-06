@@ -9,6 +9,7 @@
 	</div>
 </div>
 
+
 <!-- Jquery JS -->
 <script src="<c:url value="/resources/js/jquery-3.3.1.js"/>"></script>
 <!-- Jquery cookie -->

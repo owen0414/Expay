@@ -287,7 +287,7 @@
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json;charset=utf-8',
-			success: function (returnData) {			
+			success: function (returnData) {
 				console.log(returnData)
 				$("#transaction_history_area").children().remove()
 				for(var i = 0; i < returnData.length ; i++){

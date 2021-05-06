@@ -155,7 +155,7 @@
 
 					instance.post("/api/getEAccount", dataJSON)
 					.then(res => {
-						if(res.status === 200){
+						if(res.data.status === 200){
 							const { name } = res.data;
 							store.dispatch({
 								type: "FETCH",
@@ -166,6 +166,7 @@
 						}
 					})
 					.catch(error => {
+						handleError(error.response.data);
 						console.log(error);
 					});
 				} else{
@@ -201,6 +202,7 @@
 						});
 					})
 					.catch(error => {
+						handleError(error.response.data);
 						console.log(error);
 					});
 				}
@@ -220,6 +222,7 @@
 					payload: res.data
 				});
 			}catch(error){
+				handleError(error.response.data);
 				console.log(error);
 			}
 		}

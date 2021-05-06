@@ -126,3 +126,10 @@ function numberWithCommas(x) {
 function undoNumberWithCommas(value) {
     return value.toString().replace(',', '')
 }
+
+// 錯誤處理
+const handleError = errRes => (
+    renderModalBody(errRes, () => {}, ({status, message, timestamp}) => {
+        return `${message}`;
+    })
+);

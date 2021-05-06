@@ -102,6 +102,7 @@
 						initFetch();
 					})
 					.catch(error => {
+						handleError(error.response.data);
 						console.log(error);
 					});	
 				}
@@ -130,6 +131,7 @@
 					payload: res.data
 				});
 			}catch(error){
+				handleError(error.response.data);
 				console.log(error);
 			}
 		}

@@ -53,6 +53,7 @@
 							$("#transactionPwModal").modal("hide");
 						}
 					}catch(error){
+						handleError(error.response.data);
 						console.log(error);
 					}
 				}

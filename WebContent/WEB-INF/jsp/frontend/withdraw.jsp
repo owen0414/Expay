@@ -187,6 +187,7 @@
 						updateAfterWithDrawBalance();
 					})
 					.catch(error => {
+						handleError(error.response.data);
 						console.log(error);
 					});
 				}
@@ -217,6 +218,7 @@
 				
 				showBankAccountIconName("${pageContext.request.contextPath}");
 			}catch(error){
+				handleError(error.response.data);
 				console.log(error);
 			}
 		}

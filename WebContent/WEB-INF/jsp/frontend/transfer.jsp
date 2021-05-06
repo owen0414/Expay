@@ -208,11 +208,12 @@
                                 const timeoutID = window.setTimeout(() => isCompleted(true), 2000)
 
                                 //dom渲染
-                                $('#current-balance').html(receiverUser.data.info.balance)
-                                $('#remitter_eAccount').html(receiverUser.data.info.e_account)
-                                $('#remitter_name').html('張O凱')
-                                $('#receiver_eAccount').html('xxxx' + receiverUser.data.info.slice(-4))
-                                $('#receiver_name').html(eAccount.data.name)
+                                $('#current-balance').html(currentUser.data.info.balance)
+                                $('#remitter_eAccount').html(currentUser.data.info.e_account)
+                                $('#remitter_name').html(currentUser.data.info.name)
+                                //const mask = 'xxxx' + receiverUser.data.e_account.slice(-4)
+                                $('#receiver_eAccount').html(receiverUser.data.e_account)
+                                $('#receiver_name').html(receiverUser.data.name)
                             } catch (error) {}
                         } else {
                             // $('#second-block').hide()

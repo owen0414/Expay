@@ -2,7 +2,7 @@
 // BASE_URL
 //const BASE_URL = 'http://172.19.35.133/'
 // const BASE_URL = "http://172.19.35.97/";
-// const BASE_URL = "http://172.19.35.31/";
+ const BASE_URL = "http://172.19.35.31/";
 
 // $('body').css('padding-top', $('.navbar').outerHeight() + 'px')
 
@@ -34,10 +34,8 @@ $('.navbar-nav>li>a').on('click', function () {
 //Toggle .header-scrolled class to #header when page is scrolled
 $(window).scroll(function () {
     if ($(this).scrollTop() > 100) {
-        $('#header').addClass('header-scrolled')
         $('.back-to-top').fadeIn('slow')
     } else {
-        $('#header').removeClass('header-scrolled')
         $('.back-to-top').fadeOut('slow')
     }
 })
@@ -126,3 +124,24 @@ function numberWithCommas(x) {
 function undoNumberWithCommas(value) {
     return value.toString().replace(',', '')
 }
+
+//將重要資訊加上*字號
+
+function nameToStar(name) {
+	
+	var Newname = ""
+		
+	var length = name.length
+		
+	Newname = name.slice(0,1)
+	
+	for(var i = 1;i<length-1;i++){
+		Newname += "＊"
+	}
+	
+	Newname += name.slice(length-1)
+	
+    return Newname
+
+}
+

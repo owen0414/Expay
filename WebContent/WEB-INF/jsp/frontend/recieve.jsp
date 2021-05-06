@@ -15,7 +15,7 @@
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-5">
 				<h2 class="text-center my-3">收款</h2>
-				<form>
+				<form class="mypanel">
 					<div class="mb-3 mybox container">
 						<div class="row">
 							<ul class="col d-flex justify-content-between align-items-center">
@@ -180,8 +180,8 @@
 				
 				if(!checkPhone(remitter)){
 					alert("付款方手機不符格式!");
-				} else if(amount < 0 || amount > 50000){
-					alert("收款金額必須0~50000");
+				} else if(amount <= 0 || amount > 50000){
+					alert("收款金額必須1~50000");
 				} else if(note.length == 0 || note.length > 50){
 					alert("收款備註字元需介於1~50字之間!");
 				} else {

@@ -15,7 +15,7 @@
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-5">
 				<h2 class="text-center my-3">提領</h2>
-				<form>
+				<form class="mypanel">
 					<div class="mb-3 mybox text-center">
 						<label for="bank_account">銀行帳號:</label>
 						<select class="custom-select" name="bank_account" id="bank_account">
@@ -165,8 +165,8 @@
 				let [bankCode, bankAddress] = $("#bank_account").val().split(",");//銀行代碼和帳戶
 				let amount = parseInt($("#withdraw_amount").val());//提領金額
 				
-				if(amount < 0 || amount > 50000){
-					alert("提款金額必須0~50000");
+				if(amount <= 0 || amount > 50000){
+					alert("提款金額必須1~50000");
 				} else {
 					let dataJSON = {};
 				

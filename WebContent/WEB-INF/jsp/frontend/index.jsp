@@ -30,6 +30,16 @@
 	
 	<!-- Footer -->
 	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
+	
+	<script>
+		instance.get("/api/getCurrentUser")
+		.then(res => {
+			if(!res.data.login){
+				//console.log(res);
+				location.href=`${pageContext.request.contextPath}/user/login`;
+			}
+		});
+	</script>
 </body>
 </html>
 

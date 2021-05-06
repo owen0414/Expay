@@ -1,7 +1,7 @@
 //使用axios前請先設定
 // BASE_URL
-// const BASE_URL = 'http://172.19.35.133/'
-const BASE_URL = "http://172.19.35.97/";
+const BASE_URL = 'http://172.19.35.133/'
+//const BASE_URL = "http://172.19.35.97/";
 // const BASE_URL = "http://172.19.35.31/";
 
 // $('body').css('padding-top', $('.navbar').outerHeight() + 'px')
@@ -127,26 +127,27 @@ function undoNumberWithCommas(value) {
 
 //將重要資訊加上*字號
 function nameToStar(name) {
-	
-	var Newname = ""
-		
-	var length = name.length
-		
-	Newname = name.slice(0,1)
-	
-	for(var i = 1;i<length-1;i++){
-		Newname += "＊"
-	}
-	
-	Newname += name.slice(length-1)
-	
-    return Newname
+    var Newname = ''
 
+    var length = name.length
+
+    Newname = name.slice(0, 1)
+
+    for (var i = 1; i < length - 1; i++) {
+        Newname += '＊'
+    }
+
+    Newname += name.slice(length - 1)
+
+    return Newname
 }
 
 // 錯誤處理
-const handleError = errRes => (
-    renderModalBody(errRes, () => {}, ({status, message, timestamp}) => {
-        return `${message}`;
-    })
-);
+const handleError = (errRes) =>
+    renderModalBody(
+        errRes,
+        () => {},
+        ({ status, message, timestamp }) => {
+            return `${message}`
+        }
+    )

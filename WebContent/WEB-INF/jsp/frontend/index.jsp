@@ -31,6 +31,9 @@
 	<!-- Footer -->
 	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 	
+	<!-- PaymentNotification -->
+	<%@ include file="/WEB-INF/jsp/frontend/paymentNotificationModal.jsp"%>
+
 	<script>
 		instance.get("/api/getCurrentUser")
 		.then(res => {

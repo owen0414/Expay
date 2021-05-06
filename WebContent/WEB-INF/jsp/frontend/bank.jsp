@@ -801,11 +801,12 @@
             }
 
             //獲取驗證碼
+
             function getCaptcha() {
                 loadingCaptcha()
+
                 $.ajax({
-                    url: 'http://172.19.35.133/api/getCode',
-                    //url: 'http://172.19.35.133/exPay/api/getCode',
+                    url: BASE_URL + 'api/getCode',
                     xhrFields: {
                         responseType: 'blob',
                         withCredentials: true,
@@ -832,8 +833,7 @@
                 var pwd1 = $('#captchaInput').val()
                 if (pwd1.length == '4') {
                     $.ajax({
-                        url: 'http://172.19.35.133/api/checkCode/' + pwd1,
-                        //url: 'http://172.19.35.133/exPay/api/checkCode/' + pwd1,
+                        url: BASE_URL + 'api/checkCode/' + pwd1,
                         xhrFields: {
                             withCredentials: true,
                         },

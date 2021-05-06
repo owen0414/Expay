@@ -15,7 +15,7 @@
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-5">
 				<h2 class="text-center my-3">付款</h2>
-				<form>
+				<form class="mypanel">
 					<div class="mb-3 mybox text-center">
 						<div class="row">
 							<ul class="col d-flex flex-row justify-content-between align-items-center">
@@ -187,8 +187,8 @@
 
 				if(!checkPhone(phone)){
 					alert("商家手機不符格式!");
-				} else if(amount < 0 || amount > 50000){
-					alert("付款金額必須0~50000");
+				} else if(amount <= 0 || amount > 50000){
+					alert("付款金額必須1~50000");
 				} else {
 					let dataJSON = {};
 					dataJSON["remitter"] = store.getState().e_account ? store.getState().e_account.info.phone : "0912345678";//TODO 抓使用者真實的手機

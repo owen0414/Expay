@@ -17,7 +17,7 @@
                         <b>轉帳</b>
                     </h2>
 
-                    <form>
+                    <form onkeydown="return event.key != 'Enter';">
                         <div id="first-block" class="mb-3 mybox">
                             <label for="phone" class="d-block mb-1">收款方手機號碼:</label>
                             <input
@@ -50,7 +50,7 @@
                         </div>
                     </div>
 
-                    <form>
+                    <form onkeydown="return event.key != 'Enter';">
                         <div id="second-block">
                             <div class="mb-3 mybox container">
                                 <div id="transferPage">
@@ -204,11 +204,6 @@
                     setTransferAmount(amount)
                 })
 
-                //按下轉帳鍵
-                $('#post2Btn').click(function () {
-                    loadingForm(true)
-                })
-
                 //現在時間
                 setInterval(() => {
                     $('#nowtime').text(new Date())
@@ -297,6 +292,7 @@
                 //當form觸發時
                 $('form').on('submit', function (event) {
                     event.preventDefault()
+                    loadingForm(true)
                     //轉帳api
                     transfer($('input[name="transfer_amount"]').val()).then((res) => loadingForm(false))
                 })

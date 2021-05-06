@@ -154,20 +154,25 @@
 			//根據輸入的手機號碼抓取對方大名
 			$("#store_phone").keyup(function() {
 				let storePhone = $("#store_phone").val();
-				if(storePhone.length == 10){
+				if(checkPhone(storePhone)){
 					let dataJSON = {};
 					dataJSON["phone"] = storePhone;
 					dataJSON["role"] = "S";
 
 					instance.post("/api/getEAccount", dataJSON)
 					.then(res => {
-						const { name } = res.data;
-						store.dispatch({
-							type: "FETCH",
-							payload: {to:{name}}
-						});
+						if(res.data.status === 200){
+							const { name } = res.data;
+							store.dispatch({
+								type: "FETCH",
+								payload: {to:{name}}
+							});
+						} else {
+							alert("手機不存在!");
+						}
 					})
 					.catch(error => {
+						handleError(error.response.data);
 						console.log(error);
 					});
 				} else{
@@ -177,24 +182,34 @@
 			
 			//付款
 			$("#pay-btn").click(() => {
-				let dataJSON = {};
-				dataJSON["remitter"] = store.getState().e_account ? store.getState().e_account.info.phone : "0912345678";//TODO 抓使用者真實的手機
-				dataJSON["receiver"] = $("#store_phone").val();
-				dataJSON["amount"] = parseInt($("#pay_amount").val());
-				dataJSON["type"] = "S";
+				const phone = $("#store_phone").val();
+				const amount = parseInt($("#pay_amount").val());
 
-				instance.post("/api/ePay/transaction", dataJSON)
-				.then(res => {
-					store.dispatch({
-						type: "SUBMIT",
-						payload: res.data
+				if(!checkPhone(phone)){
+					alert("商家手機不符格式!");
+				} else if(amount < 0 || amount > 50000){
+					alert("付款金額必須0~50000");
+				} else {
+					let dataJSON = {};
+					dataJSON["remitter"] = store.getState().e_account ? store.getState().e_account.info.phone : "0912345678";//TODO 抓使用者真實的手機
+					dataJSON["receiver"] = phone;
+					dataJSON["amount"] = amount;
+					dataJSON["type"] = "S";
+
+					instance.post("/api/ePay/transaction", dataJSON)
+					.then(res => {
+						store.dispatch({
+							type: "SUBMIT",
+							payload: res.data
+						});
+						
+						initFetch();
+					})
+					.catch(error => {
+						handleError(error.response.data);
+						console.log(error);
 					});
-					
-					initFetch();
-				})
-				.catch(error => {
-					console.log(error);
-				});
+				}
 			});
 		});
 		
@@ -203,7 +218,7 @@
 				let res = await instance.get("/api/getCurrentUser");
 				const { login } = res.data;
 				if(!login){
-					alert("尚未登入!");
+					location.href=`${pageContext.request.contextPath}/user/login`;
 					throw new Error("尚未登入!");
 				}
 
@@ -212,6 +227,7 @@
 					payload: res.data
 				});
 			}catch(error){
+				handleError(error.response.data);
 				console.log(error);
 			}
 		}

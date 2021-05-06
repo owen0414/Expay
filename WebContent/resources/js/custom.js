@@ -126,7 +126,6 @@ function undoNumberWithCommas(value) {
 }
 
 //將重要資訊加上*字號
-
 function nameToStar(name) {
 	
 	var Newname = ""
@@ -145,3 +144,9 @@ function nameToStar(name) {
 
 }
 
+// 錯誤處理
+const handleError = errRes => (
+    renderModalBody(errRes, () => {}, ({status, message, timestamp}) => {
+        return `${message}`;
+    })
+);

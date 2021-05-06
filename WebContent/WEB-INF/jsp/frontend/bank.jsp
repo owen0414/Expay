@@ -187,7 +187,9 @@
                                     <div>
                                         <img id="captcha" />
                                     </div>
-                                    <div class="captchaLoading d-flex justify-content-center"></div>
+                                    <div class="captchaLoading d-flex justify-content-center">
+                                        <div id="loading_spinner" style="display: none"></div>
+                                    </div>
                                     <p class="mt-1" style="font-size: 10px; font-weight: bold">點選更換驗證碼</p>
                                 </div>
                             </div>
@@ -396,7 +398,7 @@
         </div>
 
         <!--Modal 刪除雙重確認 -->
-        <div
+        <!-- <div
             class="modal fade"
             id="confirm-delete"
             tabindex="-1"
@@ -425,7 +427,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Footer -->
         <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
@@ -448,8 +450,6 @@
 
         <script type="text/javascript">
             function init() {
-                $('#captcha').hide() //驗證碼區隱藏
-                $('.captchaLoading').hide()
                 getLinkedBank() //取得卡片
             }
 
@@ -516,12 +516,15 @@
             //getLinkedBank(真實所有卡片資料)
             async function getLinkedBank() {
                 try {
+                    //loading
                     loadingCard()
+                    const currentUser = await instance.get('/api/getCurrentUser')
                     const response = await instance.get('/api/getLinkedBank')
-                    console.log(response.data)
+                    console.log('response.data:' + response)
+                    console.log('currentUser.data.info.name:' + currentUser.data.info.name)
 
                     //初始讀取卡片陣列
-                    createCards(response.data.banks)
+                    createCards(response.data.banks, currentUser.data.info.name)
 
                     //編輯卡片陣列
                     editCards(response.data.banks)
@@ -540,7 +543,7 @@
                         bank_code,
                         account,
                         birth,
-                        e_account: currentUser.data.e_account,
+                        e_account: currentUser.data.info.e_account,
                     })
 
                     console.log('linkBank綁定: ' + response.data)
@@ -574,20 +577,22 @@
                     const currentUser = await instance.get('/api/getCurrentUser')
                     const response = await instance.put('/api/unlinkBank', {
                         bank_account,
-                        e_account: currentUser.data.e_account,
+                        e_account: currentUser.data.info.e_account,
                     })
 
                     console.log('unlinkBank: ' + response.data)
 
-                    if (response.data.status == '402') {
+                    if (response.data.status === 402) {
                         //failInit()
                         console.log('unlinkbank error: 402')
-                    } else if (response.data.status == '401') {
+                    } else if (response.data.status === 401) {
                         //failInit()
                         console.log('unlinkbank error: 401')
-                    } else if (response.data.status == '200') {
+                    } else if (response.data.status === 200) {
                         unlinkBankInit()
                         console.log('unlinkbank error: 200')
+                    } else {
+                        console.log('unlinkbank error: 非200 401 402')
                     }
                 } catch (error) {
                     console.log('unlinkbank error: ' + error)
@@ -609,14 +614,13 @@
             }
 
             function loadingCaptcha() {
-                $('.captchaLoading').html('<div id="loading_spinner"></div>')
-                $('.captchaLoading').fadeIn(500)
-                $('#captcha').hide()
+                $('#loading_spinner').fadeIn(500)
+                $('#captcha').hide() //圖
             }
 
             function loadedCaptcha() {
-                $('#captcha').fadeIn(300)
-                $('.captchaLoading').hide()
+                $('#captcha').fadeIn(300) //圖
+                $('#loading_spinner').hide()
             }
 
             function loadingForm() {
@@ -631,9 +635,9 @@
 
             //建立卡片s(由getLinkedBank呼叫)
             //若資料為[] 渲染假資料
-            function createCards(data) {
-                if (data.length == 0) {
-                    console.log('no data!' + data)
+            function createCards(banks, name) {
+                if (banks.length == 0) {
+                    console.log('no data!' + banks)
 
                     //範例檔
                     var cardHtml =
@@ -663,19 +667,19 @@
                             $('.card0').addClass('active')
                             $('.indicator0').addClass('active')
                         }
-                        //詳細資訊渲染
-                        cardInfo(data[i], i)
+                        //每張卡進行詳細資訊渲染
+                        cardInfo(banks[i], i, name)
                     }
                     $('.cardDefault').hide()
                     $('.indicatorDefault').hide()
                 } else {
-                    //顯示編輯卡片
+                    //有已綁定卡片時，顯示編輯卡片
                     modalEditBankBtnInit(true)
 
                     //範例檔
 
                     var cardHtml =
-                        '<div class="d-flex justify-content-center align-items-center h-100"><div class="col-12 pt-5 col-sm-12 py-sm-0 d-flex justify-content-center"style="width: 100vw"><div class="card"style="border: 0; min-width: 320px; min-height: 190px; max-width: 320px; max-height: 190px; width: calc(30vw - 20px); height: calc(( 30vw - 20px)* 0.5625);"><div class="card__front card__part" style="width: 100%; height: 100%"><img class="card__front-square card__square" src="<c:url value="/resources/img/esun.png"/>"> <img class="card__front-logo card__logo" src="<c:url value="/resources/img/touch.png"/>"><p class="card_numer">******** 6258</p><div class="card__space-75"><span class="card__label">卡片持有人</span><p class="card__info">彭麟翔</p></div><div class="card__space-25"><div><img class="institution"src="<c:url value="/resources/img/masterCard.png"/>"height="50px"></div></div></div></div></div></div>'
+                        '<div class="d-flex justify-content-center align-items-center h-100"><div class="col-12 pt-5 col-sm-12 py-sm-0 d-flex justify-content-center"style="width: 100vw"><div class="card"style="border: 0; min-width: 320px; min-height: 190px; max-width: 320px; max-height: 190px; width: calc(30vw - 20px); height: calc(( 30vw - 20px)* 0.5625);"><div class="card__front card__part" style="width: 100%; height: 100%"><img class="card__front-square card__square" src="<c:url value="/resources/img/esun.png"/>"> <img class="card__front-logo card__logo" src="<c:url value="/resources/img/touch.png"/>"><p class="card_numer">******** 0000</p><div class="card__space-75"><span class="card__label">卡片持有人</span><p class="card__info">彭麟翔</p></div><div class="card__space-25"><div><img class="institution"src="<c:url value="/resources/img/masterCard.png"/>"height="50px"></div></div></div></div></div></div>'
                     var indicatorHtml =
                         '<li style="display: none; width: 15px; height: 15px; border-radius: 100%; background-color: black"data-target="#carouselExampleInterval" data-slide-to="0"class="indicatorDefault "></li>'
                     $('.cardDefault').html(cardHtml)
@@ -685,7 +689,7 @@
                     $('.cardDefault').show()
                     $('.indicatorDefault').show()
 
-                    var num = data.length
+                    var num = banks.length
                     for (var i = 0; i < num; i++) {
                         //新增n張卡片
                         $('.cardDefault')
@@ -703,8 +707,8 @@
                             $('.card0').addClass('active')
                             $('.indicator0').addClass('active')
                         }
-                        //詳細資訊渲染
-                        cardInfo(data[i], i)
+                        //每張卡進行詳細資訊渲染
+                        cardInfo(banks[i], i, name)
                     }
                     $('.cardDefault').hide()
                     $('.indicatorDefault').hide()
@@ -716,7 +720,8 @@
             }
 
             //卡片詳細資訊
-            function cardInfo(data, new_index) {
+            function cardInfo(data, new_index, name) {
+                console.log('CARDINFO:' + name)
                 // var local_bank = data.bank;
                 // var local_card_numer = data.card_numer;
                 // var local_user = data.user;
@@ -724,8 +729,8 @@
 
                 var local_bank = data.bankCode
                 var local_card_numer = data.bankAddress
-                var local_user = '陳先生'
-                var local_intitution = ''
+                var local_user = name
+                var local_intitution = 'masterCard'
 
                 //銀行
                 if (local_bank == '012') {
@@ -920,6 +925,9 @@
                     return count
                 }
 
+                $('#myModal1').on('shown.bs.modal', function () {
+                    $('#textareaID1').focus()
+                })
                 //當form觸發時
                 $('form').on('submit', function (event) {
                     event.preventDefault()

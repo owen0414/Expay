@@ -20,6 +20,7 @@ contentType="text/html; charset=UTF-8"%>
             class="mt-5 px-5"
             onclick="location.href='${pageContext.request.contextPath}/history'"
             style="cursor: pointer"
+            id="balance"
           >
             NT$500
           </p>
@@ -70,11 +71,14 @@ contentType="text/html; charset=UTF-8"%>
     <script>
       //檢查是否登入及設定交易密碼
       instance.get("/api/getCurrentUser").then((res) => {
-        if (!res.data.login) {
+        const {login, info: { balance }, t_password} = res.data;
+        if (!login) {
           //console.log(res);
           location.href = `${pageContext.request.contextPath}/user/login`;
-        } else if (!res.data.t_password) {
+        } else if (!t_password) {
           location.href = `${pageContext.request.contextPath}/payment_password`;
+        } else {
+          $("#balance").text("NT$" + balance);
         }
       });
     </script>

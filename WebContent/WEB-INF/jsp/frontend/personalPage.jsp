@@ -17,12 +17,12 @@ contentType="text/html; charset=UTF-8"%>
           <div class="mybox text-center mr-3">
             <img src="<c:url value="/resources/img/person.jpg" />" alt="彭小翔"
             style="width: 50%;"/>
-            <p>彭小翔</p>
+            <p id="name">彭小翔</p>
           </div>
           <div
             class="mybox d-flex flex-column justify-content-center w-25 text-center"
           >
-            <p>NT$ 500</p>
+            <p id="balance">NT$ 500</p>
           </div>
         </div>
       </div>
@@ -54,9 +54,13 @@ contentType="text/html; charset=UTF-8"%>
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
     <script>
       instance.get("/api/getCurrentUser").then((res) => {
-        if (!res.data.login) {
-          //console.log(res);
-          location.href = `${pageContext.request.contextPath}/user/login`;
+        const {login, info: { balance, name }} = res.data;
+        if(!login){
+            //console.log(res);
+            location.href=`${pageContext.request.contextPath}/user/login`;
+        } else {
+            $("#balance").text("NT$" + balance);
+            $("#name").text(name);        
         }
       });
     </script>

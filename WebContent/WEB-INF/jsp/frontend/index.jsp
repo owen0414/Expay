@@ -65,9 +65,6 @@ contentType="text/html; charset=UTF-8"%>
     <!-- Footer -->
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 
-    <!-- PaymentNotification -->
-    <%@ include file="/WEB-INF/jsp/frontend/paymentNotificationModal.jsp"%>
-
     <script>
       //檢查是否登入及設定交易密碼
       instance.get("/api/getCurrentUser").then((res) => {

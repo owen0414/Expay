@@ -1,7 +1,7 @@
 //使用axios前請先設定
 // BASE_URL
-const BASE_URL = 'http://172.19.35.133/'
-//const BASE_URL = "http://172.19.35.97/";
+//const BASE_URL = 'http://172.19.35.133/'
+const BASE_URL = "http://172.19.35.97/";
 // const BASE_URL = "http://172.19.35.31/";
 
 // $('body').css('padding-top', $('.navbar').outerHeight() + 'px')
@@ -140,6 +140,18 @@ function nameToStar(name) {
     Newname += name.slice(length - 1)
 
     return Newname
+}
+
+// 手機號碼打星星
+const phoneToStar = phone => {
+    let tempPhone = phone + "";
+
+    if(!checkPhone(tempPhone)){
+        throw new Error("手機不符格式!");
+    }
+
+    //中間三碼打星星
+    return tempPhone.slice(0, 4) + "***" + tempPhone.slice(7);
 }
 
 // 錯誤處理

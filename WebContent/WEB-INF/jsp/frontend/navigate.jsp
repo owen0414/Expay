@@ -36,6 +36,9 @@
         >
       </li>
       <li class="nav-item">
+        <a class="nav-link" style="cursor: pointer;" data-toggle="modal" data-target="#paymentNotificationModal">待收款通知</a>
+      </li>
+      <li class="nav-item">
         <a
           href="${pageContext.request.contextPath}/user/logout"
           class="nav-link"

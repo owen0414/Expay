@@ -13,36 +13,37 @@ const App = props => {
     const [data, setData] = useState([]);
 
     useEffect(async () => {
-        // const res = await instance.get("/api/getPaymentNotification");
-        // setData(oldState => res.data);
-        setData([
-            {
-                name: "張登凱",
-                phone: "0912345678",
-                amount: 1000,
-                note: "快付錢!",
-                transaction_code: "T202105060000000008"
-            },
-            {
-                name: "呂承昊",
-                phone: "0988777666",
-                amount: 30000,
-                note: "還錢!",
-                transaction_code: "T202105060000000009"
-            }
-        ]);
+        const res = await instance.get("/api/getPaymentNotification");
+        setData(oldState => res.data);
+        // setData([
+        //     {
+        //         name: "張登凱",
+        //         phone: "0912345678",
+        //         amount: 1000,
+        //         note: "快付錢!",
+        //         transaction_code: "T202105060000000008"
+        //     },
+        //     {
+        //         name: "呂承昊",
+        //         phone: "0988777666",
+        //         amount: 30000,
+        //         note: "還錢!",
+        //         transaction_code: "T202105060000000009"
+        //     }
+        // ]);
     }, []);
 
-    const Item = ({name, phone, amount, note, transaction_code}) => (
+    const Item = ({name, phone, amount, note, time}) => (
         <div className="row mx-3 mx-md-auto mybox">
             <div
                 className="col-12 col-md-10 my-3 mx-auto payment_item">
                 <div className="row">
                     <div className="col">
                         <p>{nameToStar(name)}</p>
-                        <p>{phone}</p>
+                        <p>{phoneToStar(phone)}</p>
                         <p>要求您付NT$ {amount}</p>
                         <p>備註: {note}</p>
+                        <p>時間: {time}</p>
                     </div>
                 </div>
                 <div className="row">
@@ -50,7 +51,7 @@ const App = props => {
                         <button className="btn btn-primary mr-3" onClick={() => {
                             $.cookie("name", name);
                             $.cookie("amount",amount);
-                            $.cookie("transaction_code", transaction_code);
+                            //$.cookie("transaction_code", transaction_code);
                             location.href = "${pageContext.request.contextPath}/transfer";
                         }}>確認</button>
                         <button className="btn btn-danger">拒絕</button>

@@ -27,7 +27,7 @@
                                 pattern="09[0-9]{8}"
                                 maxlength="10"
                                 class="form-control w-75 mx-auto"
-                                placeholder="09xxxxxxxx"
+                                placeholder="對方的手機號碼"
                             />
                         </div>
                         <div id="postBtn" class="mb-3 d-flex justify-content-end">
@@ -209,6 +209,15 @@
                 }
             }
 
+            //errorFormat
+            function isErrorFormat(phone, success, failed) {
+                if (checkPhone(phone)) {
+                    console.log(success(phone))
+                } else {
+                    alert(failed(phone))
+                }
+            }
+
             //送出轉帳時防止輸入
             const loadingForm = (status) => {
                 if (status) {
@@ -251,20 +260,23 @@
 
                 //按下確定，獲取接收方資訊
                 $('#postBtn').click(function () {
-                    isCompleted(false)
-                    //將接收方電話寫入cookie
-                    $.cookie('receiver_phone', $('#phoneInput').val())
-                    // 取接收方資訊
-                    getEAccount()
-                })
-
-                //關閉resultModal(交易密碼)時執行
-                $('#resultModal').on('hidden.bs.modal', function (event) {
-                    isCompleted(false)
-                    //將接收方電話寫入cookie
-                    $.cookie('receiver_phone', $('#phoneInput').val())
-                    // 取接收方資訊
-                    getEAccount()
+                    const local_phone = $('#phoneInput').val()
+                    if (local_phone) {
+                        isErrorFormat(
+                            local_phone,
+                            (local_phone) => {
+                                isCompleted(false)
+                                //將接收方電話寫入cookie
+                                $.cookie('receiver_phone', $('#phoneInput').val())
+                                // 取接收方資訊
+                                getEAccount()
+                                return `成功`
+                            },
+                            (local_phone) => {
+                                return `請輸入正確格式`
+                            }
+                        )
+                    }
                 })
 
                 //getEAccount(接受方)
@@ -273,7 +285,8 @@
                         const currentUser = await instance.get('/api/getCurrentUser')
                         //對方電話號碼讀取
                         const receiver_phone = $.cookie('receiver_phone')
-                        if (receiver_phone.length == '10') {
+
+                        if (true) {
                             const receiverUser = await instance.post('/api/getEAccount', {
                                 phone: receiver_phone,
                                 role: 'M',
@@ -288,14 +301,14 @@
                             $('#receiver_eAccount').html(receiverUser.data.e_account)
                             $('#receiver_name').html(receiverUser.data.name)
                         } else {
-                            // $('#second-block').hide()
-                            // $('#postBtn').show()
+                            alert('請輸入正確的電話號碼格式')
                         }
                     } catch (error) {
                         console.log(error)
                     }
                 }
 
+                //轉帳API
                 async function transfer(price) {
                     try {
                         const currentUser = await instance.get('/api/getCurrentUser')
@@ -329,6 +342,7 @@
                     }
                 }
 
+                //要求轉帳API
                 async function transferByRequest(transaction_code) {
                     try {
                         const transferRes = await instance.post('/api/ePay/receive', {
@@ -359,7 +373,7 @@
                     }
                 }
 
-                //當form觸發時
+                //當form觸發時送出
                 $('form').on('submit', function (event) {
                     event.preventDefault()
                     loadingForm(true)

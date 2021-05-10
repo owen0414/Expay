@@ -71,15 +71,13 @@ contentType="text/html; charset=UTF-8"%>
     <script>
       //檢查是否登入及設定交易密碼
       instance.get("/api/getCurrentUser").then((res) => {
-        const {
-          login,
-          info: { balance },
-          t_password,
-        } = res.data;
-        if (!login) {
+        if (!res.data.login) {
           //console.log(res);
           location.href = `${pageContext.request.contextPath}/user/login`;
-        } else if (!t_password) {
+        }
+        
+        const { login, info: { balance }, t_password } = res.data;
+        if (!t_password) {
           location.href = `${pageContext.request.contextPath}/payment_password`;
         } else {
           $("#balance").text("NT$" + numberWithCommas(balance));

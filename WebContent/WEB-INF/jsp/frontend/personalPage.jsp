@@ -54,13 +54,13 @@ contentType="text/html; charset=UTF-8"%>
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
     <script>
       instance.get("/api/getCurrentUser").then((res) => {
-        const {login, info: { balance, name }} = res.data;
-        if(!login){
+        if(!res.data.login){
             //console.log(res);
             location.href=`${pageContext.request.contextPath}/user/login`;
-        } else {
-            $("#balance").text("NT$" + balance);
-            $("#name").text(name);        
+        } else{
+          const {login, info: { balance, name }} = res.data;
+          $("#balance").text("NT$" + balance);
+          $("#name").text(name);    
         }
       });
     </script>

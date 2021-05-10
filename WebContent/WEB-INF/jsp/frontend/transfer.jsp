@@ -17,7 +17,7 @@
                         <b>轉帳</b>
                     </h2>
 
-                    <form>
+                    <form onkeydown="return event.key != 'Enter';">
                         <div id="first-block" class="mb-3 mybox">
                             <label for="phone" class="d-block mb-1">收款方手機號碼:</label>
                             <input
@@ -50,7 +50,7 @@
                         </div>
                     </div>
 
-                    <form>
+                    <form onkeydown="return event.key != 'Enter';">
                         <div id="second-block">
                             <div class="mb-3 mybox container">
                                 <div id="transferPage">
@@ -166,7 +166,7 @@
             //是否完成載入
             const isCompleted = (num) => {
                 if (num) {
-                    $('#second-block').show()
+                    $('#second-block').fadeIn(500)
                     $('#loading').hide()
                 } else {
                     //尚未完成
@@ -175,13 +175,28 @@
                 }
             }
 
+            //送出轉帳時進行
+            function loadingForm(status) {
+                if (status) {
+                    $('#phoneInput').attr('disabled', true)
+                    $('#transfer_amount').attr('disabled', true)
+                    $('#post2Btn').html(
+                        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
+                    )
+                } else {
+                    $('#phoneInput').attr('disabled', false)
+                    $('#transfer_amount').attr('disabled', false)
+                    $('#post2Btn').html('轉帳')
+                }
+            }
+
             $(document).ready(() => {
                 initRender()
 
                 // keyup event
-                $('#transfer_amount').on('keyup', function () {
-                    $(this).attr(max)
-                })
+                // $('#transfer_amount').on('keyup', function () {
+                //     $(this).attr(max)
+                // })
 
                 //按下快捷鍵
                 $('#plus-100').click(function () {
@@ -277,8 +292,9 @@
                 //當form觸發時
                 $('form').on('submit', function (event) {
                     event.preventDefault()
+                    loadingForm(true)
                     //轉帳api
-                    transfer($('input[name="transfer_amount"]').val())
+                    transfer($('input[name="transfer_amount"]').val()).then((res) => loadingForm(false))
                 })
             })
         </script>

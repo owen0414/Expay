@@ -115,7 +115,7 @@ public class PageController {
 
 	}
 
-	@GetMapping("user/payment_password")
+	@GetMapping("payment_password")
 	public String paymentPassword() {
 
 		return "frontend/payment_password";

@@ -49,6 +49,7 @@ const App = props => {
                 <div className="row">
                     <div className="col-12 text-center text-md-right">
                         <button className="btn btn-primary mr-3" onClick={() => {
+                            //確認的話把資料pass給轉帳頁面!
                             $.cookie("e_account", e_account);
                             $.cookie("name", name);
                             $.cookie("phone", phone);
@@ -58,11 +59,18 @@ const App = props => {
                         }}>確認</button>
                         <button className="btn btn-danger" onClick={async ()=>{
                             try{
-                                const res = await instance.post("/api/ePay/receieve", {
+                                //執行拒絕的動作
+                                const res = await instance.post("/api/ePay/receive", {
                                     transactionCode: transaction_code,
                                     status: "N"
                                 });
-                                alert(res.data.message);
+
+                                //跳出框框
+                                const {status, message} = res.data;
+                                alert(message);
+
+                                //從ui刪除資料
+                                setData(oldData => oldData.filter((val, i) => val.transaction_code !== transaction_code));
                             }catch(error){
                                 console.log(error);
                             }

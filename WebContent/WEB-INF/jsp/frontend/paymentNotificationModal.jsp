@@ -33,6 +33,11 @@ const App = props => {
         // ]);
     }, []);
 
+    $("#paymentNotificationModal").on("show.bs.modal", async () => {
+        const res = await instance.get("/api/getPaymentNotification");
+        setData(oldState => res.data);
+    });
+
     const Item = ({name, phone, amount, note, time, transaction_code, e_account}) => (
         <div className="row mx-3 mx-md-auto mybox">
             <div

@@ -14,7 +14,7 @@
 	<div class="content_container" style="height:auto;min-height:450px" >
 		<div class="row mx-5 mx-sm-auto">
 			<div class="col-12 col-sm-3 money_container mx-sm-auto mt-5 text-center">
-				<p class="mt-5 px-5" onclick="location.href='${pageContext.request.contextPath}/history'" style="cursor:pointer;">NT$500</p>
+				<p class="mt-5 px-5" onclick="location.href='${pageContext.request.contextPath}/history'" style="cursor:pointer;" id="balance">NT$500</p>
 				<div class="mt-5">
 					<button class="btn addmoney_btn" onclick="location.href='${pageContext.request.contextPath}/deposit'">儲值</button>
 					<button class="btn withdraw_btn" onclick="location.href='${pageContext.request.contextPath}/withdraw'">提領</button>	
@@ -37,9 +37,12 @@
 	<script>
 		instance.get("/api/getCurrentUser")
 		.then(res => {
-			if(!res.data.login){
+			const {login, info: { balance }} = res.data;
+			if(!login){
 				//console.log(res);
 				location.href=`${pageContext.request.contextPath}/user/login`;
+			} else {
+				$("#balance").text("NT$" + balance);
 			}
 		});
 	</script>

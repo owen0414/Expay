@@ -17,7 +17,7 @@
                         <img src="<c:url value="/resources/img/person.jpg" />" alt="彭小翔" style="width: 50%;"/>
                         <p>彭小翔</p>
                     </div>
-                    <div class="mybox d-flex flex-column justify-content-center w-25 text-center">
+                    <div class="mybox d-flex flex-column justify-content-center w-25 text-center" id="balance">
                         <p>NT$ 500</p>
                     </div>
                 </div>
@@ -40,5 +40,17 @@
         </div>
         <!-- Footer -->
         <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
+        <script>
+            instance.get("/api/getCurrentUser")
+            .then(res => {
+                const {login, info: { balance }} = res.data;
+                if(!login){
+                    //console.log(res);
+                    location.href=`${pageContext.request.contextPath}/user/login`;
+                } else {
+                    $("#balance").text("NT$" + balance);
+                }
+            });
+        </script>
     </body>
 </html>

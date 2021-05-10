@@ -5,7 +5,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="transactionPwModalLabel">請輸入交易密碼</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close" disabled>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.href='${pageContext.request.contextPath}';">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
@@ -21,7 +21,7 @@
 	      	
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal" disabled>關閉</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.href='${pageContext.request.contextPath}';">關閉</button>
 	      </div>
 	    </div>
 	  </div>

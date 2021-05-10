@@ -29,3 +29,7 @@
 
 <!-- Custom JS -->
 <script type="text/javascript" src="<c:url value="/resources/js/custom.js"/>"></script>
+
+<!-- PaymentNotification -->
+<%@ include file="/WEB-INF/jsp/frontend/paymentNotificationModal.jsp"%>
+

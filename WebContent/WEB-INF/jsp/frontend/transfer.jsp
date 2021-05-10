@@ -157,8 +157,8 @@
                 }
             }
 
-            //預先隱藏second-block與loading
             const initRender = () => {
+                //預先隱藏second-block與loading
                 $('#second-block').hide()
                 $('#loading').hide()
             }
@@ -176,7 +176,7 @@
             }
 
             //送出轉帳時進行
-            function loadingForm(status) {
+            const loadingForm = (status) => {
                 if (status) {
                     $('#phoneInput').attr('disabled', true)
                     $('#transfer_amount').attr('disabled', true)
@@ -234,21 +234,19 @@
                         //對方電話號碼讀取
                         const receiver_phone = $.cookie('receiver_phone')
                         if (receiver_phone.length == '10') {
-                            try {
-                                const receiverUser = await instance.post('/api/getEAccount', {
-                                    phone: receiver_phone,
-                                    role: 'M',
-                                })
-                                const timeoutID = window.setTimeout(() => isCompleted(true), 2000)
+                            const receiverUser = await instance.post('/api/getEAccount', {
+                                phone: receiver_phone,
+                                role: 'M',
+                            })
+                            const timeoutID = window.setTimeout(() => isCompleted(true), 500)
 
-                                //dom渲染
-                                $('#current-balance').html(currentUser.data.info.balance)
-                                $('#remitter_eAccount').html(currentUser.data.info.e_account)
-                                $('#remitter_name').html(currentUser.data.info.name)
-                                //const mask = 'xxxx' + receiverUser.data.e_account.slice(-4)
-                                $('#receiver_eAccount').html(receiverUser.data.e_account)
-                                $('#receiver_name').html(receiverUser.data.name)
-                            } catch (error) {}
+                            //dom渲染
+                            $('#current-balance').html(numberWithCommas(currentUser.data.info.balance))
+                            $('#remitter_eAccount').html(currentUser.data.info.e_account)
+                            $('#remitter_name').html(currentUser.data.info.name)
+                            //const mask = 'xxxx' + receiverUser.data.e_account.slice(-4)
+                            $('#receiver_eAccount').html(receiverUser.data.e_account)
+                            $('#receiver_name').html(receiverUser.data.name)
                         } else {
                             // $('#second-block').hide()
                             // $('#postBtn').show()
@@ -285,7 +283,6 @@
                                 }
                             )
                         }
-                        // console.log('轉帳結果: ' + transferRes.data)
                     } catch (error) {}
                 }
 
@@ -294,8 +291,19 @@
                     event.preventDefault()
                     loadingForm(true)
                     //轉帳api
-                    transfer($('input[name="transfer_amount"]').val()).then((res) => loadingForm(false))
+                    transfer($('input[name="transfer_amount"]').val()).then((res) =>
+                        window.setTimeout(() => loadingForm(false), 500)
+                    )
                 })
+            })
+        </script>
+
+        <script>
+            instance.get('/api/getCurrentUser').then((res) => {
+                if (!res.data.login) {
+                    //console.log(res);
+                    location.href = `${pageContext.request.contextPath}/user/login`
+                }
             })
         </script>
     </body>

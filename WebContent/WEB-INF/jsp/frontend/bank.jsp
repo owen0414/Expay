@@ -28,12 +28,6 @@
                     >
                         <ol class="carousel-indicators">
                             <!--<li>指標</li> -->
-                            <li
-                                style="width: 15px; height: 15px; border-radius: 100%; background-color: black"
-                                data-target="#carouselExampleInterval"
-                                data-slide-to="0"
-                                class="indicatorDefault2 active"
-                            ></li>
                         </ol>
                         <div class="carousel-inner" style="overflow: none">
                             <div class="cardDefault carousel-item active"></div>
@@ -162,7 +156,7 @@
                                         type="date"
                                         class="form-control"
                                         id="bookdate"
-                                        value="1987-01-01"
+                                        value="1998-01-01"
                                     />
                                 </div>
                                 <div class="col-12">
@@ -220,7 +214,7 @@
                                 </div>
                                 <div class="col-12 d-flex justify-content-center">
                                     <div class="fadeIn">
-                                        <p style="font-weight: bold">28881007434452</p>
+                                        <p id="successBankAccount" style="font-weight: bold">28881007434452</p>
                                     </div>
                                 </div>
                                 <div class="col-12 d-flex justify-content-center">
@@ -451,6 +445,7 @@
         <script type="text/javascript">
             function init() {
                 getLinkedBank() //取得卡片
+                modalEditBankBtnInit(false) //預設隱藏編輯卡片
             }
 
             function bankInit() {
@@ -467,18 +462,20 @@
             }
 
             function formInit() {
-                $('.btn-bank').hide() //銀行隱藏
-                $('.content').show() //顯示表單與返回
+                $('.btn-bank').hide() //銀行選擇頁面隱藏
+                $('.content').show() //顯示表單與返回按鈕
                 $('.return').show()
-                $('#nextBtn').show() //顯示下一步並停用之
+                $('#bank_Id').focus()
+                $('#nextBtn').show() //顯示下一步，並停用之
                 $('#nextBtn').attr('disabled', 'disabled')
             }
 
-            function successInit() {
+            function successInit(bank_account) {
                 $('.btn-bank').hide() //銀行隱藏
                 $('.content').hide() //表單隱藏
                 $('.return').hide()
                 $('.successPage').show() //顯示成功頁面
+                $('#successBankAccount').html(bank_account) //顯示成功綁定卡號
                 $('.fadeIn').fadeIn(1000)
                 $('#nextBtn').hide() //隱藏下一步
             }
@@ -536,7 +533,7 @@
             //linkBank(真實卡片綁定)
             async function linkBank(bank_code, account, birth, e_account) {
                 try {
-                    loadingForm()
+                    loadingForm(true)
                     const currentUser = await instance.get('/api/getCurrentUser')
                     const response = await instance.post('/api/linkBank', {
                         //測資
@@ -557,7 +554,7 @@
                         console.log('link銀行端401： ' + response.data.message)
                         failInit() //顯示失敗
                     } else if (response.data.status == '200') {
-                        successInit() //顯示成功
+                        successInit(account) //顯示成功
                     }
                 } catch (error) {
                     $('.responseMessage').html(
@@ -568,6 +565,8 @@
                     )
                     console.log('catch error： ' + error.response.data.message)
                     failInit() //顯示失敗
+                } finally {
+                    loadingForm(false)
                 }
             }
 
@@ -623,19 +622,31 @@
                 $('#loading_spinner').hide()
             }
 
-            function loadingForm() {
-                $('#bank_Id').attr('disabled', true)
-                $('#birthday').attr('disabled', true)
-                $('#captchaInput').attr('disabled', true)
-                //按鈕loading
-                $('#nextBtn').html(
-                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
-                )
+            function loadingForm(status) {
+                if (status) {
+                    $('#bank_Id').attr('disabled', true)
+                    $('#birthday').attr('disabled', true)
+                    $('#captchaInput').attr('disabled', true)
+                    //按鈕loading
+                    $('#nextBtn').html(
+                        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
+                    )
+                } else {
+                    $('#bank_Id').attr('disabled', false)
+                    $('#birthday').attr('disabled', false)
+                    $('#captchaInput').attr('disabled', false)
+                    //按鈕loading
+                    $('#nextBtn').html('下一步')
+                }
             }
 
             //建立卡片s(由getLinkedBank呼叫)
             //若資料為[] 渲染假資料
             function createCards(banks, name) {
+                //先清空
+                $('.carousel-inner').html('<div class="cardDefault carousel-item active"></div>')
+                $('.carousel-indicators').html()
+
                 if (banks.length == 0) {
                     console.log('no data!' + banks)
 
@@ -860,30 +871,11 @@
             }
 
             $(document).ready(function () {
-                //當按下刪除卡片時
-                $(document).on('click', '.unlinkBankBtn', function (event) {
-                    //刪除雙重確認(modal)
-                    // $('#confirm-delete').on('show.bs.modal', function (e) {
-                    //     //取data-xxx的值並塞屬性給(.btn_ok)
-                    //     $(this).find('.btn-ok').attr('id', $(e.relatedTarget).data('id'))
-                    //     //塞文字到(.debug-url)
-                    //     $('.debug-url').html('銀行卡號:  <strong>' + $(e.relatedTarget).data('id') + '</strong>')
-
-                    //     console.log($(e.relatedTarget).data('id'))
-                    // })
-
-                    //解綁api
-                    unlinkBank($(this).attr('id'))
-                })
-
-                //後端資料渲染
+                //資料渲染與預設編輯卡片隱藏
                 init()
 
-                //預設隱藏編輯卡片
-                modalEditBankBtnInit(false)
-
-                //啟動新增卡片modal時
-                $('#modalBank').click(function () {
+                //啟動新增卡片modal時/更換其他銀行/返回上一層以更換銀行
+                $('#modalBank, .change, .return').click(function () {
                     bankInit()
                 })
 
@@ -898,13 +890,21 @@
                     getCaptcha() //取驗證碼API
                     formInit()
                 })
-                //更換其他銀行
-                $('.change').click(function () {
-                    bankInit()
-                })
-                //返回上一層以更換銀行
-                $('.return').click(function () {
-                    bankInit()
+
+                //當按下刪除卡片時
+                $(document).on('click', '.unlinkBankBtn', function (event) {
+                    //刪除雙重確認(modal)
+                    // $('#confirm-delete').on('show.bs.modal', function (e) {
+                    //     //取data-xxx的值並塞屬性給(.btn_ok)
+                    //     $(this).find('.btn-ok').attr('id', $(e.relatedTarget).data('id'))
+                    //     //塞文字到(.debug-url)
+                    //     $('.debug-url').html('銀行卡號:  <strong>' + $(e.relatedTarget).data('id') + '</strong>')
+
+                    //     console.log($(e.relatedTarget).data('id'))
+                    // })
+
+                    //解綁api
+                    unlinkBank($(this).attr('id'))
                 })
 
                 //監測到輸入驗證碼時，進行驗證
@@ -925,9 +925,6 @@
                     return count
                 }
 
-                $('#myModal1').on('shown.bs.modal', function () {
-                    $('#textareaID1').focus()
-                })
                 //當form觸發時
                 $('form').on('submit', function (event) {
                     event.preventDefault()
@@ -950,9 +947,9 @@
                     $('#addBankAccountForm')[0].reset()
                 })
 
-                //每次關閉modal重整
+                //關閉modal重整
                 $('#exampleModalScrollable,#editCardModal').on('hidden.bs.modal', function () {
-                    location.reload()
+                    init()
                 })
             })
         </script>

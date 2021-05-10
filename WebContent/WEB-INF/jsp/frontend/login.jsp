@@ -128,7 +128,11 @@ contentType="text/html; charset=UTF-8"%>
                   <hr class="login_hr" />
                 </div>
                 <div class="col-10 col-md-8 mx-auto text-center">
-                  <a class="btn btn_register" href="register">註冊</a>
+                  <a
+                    class="btn btn_register"
+                    href="${pageContext.request.contextPath}/user/register"
+                    >註冊</a
+                  >
                 </div>
               </div>
             </form>
@@ -232,7 +236,11 @@ contentType="text/html; charset=UTF-8"%>
                   <hr class="login_hr" />
                 </div>
                 <div class="col-10 col-md-8 mx-auto text-center">
-                  <a class="btn btn_register" href="register">註冊</a>
+                  <a
+                    class="btn btn_register"
+                    href="${pageContext.request.contextPath}/user/register"
+                    >註冊</a
+                  >
                 </div>
               </div>
             </form>

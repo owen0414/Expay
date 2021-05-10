@@ -91,7 +91,7 @@
                                     class="align-self-center">
                                 </div>
                                 <div class="col">
-                                    <img alt="家樂福" src="<c:url value="/resources/img/shop.jpg" />"
+                                    <img alt="家樂福" src="<c:url value="/resources/img/shop.png" />"
                                     id="e_account-icon">
                                     <span id="e_account-name">家樂福</span>
                                 </div>

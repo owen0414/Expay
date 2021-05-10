@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="row text-center">
                                         <div class="col" style="width: 30px; height: auto">
-                                            <img alt="電支帳戶" src="<c:url value="/resources/img/person_1.jpg" />">
+                                            <img alt="電支帳戶" src="<c:url value="/resources/img/person.jpg" />">
                                             <p>
                                                 <span id="remitter_eAccount">xxxxxx</span>
                                             </p>
@@ -109,7 +109,7 @@
                                             <i class="fas fa-angle-double-right fa-2x align-self-center"></i>
                                         </div>
                                         <div class="col" style="width: 30px; height: auto">
-                                            <img alt="名字" src="<c:url value="/resources/img/person_1.jpg" />">
+                                            <img alt="名字" src="<c:url value="/resources/img/person.jpg" />">
                                             <p>
                                                 <span id="receiver_eAccount">xxx</span>
                                             </p>

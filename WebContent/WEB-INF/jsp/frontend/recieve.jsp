@@ -84,7 +84,7 @@
                         <div class="mb-3 mybox container text-center">
                             <div class="row">
                                 <div class="col">
-                                    <img alt="對方電支帳戶" src="<c:url value="/resources/img/person2.png" />"
+                                    <img alt="對方電支帳戶" src="<c:url value="/resources/img/person.jpg" />"
                                     id="e_account-icon">
                                     <span id="e_account-name">對方電支帳戶</span>
                                 </div>

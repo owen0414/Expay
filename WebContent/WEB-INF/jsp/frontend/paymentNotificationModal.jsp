@@ -13,27 +13,27 @@ const App = props => {
     const [data, setData] = useState([]);
 
     useEffect(async () => {
-        //const res = await instance.get("/api/getPaymentNotification");
-        //setData(oldState => res.data);
+        // const res = await instance.get("/api/getPaymentNotification");
+        // setData(oldState => res.data);
         setData([
             {
                 name: "張登凱",
                 phone: "0912345678",
                 amount: 1000,
                 note: "快付錢!",
-                transactionCode: "T202105060000000008"
+                transaction_code: "T202105060000000008"
             },
             {
                 name: "呂承昊",
                 phone: "0988777666",
                 amount: 30000,
                 note: "還錢!",
-                transactionCode: "T202105060000000009"
+                transaction_code: "T202105060000000009"
             }
         ]);
     }, []);
 
-    const Item = ({name, phone, amount, note, transactionCode}) => (
+    const Item = ({name, phone, amount, note, transaction_code}) => (
         <div className="row mx-3 mx-md-auto mybox">
             <div
                 className="col-12 col-md-10 my-3 mx-auto payment_item">
@@ -50,7 +50,7 @@ const App = props => {
                         <button className="btn btn-primary mr-3" onClick={() => {
                             $.cookie("name", name);
                             $.cookie("amount",amount);
-                            $.cookie("transactionCode", transactionCode);
+                            $.cookie("transaction_code", transaction_code);
                             location.href = "${pageContext.request.contextPath}/transfer";
                         }}>確認</button>
                         <button className="btn btn-danger">拒絕</button>

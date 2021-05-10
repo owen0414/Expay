@@ -157,10 +157,44 @@
                 }
             }
 
-            const initRender = () => {
+            //清除cookie
+            const cleanCookieAndContent = () => {
+                $('#phoneInput').val()
+                $.removeCookie('transaction_code')
+                $.removeCookie('amount')
+                $.removeCookie('phone')
+                $.removeCookie('name')
+                $.removeCookie('e_account')
+            }
+
+            const initRender = async () => {
                 //預先隱藏second-block與loading
                 $('#second-block').hide()
                 $('#loading').hide()
+
+                if (typeof $.cookie('transaction_code') !== 'undefined') {
+                    $('#second-block').fadeIn(500)
+                    $('#postBtn').children().hide()
+                    try {
+                        const currentUser = await instance.get('/api/getCurrentUser')
+                        //dom渲染
+                        $('#current-balance').html(numberWithCommas(currentUser.data.info.balance))
+                        $('#remitter_eAccount').html(currentUser.data.info.e_account)
+                        $('#remitter_name').html(currentUser.data.info.name)
+
+                        $('#phoneInput').val($.cookie('phone'))
+                        $('#receiver_eAccount').html($.cookie('e_account'))
+                        $('#receiver_name').html($.cookie('name'))
+                        $('#transfer_amount').val($.cookie('amount'))
+
+                        //避免input
+                        $('#phoneInput').attr('disabled', true)
+                        $('#transfer_amount').attr('disabled', true)
+                        $('#plus-100').attr('disabled', true)
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
             }
 
             //是否完成載入
@@ -175,17 +209,23 @@
                 }
             }
 
-            //送出轉帳時進行
+            //送出轉帳時防止輸入
             const loadingForm = (status) => {
                 if (status) {
                     $('#phoneInput').attr('disabled', true)
                     $('#transfer_amount').attr('disabled', true)
+                    $('#plus-100').attr('disabled', true)
+
                     $('#post2Btn').html(
                         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
                     )
                 } else {
+                    //確認狀態(轉帳or要求轉帳)
+                    initRender()
+
                     $('#phoneInput').attr('disabled', false)
                     $('#transfer_amount').attr('disabled', false)
+                    $('#plus-100').attr('disabled', false)
                     $('#post2Btn').html('轉帳')
                 }
             }
@@ -218,7 +258,7 @@
                     getEAccount()
                 })
 
-                //關閉resultModal時執行
+                //關閉resultModal(交易密碼)時執行
                 $('#resultModal').on('hidden.bs.modal', function (event) {
                     isCompleted(false)
                     //將接收方電話寫入cookie
@@ -283,17 +323,58 @@
                                 }
                             )
                         }
-                    } catch (error) {}
+                    } catch (error) {
+                    } finally {
+                        cleanCookieAndContent()
+                    }
+                }
+
+                async function transferByRequest(transaction_code) {
+                    try {
+                        const transferRes = await instance.post('/api/ePay/receive', {
+                            transactionCode: transaction_code,
+                            status: 'Y',
+                        })
+                        if (transferRes.data) {
+                            renderModalBody(
+                                transferRes.data,
+                                ({ amount, balance, message, name, status, timestamp }) => {
+                                    return `
+                                        訊息: \${message}<br>
+                                        轉帳金額: NT\$\${numberWithCommas(amount)}<br>
+                                        轉帳後餘額: NT\$\${numberWithCommas(balance)}
+                                    `
+                                },
+                                ({ amount, balance, message, name, status, timestamp }) => {
+                                    return `
+                                        訊息: \${message}<br>
+                                        轉帳失敗
+                                    `
+                                }
+                            )
+                        }
+                    } catch (error) {
+                    } finally {
+                        cleanCookieAndContent()
+                    }
                 }
 
                 //當form觸發時
                 $('form').on('submit', function (event) {
                     event.preventDefault()
                     loadingForm(true)
-                    //轉帳api
-                    transfer($('input[name="transfer_amount"]').val()).then((res) =>
-                        window.setTimeout(() => loadingForm(false), 500)
-                    )
+
+                    if (typeof $.cookie('transaction_code') !== 'undefined') {
+                        //要求轉帳API
+                        transferByRequest($.cookie('transaction_code')).then((res) =>
+                            window.setTimeout(() => loadingForm(false), 500)
+                        )
+                    } else {
+                        //轉帳API
+                        transfer($('input[name="transfer_amount"]').val()).then((res) =>
+                            window.setTimeout(() => loadingForm(false), 500)
+                        )
+                    }
                 })
             })
         </script>

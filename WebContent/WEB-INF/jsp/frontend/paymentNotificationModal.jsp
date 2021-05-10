@@ -60,7 +60,7 @@ const App = props => {
                         <button className="btn btn-danger" onClick={async ()=>{
                             try{
                                 //執行拒絕的動作
-                                const res = await instance.post("/api/ePay/receieve", {
+                                const res = await instance.post("/api/ePay/receive", {
                                     transactionCode: transaction_code,
                                     status: "N"
                                 });

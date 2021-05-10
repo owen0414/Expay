@@ -114,6 +114,7 @@
                 }
 
                 if (state.request) {
+                    $('#bank_account').empty()
                     const { banks } = state.request
                     banks.forEach(({ bankCode, bankAddress }) => {
                         $('#bank_account').append(

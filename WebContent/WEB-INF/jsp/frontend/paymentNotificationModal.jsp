@@ -9,55 +9,60 @@
 const { useState, useEffect } = React;
 const { render } = ReactDOM;
 
-const Item = props => (
-    <div className="row mx-3 mx-md-auto mybox">
-        <div
-            className="col-12 col-md-10 my-3 mx-auto payment_item">
-            <div className="row">
-                <div className="col">
-                    <p>{nameToStar(props.name)}</p>
-                    <p>{props.phone}</p>
-                    <p>要求您付NT$ {props.amount}</p>
-                    <p>備註: {props.note}</p>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-12 text-center text-md-right">
-                    <button className="btn btn-primary">確認</button>
-                    <button className="btn btn-danger">拒絕</button>
-                </div>
-            </div>
-        </div>
-    </div>
-);
-
 const App = props => {
     const [data, setData] = useState([]);
 
     useEffect(async () => {
-        //const res = await instance.get("/api/getPaymentNotification");
-        //setData(oldState => res.data);
+        // const res = await instance.get("/api/getPaymentNotification");
+        // setData(oldState => res.data);
         setData([
             {
                 name: "張登凱",
                 phone: "0912345678",
                 amount: 1000,
                 note: "快付錢!",
-                transactionCode: "T202105060000000008"
+                transaction_code: "T202105060000000008"
             },
             {
                 name: "呂承昊",
                 phone: "0988777666",
                 amount: 30000,
                 note: "還錢!",
-                transactionCode: "T202105060000000009"
+                transaction_code: "T202105060000000009"
             }
         ]);
     }, []);
 
+    const Item = ({name, phone, amount, note, transaction_code}) => (
+        <div className="row mx-3 mx-md-auto mybox">
+            <div
+                className="col-12 col-md-10 my-3 mx-auto payment_item">
+                <div className="row">
+                    <div className="col">
+                        <p>{nameToStar(name)}</p>
+                        <p>{phone}</p>
+                        <p>要求您付NT$ {amount}</p>
+                        <p>備註: {note}</p>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 text-center text-md-right">
+                        <button className="btn btn-primary mr-3" onClick={() => {
+                            $.cookie("name", name);
+                            $.cookie("amount",amount);
+                            $.cookie("transaction_code", transaction_code);
+                            location.href = "${pageContext.request.contextPath}/transfer";
+                        }}>確認</button>
+                        <button className="btn btn-danger">拒絕</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
     const renderItem = () => {
         return data.map((val, i) => {
-            return <Item {...val} key={i}/>; 
+            return <Item {...val} key={i}/>;
         });
     };
     
@@ -67,7 +72,7 @@ const App = props => {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                    <h5 className="modal-title" id="paymentNotificationModalLabel"></h5>
+                    <h5 className="modal-title" id="paymentNotificationModalLabel">待付款通知</h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

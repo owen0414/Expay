@@ -1,132 +1,112 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp"%> <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>儲值</title>
-        <%@ include file="/WEB-INF/jsp/frontend/include.jsp"%>
-    </head>
-    <body>
-        <!-- Navigation -->
-        <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
+<head>
+	<title>儲值</title>
+	<%@ include file="/WEB-INF/jsp/frontend/include.jsp"%>
+</head>
+<body>
+	<!-- Navigation -->
+	<%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
+	
+	<!-- Content -->
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-5">
+				<h2 class="text-center my-3">儲值</h2>
+				<form class="mypanel">
+					<div class="mb-3 mybox text-center">
+						<label for="bank_account">銀行帳號:</label>
+						<select class="custom-select" name="bank_account" id="bank_account">
+							<!--<option value="808,03113730000111">玉山銀行 00111</option>-->
+						</select>
+					</div>
+					<div class="mb-3 mybox container">
+						<div class="row">
+							<ul class="col d-flex flex-row justify-content-between">
+								<li>目前餘額</li>
+								<li>NT$ <span id="current-balance">0</span></li>
+							</ul>
+						</div>
+						<div class="row">
+							<ul class="col d-flex flex-column align-items-center">
+								<li class="mb-1 align-self-start"><label for="deposit_amount">儲值金額</label></li>
+								<li class="mb-1">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">NT$</span>
+										</div>
+										<input type="number" id="deposit_amount" name="deposit_amount" min="0" max="50000" value="0" class="form-control">
+									</div>
+								</li>
+								<li class="mb-1">
+									<button type="button" value="100" class="btn btn-secondary" id="plus-100">+100</button>
+									<button type="button" value="1000" class="btn btn-secondary" id="plus-1000">+1000</button>
+									<button type="button" value="10000" class="btn btn-secondary" id="plus-10000">+10000</button>
+								</li>
+							</ul>
+						</div>
+						<div class="row">
+							<ul class="col d-flex flex-row justify-content-between">
+								<li>儲值後餘額</li>
+								<li>NT$ <span id="after-deposit-balance"></span></li>
+							</ul>
+						</div>
+					</div>
+					<div class="mb-3 mybox container text-center">
+						<div class="row">
+							<div class="col">
+								<img alt="玉山銀行" src="<c:url value="/resources/img/esun.png" />" id="bank-icon">
+								<span id="bank-name">玉山銀行</span>
+							</div>
+							<div class="col d-flex justify-content-center">
+								<img alt="箭頭" src="<c:url value="/resources/img/arrow.png" />" class="align-self-center">
+							</div>
+							<div class="col">
+								<img alt="您的電支帳戶" src="<c:url value="/resources/img/person.jpg"/>">
+								<span>您的電支帳戶</span>
+							</div>
+						</div>			
+					</div>
+					<div class="mb-3 d-flex justify-content-end">
+						<button class="btn btn-secondary" id="deposit-btn" type="button">儲值</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Footer -->
+	<%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
+	
+	<!-- ResultModal -->
+	<%@ include file="/WEB-INF/jsp/frontend/resultModal.jsp"%>
 
-        <!-- Content -->
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-5">
-                    <h2 class="text-center my-3">儲值</h2>
-                    <form class="mypanel">
-                        <div class="mb-3 mybox text-center">
-                            <label for="bank_account">銀行帳號:</label>
-                            <select class="custom-select" name="bank_account" id="bank_account">
-                                <!--<option value="808,03113730000111">玉山銀行 00111</option>-->
-                            </select>
-                        </div>
-                        <div class="mb-3 mybox container">
-                            <div class="row">
-                                <ul class="col d-flex flex-row justify-content-between">
-                                    <li>目前餘額</li>
-                                    <li>NT$ <span id="current-balance">0</span></li>
-                                </ul>
-                            </div>
-                            <div class="row">
-                                <ul class="col d-flex flex-column align-items-center">
-                                    <li class="mb-1 align-self-start"><label for="deposit_amount">儲值金額</label></li>
-                                    <li class="mb-1">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">NT$</span>
-                                            </div>
-                                            <input
-                                                type="number"
-                                                id="deposit_amount"
-                                                name="deposit_amount"
-                                                min="0"
-                                                max="50000"
-                                                value="0"
-                                                class="form-control"
-                                            />
-                                        </div>
-                                    </li>
-                                    <li class="mb-1">
-                                        <button type="button" value="100" class="btn btn-secondary" id="plus-100">
-                                            +100
-                                        </button>
-                                        <button type="button" value="1000" class="btn btn-secondary" id="plus-1000">
-                                            +1000
-                                        </button>
-                                        <button type="button" value="10000" class="btn btn-secondary" id="plus-10000">
-                                            +10000
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="row">
-                                <ul class="col d-flex flex-row justify-content-between">
-                                    <li>儲值後餘額</li>
-                                    <li>NT$ <span id="after-deposit-balance"></span></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="mb-3 mybox container text-center">
-                            <div class="row">
-                                <div class="col">
-                                    <img alt="玉山銀行" src="<c:url value="/resources/img/esun.png" />" id="bank-icon">
-                                    <span id="bank-name">玉山銀行</span>
-                                </div>
-                                <div class="col d-flex justify-content-center">
-                                    <img alt="箭頭" src="<c:url value="/resources/img/arrow.png" />"
-                                    class="align-self-center">
-                                </div>
-                                <div class="col">
-                                    <img alt="您的電支帳戶" src="<c:url value="/resources/img/person.jpg" />">
-                                    <span>您的電支帳戶</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 d-flex justify-content-end">
-                            <button class="btn btn-secondary" id="deposit-btn" type="button">儲值</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
-
-        <!-- ResultModal -->
-        <%@ include file="/WEB-INF/jsp/frontend/resultModal.jsp"%>
-
-        <!-- 交易密碼 -->
-        <%@ include file="/WEB-INF/jsp/frontend/transactionPwModal.jsp"%>
-        <script>
-            initFetch()
-
-            store.subscribe(() => {
-                const state = store.getState()
-                console.log(store.getState())
-
-                if (state.e_account) {
-                    const {
-                        info: { balance },
-                    } = state.e_account
-                    $('#current-balance').text(numberWithCommas(balance))
-                }
-
-                if (state.request) {
-                    const { banks } = state.request
-                    banks.forEach(({ bankCode, bankAddress }) => {
-                        $('#bank_account').append(
-                            `<option value=\${bankCode},\${bankAddress}>\${bankList[bankCode]} \${last5Address(bankAddress)}</option>`
-                        )
-                    })
-                }
-
-                if (state.response) {
-                    renderModalBody(
-                        state.response,
-                        ({ status, message, timestamp, bankCode, amount, balance }) => {
-                            return `
+	<!-- 交易密碼 -->
+	<%@ include file="/WEB-INF/jsp/frontend/transactionPwModal.jsp"%>
+	<script>
+		initFetch();
+		
+		store.subscribe(() => {
+			const state = store.getState();
+			console.log(store.getState());
+			
+			if(state.e_account){
+				const { info: {balance} } = state.e_account;
+				$("#current-balance").text(numberWithCommas(balance));
+			}
+			
+			if(state.request){
+				$("#bank_account").empty();
+				const {banks} = state.request;
+			    banks.forEach(({bankCode, bankAddress}) => { 
+			        $("#bank_account").append(`<option value=\${bankCode},\${bankAddress}>\${bankList[bankCode]} \${last5Address(bankAddress)}</option>`);
+			    });
+			}
+			
+			if(state.response){
+				renderModalBody(state.response, ({status, message, timestamp, bankCode, amount, balance}) => {
+					return `
 						儲值銀行: \${bankList[bankCode]}<br>
 						儲值金額: NT\$\${numberWithCommas(amount)}<br>
 						儲值後餘額: NT\$\${numberWithCommas(balance)}

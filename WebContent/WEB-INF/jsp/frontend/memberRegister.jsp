@@ -643,7 +643,8 @@ contentType="text/html; charset=UTF-8"%>
             contentType: "application/json;charset=utf-8",
             success: function (returnData) {
               if (returnData.status == 200) {
-                location.href = "payment_password";
+                console.log(returnData.message);
+                // location.href = `${pageContext.request.contextPath}/payment_password`;
               } else if (returnData.status == 400) {
                 $(".responseMessage").html(returnData.message);
                 console.log(returnData.message);

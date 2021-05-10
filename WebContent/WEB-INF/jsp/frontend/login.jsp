@@ -146,7 +146,13 @@ contentType="text/html; charset=UTF-8"%>
               </div>
               <div class="row justify-content-start">
                 <div class="col-10 col-md-8 mt-2 mx-auto">
-                  <input type="text" class="form-control" id="id" name="id" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="id"
+                    name="id"
+                    placeholder="請輸入帳號"
+                  />
                   <p class="is_error">
                     <i class="fas fa-exclamation mr-1"></i>帳號不能為空白
                   </p>
@@ -163,6 +169,7 @@ contentType="text/html; charset=UTF-8"%>
                     id="shop_pwd"
                     name="shop_pwd"
                     maxlength="16"
+                    placeholder="請輸入密碼"
                   />
                   <i class="far fa-eye toggle_password"></i>
                   <p class="is_error">

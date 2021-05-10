@@ -23,182 +23,219 @@ contentType="text/html; charset=UTF-8"%>
         <div class="col-12 col-md-5 login_item mx-md-auto mt-4 px-0">
           <!-- 個人登入 -->
           <div id="mem_item">
-            <div class="shop_lg text-center">切換商家</div>
-            <div class="row justify-content-start mt-4 mx-auto mx-md-5">
-              <div class="col-12 mx-3 mx-md-5 px-md-0">身分證字號</div>
-            </div>
-            <div class="row justify-content-start">
-              <div class="col-10 col-md-8 mt-2 mx-auto">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="identity"
-                  name="identity"
-                  maxlength="10"
-                  placeholder="請輸入身分證字號"
-                />
-                <p class="is_error">
-                  <i class="fas fa-exclamation mr-1"></i>身分證不能為空白
-                </p>
+            <form id="mem_login_form" method="post" autocomplete="off">
+              <div class="shop_lg text-center">切換商家</div>
+              <div class="row justify-content-start mt-4 mx-auto mx-md-5">
+                <div class="col-12 mx-3 mx-md-5 px-md-0">身分證字號</div>
               </div>
-            </div>
-            <div class="row justify-content-start mt-4 mx-auto mx-md-5">
-              <div class="col-12 mx-3 mx-md-5 px-md-0">密碼</div>
-            </div>
-            <div class="row">
-              <div class="col-10 col-md-8 mt-2 mx-auto">
-                <input
-                  type="password"
-                  class="form-control input_password"
-                  id="mem_pwd"
-                  name="mem_pwd"
-                  maxlength="16"
-                  placeholder="請輸入密碼"
-                />
-                <i class="far fa-eye toggle_password"></i>
-                <p class="is_error">
-                  <i class="fas fa-exclamation mr-1"></i>密碼不能為空白
-                </p>
-              </div>
-            </div>
-            <div class="row justify-content-start mt-4 mx-auto mx-md-5">
-              <div class="col-12 mx-3 mx-md-5 px-md-0">驗證碼</div>
-            </div>
-            <div class="row justify-content-start">
-              <div class="col-10 col-md-8 mt-2 mx-auto">
-                <div class="row">
-                  <div class="col-12 col-md-8">
-                    <input
-                      id="mem_captchaInput"
-                      name="mem_captchaInput"
-                      type="text"
-                      type="text"
-                      class="form-control captchaInput"
-                      maxlength="4"
-                      placeholder="請輸入驗證碼"
-                      pattern="[0-9A-Z]{4}"
-                    />
-                    <p class="is_error">
-                      <i class="fas fa-exclamation mr-1"></i>驗證碼不能為空白
-                    </p>
-                    <p class="is_error">
-                      <i class="fas fa-exclamation mr-1"></i>驗證碼錯誤
-                    </p>
-                  </div>
-                  <div class="col-12 col-md-4">
-                    <div>
-                      <img id="captcha" />
-                    </div>
-                    <div class="captchaLoading d-flex justify-content-center">
-                      <div id="loading_spinner" style="display: none"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row justify-content-center mt-2">
-              <div class="col-10 col-md-8">
-                <div class="form-check form-check-inline">
+              <div class="row justify-content-start">
+                <div class="col-10 col-md-8 mt-2 mx-auto">
                   <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="mem_remember"
-                    name="mem_remember"
+                    type="text"
+                    class="form-control"
+                    id="identity"
+                    name="identity"
+                    maxlength="10"
+                    placeholder="請輸入身分證字號"
                   />
-                  <label class="form-check-label" for="mem_remember"
-                    >保持登入狀態</label
-                  >
+                  <p class="is_error">
+                    <i class="fas fa-exclamation mr-1"></i>身分證不能為空白
+                  </p>
                 </div>
               </div>
-            </div>
-            <div class="row justify-content-start mt-4 mx-auto mx-md-5">
-              <div class="col-6 col-md-4 mx-3 mx-md-5 px-md-0">
-                <a href="#" class="forget_password">忘記密碼？</a>
+              <div class="row justify-content-start mt-4 mx-auto mx-md-5">
+                <div class="col-12 mx-3 mx-md-5 px-md-0">密碼</div>
               </div>
-            </div>
-            <div class="row justify-content-start mx-auto mb-3">
-              <div class="col-10 col-md-8 mx-auto text-center">
-                <button class="btn btn_memlogin">登入</button>
+              <div class="row">
+                <div class="col-10 col-md-8 mt-2 mx-auto">
+                  <input
+                    type="password"
+                    class="form-control input_password"
+                    id="mem_pwd"
+                    name="mem_pwd"
+                    maxlength="16"
+                    placeholder="請輸入密碼"
+                  />
+                  <i class="far fa-eye toggle_password"></i>
+                  <p class="is_error">
+                    <i class="fas fa-exclamation mr-1"></i>密碼不能為空白
+                  </p>
+                </div>
               </div>
-              <div class="col-10 col-md-8 mx-auto">
-                <hr class="login_hr" />
+              <div class="row justify-content-start mt-4 mx-auto mx-md-5">
+                <div class="col-12 mx-3 mx-md-5 px-md-0">驗證碼</div>
               </div>
-              <div class="col-10 col-md-8 mx-auto text-center">
-                <a class="btn btn_register" href="register">註冊</a>
+              <div class="row justify-content-start">
+                <div class="col-10 col-md-8 mt-2 mx-auto">
+                  <div class="row">
+                    <div class="col-12 col-md-8">
+                      <input
+                        id="mem_captchaInput"
+                        name="mem_captchaInput"
+                        type="text"
+                        type="text"
+                        class="form-control"
+                        maxlength="4"
+                        placeholder="請輸入驗證碼"
+                        pattern="[0-9A-Z]{4}"
+                      />
+                      <p class="is_error">
+                        <i class="fas fa-exclamation mr-1"></i>驗證碼不能為空白
+                      </p>
+                      <p class="is_error">
+                        <i class="fas fa-exclamation mr-1"></i>驗證碼錯誤
+                      </p>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <div>
+                        <img class="captcha" />
+                      </div>
+                      <div class="captchaLoading d-flex justify-content-center">
+                        <div
+                          class="loading_spinner"
+                          style="display: none"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+              <div class="row justify-content-center mt-2">
+                <div class="col-10 col-md-8">
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="mem_remember"
+                      name="mem_remember"
+                    />
+                    <label class="form-check-label" for="mem_remember"
+                      >保持登入狀態</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-start mt-4 mx-auto mx-md-5">
+                <div class="col-6 col-md-4 mx-3 mx-md-5 px-md-0">
+                  <a href="#" class="forget_password">忘記密碼？</a>
+                </div>
+              </div>
+              <div class="row justify-content-start mx-auto mb-3">
+                <div class="col-10 col-md-8 mx-auto text-center">
+                  <button class="btn btn_memlogin">登入</button>
+                </div>
+                <div class="col-10 col-md-8 mx-auto">
+                  <hr class="login_hr" />
+                </div>
+                <div class="col-10 col-md-8 mx-auto text-center">
+                  <a class="btn btn_register" href="register">註冊</a>
+                </div>
+              </div>
+            </form>
           </div>
           <!-- 商家登入 -->
           <div id="shop_item" style="display: none">
-            <div class="mem_lg text-center">切換個人</div>
-            <div class="row justify-content-start mt-4 mx-auto mx-md-5">
-              <div class="col-12 mx-3 mx-md-5 px-md-0">帳號</div>
-            </div>
-            <div class="row justify-content-start">
-              <div class="col-10 col-md-8 mt-2 mx-auto">
-                <input type="text" class="form-control" id="id" name="id" />
-                <p class="is_error">
-                  <i class="fas fa-exclamation mr-1"></i>帳號不能為空白
-                </p>
+            <form id="shop_login_form" method="POST" autocomplete="off">
+              <div class="mem_lg text-center">切換個人</div>
+              <div class="row justify-content-start mt-4 mx-auto mx-md-5">
+                <div class="col-12 mx-3 mx-md-5 px-md-0">帳號</div>
               </div>
-            </div>
-            <div class="row justify-content-start mt-4 mx-auto mx-md-5">
-              <div class="col-12 mx-3 mx-md-5 px-md-0">密碼</div>
-            </div>
-            <div class="row">
-              <div class="col-10 col-md-8 mt-2 mx-auto">
-                <input
-                  type="password"
-                  class="form-control input_password"
-                  id="shop_pwd"
-                  name="shop_pwd"
-                  maxlength="16"
-                />
-                <i class="far fa-eye toggle_password"></i>
-                <p class="is_error">
-                  <i class="fas fa-exclamation mr-1"></i>密碼不能為空白
-                </p>
-              </div>
-            </div>
-            <div class="row justify-content-start mt-4 mx-auto mx-md-5">
-              <div class="col-12 mx-3 mx-md-5 px-md-0">驗證碼</div>
-            </div>
-            <div class="row justify-content-start">
-              <div class="col-10 col-md-8 mt-2 mx-auto">
-                <input type="text" class="form-control" />
-              </div>
-            </div>
-            <div class="row justify-content-center mt-2">
-              <div class="col-10 col-md-8">
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="shop_remember"
-                    name="shop_remember"
-                  />
-                  <label class="form-check-label" for="shop_remember"
-                    >保持登入狀態</label
-                  >
+              <div class="row justify-content-start">
+                <div class="col-10 col-md-8 mt-2 mx-auto">
+                  <input type="text" class="form-control" id="id" name="id" />
+                  <p class="is_error">
+                    <i class="fas fa-exclamation mr-1"></i>帳號不能為空白
+                  </p>
                 </div>
               </div>
-            </div>
-            <div class="row justify-content-start mt-4 mx-auto mx-md-5">
-              <div class="col-6 col-md-4 mx-3 mx-md-5 px-md-0">
-                <a href="#" class="forget_password">忘記密碼？</a>
+              <div class="row justify-content-start mt-4 mx-auto mx-md-5">
+                <div class="col-12 mx-3 mx-md-5 px-md-0">密碼</div>
               </div>
-            </div>
-            <div class="row justify-content-start mx-auto mb-3">
-              <div class="col-10 col-md-8 mx-auto text-center">
-                <button class="btn btn_shoplogin" type="submit">登入</button>
+              <div class="row">
+                <div class="col-10 col-md-8 mt-2 mx-auto">
+                  <input
+                    type="password"
+                    class="form-control input_password"
+                    id="shop_pwd"
+                    name="shop_pwd"
+                    maxlength="16"
+                  />
+                  <i class="far fa-eye toggle_password"></i>
+                  <p class="is_error">
+                    <i class="fas fa-exclamation mr-1"></i>密碼不能為空白
+                  </p>
+                </div>
               </div>
-              <div class="col-10 col-md-8 mx-auto">
-                <hr class="login_hr" />
+              <div class="row justify-content-start mt-4 mx-auto mx-md-5">
+                <div class="col-12 mx-3 mx-md-5 px-md-0">驗證碼</div>
               </div>
-              <div class="col-10 col-md-8 mx-auto text-center">
-                <a class="btn btn_register" href="register">註冊</a>
+              <div class="row justify-content-start">
+                <div class="col-10 col-md-8 mt-2 mx-auto">
+                  <div class="row">
+                    <div class="col-12 col-md-8">
+                      <input
+                        id="shop_captchaInput"
+                        name="shop_captchaInput"
+                        type="text"
+                        type="text"
+                        class="form-control"
+                        maxlength="4"
+                        placeholder="請輸入驗證碼"
+                        pattern="[0-9A-Z]{4}"
+                      />
+                      <p class="is_error">
+                        <i class="fas fa-exclamation mr-1"></i>驗證碼不能為空白
+                      </p>
+                      <p class="is_error">
+                        <i class="fas fa-exclamation mr-1"></i>驗證碼錯誤
+                      </p>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <div>
+                        <img class="captcha" />
+                      </div>
+                      <div class="captchaLoading d-flex justify-content-center">
+                        <div
+                          class="loading_spinner"
+                          style="display: none"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+              <div class="row justify-content-center mt-2">
+                <div class="col-10 col-md-8">
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="shop_remember"
+                      name="shop_remember"
+                    />
+                    <label class="form-check-label" for="shop_remember"
+                      >保持登入狀態</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-start mt-4 mx-auto mx-md-5">
+                <div class="col-6 col-md-4 mx-3 mx-md-5 px-md-0">
+                  <a href="#" class="forget_password">忘記密碼？</a>
+                </div>
+              </div>
+              <div class="row justify-content-start mx-auto mb-3">
+                <div class="col-10 col-md-8 mx-auto text-center">
+                  <button class="btn btn_shoplogin" type="submit">登入</button>
+                </div>
+                <div class="col-10 col-md-8 mx-auto">
+                  <hr class="login_hr" />
+                </div>
+                <div class="col-10 col-md-8 mx-auto text-center">
+                  <a class="btn btn_register" href="register">註冊</a>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -231,7 +268,7 @@ contentType="text/html; charset=UTF-8"%>
             <div class="row errorPage">
               <div class="col-12 d-flex justify-content-center">
                 <div class="m-2 text-center">
-                  <p class="h5" style="font-weight: bold">登入失敗</p>
+                  <p class="h5 responseMessage" style="font-weight: bold"></p>
                 </div>
               </div>
               <div class="col-12 d-flex justify-content-center">
@@ -292,11 +329,6 @@ contentType="text/html; charset=UTF-8"%>
                   </div>
                 </div>
               </div>
-              <div class="col-12 d-flex justify-content-center">
-                <div class="fadeIn d-flex justify-content-center">
-                  <p class="responseMessage"></p>
-                </div>
-              </div>
             </div>
           </div>
           <div class="modal-footer"></div>
@@ -344,7 +376,8 @@ contentType="text/html; charset=UTF-8"%>
 
       //一般使用者登入
 
-      $(".btn_memlogin").click(async function () {
+      $("#mem_login_form").submit(async function (e) {
+        e.preventDefault();
         var identity = $("#identity");
         var password = $("#mem_pwd");
         var captcha = $("#mem_captchaInput");
@@ -381,6 +414,7 @@ contentType="text/html; charset=UTF-8"%>
           const valid = await checkCode(captcha.val());
           if (!valid) {
             captcha.siblings(".is_error").eq(1).show();
+
             result = result && false;
           } else {
             captcha.siblings(".is_error").hide();
@@ -403,10 +437,17 @@ contentType="text/html; charset=UTF-8"%>
             contentType: "application/json;charset=utf-8",
             success: function (returnData) {
               if (returnData.status == 200) {
-                location.href = "payment_password";
+                instance.get("/api/getCurrentUser").then((res) => {
+                  if (!res.data.t_password) {
+                    location.href = `${pageContext.request.contextPath}/payment_password`;
+                  } else {
+                    location.href = `${pageContext.request.contextPath}/`;
+                  }
+                });
               } else if (returnData.status == 400) {
                 $(".responseMessage").html(returnData.message);
                 console.log(returnData.message);
+                getCaptcha();
                 failInit(); //顯示失敗
               }
             },
@@ -422,9 +463,11 @@ contentType="text/html; charset=UTF-8"%>
 
       //商家登入
 
-      $("#shop_login_form").submit(function () {
+      $("#shop_login_form").submit(async function (e) {
+        e.preventDefault();
         var id = $("#id");
         var password = $("#shop_pwd");
+        var captcha = $("#shop_captchaInput");
         var result = true;
 
         //檢查帳號有沒有填
@@ -447,6 +490,24 @@ contentType="text/html; charset=UTF-8"%>
           result = result && true;
         }
 
+        //檢查驗證碼
+
+        captcha.siblings(".is_error").hide();
+
+        if (captcha.val().length < 1) {
+          captcha.siblings(".is_error").eq(0).show();
+          result = result && false;
+        } else if (captcha.val().length == 4) {
+          const valid = await checkCode(captcha.val());
+          if (!valid) {
+            captcha.siblings(".is_error").eq(1).show();
+            result = result && false;
+          } else {
+            captcha.siblings(".is_error").hide();
+            result = result && true;
+          }
+        }
+
         if (result) {
           var requestURL = `\${BASE_URL}/api/shop/login`;
           var dataJSON = {};
@@ -462,10 +523,17 @@ contentType="text/html; charset=UTF-8"%>
             contentType: "application/json;charset=utf-8",
             success: function (returnData) {
               if (returnData.status == 200) {
-                location.href = "payment_password";
+                instance.get("/api/getCurrentUser").then((res) => {
+                  if (!res.data.t_password) {
+                    location.href = `${pageContext.request.contextPath}/payment_password`;
+                  } else {
+                    location.href = `${pageContext.request.contextPath}/`;
+                  }
+                });
               } else if (returnData.status == 400) {
                 $(".responseMessage").html(returnData.message);
                 console.log(returnData.message);
+                getCaptcha();
                 failInit(); //顯示失敗
               }
             },
@@ -480,19 +548,18 @@ contentType="text/html; charset=UTF-8"%>
       });
 
       //點案圖片更換驗證碼
-      $("#captcha").click(function () {
-        $("#tishi").html("");
+      $(".captcha").click(function () {
         getCaptcha();
       });
 
       function loadingCaptcha() {
-        $("#loading_spinner").fadeIn(500);
-        $("#captcha").hide(); //圖
+        $(".loading_spinner").fadeIn(500);
+        $(".captcha").hide(); //圖
       }
 
       function loadedCaptcha() {
-        $("#captcha").fadeIn(300); //圖
-        $("#loading_spinner").hide();
+        $(".captcha").fadeIn(300); //圖
+        $(".loading_spinner").hide();
       }
 
       //獲取驗證碼
@@ -513,7 +580,7 @@ contentType="text/html; charset=UTF-8"%>
             const url = window.URL || window.webkitURL;
             const src = url.createObjectURL(data);
             $(".captchaLoading").hide();
-            $("#captcha").attr("src", src);
+            $(".captcha").attr("src", src);
           },
           complete() {
             console.log("驗證碼載入結束");

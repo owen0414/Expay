@@ -205,12 +205,16 @@ contentType="text/html; charset=UTF-8"%>
     <!-- Footer -->
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
     <script>
+      //檢查是否登入及設定交易密碼
       instance.get("/api/getCurrentUser").then((res) => {
         if (!res.data.login) {
           //console.log(res);
           location.href = `${pageContext.request.contextPath}/user/login`;
+        } else if (!res.data.t_password) {
+          location.href = `${pageContext.request.contextPath}/payment_password`;
         }
       });
+
       $(document).ready(function () {
         var requestURL = `${BASE_URL}/api/quota`;
 

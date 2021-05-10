@@ -303,9 +303,7 @@ contentType="text/html; charset=UTF-8"%>
               <div class="col-12 mt-2">
                 <p>
                   轉入者
-                  <span class="font-weight-bold px-2 transfer_name"
-                    >張 * 程</span
-                  >
+                  <span class="font-weight-bold px-2 transfer_name"></span>
                 </p>
               </div>
             </div>
@@ -396,10 +394,13 @@ contentType="text/html; charset=UTF-8"%>
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 
     <script>
+      //檢查是否登入及設定交易密碼
       instance.get("/api/getCurrentUser").then((res) => {
         if (!res.data.login) {
           //console.log(res);
           location.href = `${pageContext.request.contextPath}/user/login`;
+        } else if (!res.data.t_password) {
+          location.href = `${pageContext.request.contextPath}/payment_password`;
         }
       });
 

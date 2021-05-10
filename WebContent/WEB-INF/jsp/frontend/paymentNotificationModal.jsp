@@ -33,7 +33,7 @@ const App = props => {
         // ]);
     }, []);
 
-    const Item = ({name, phone, amount, note, time}) => (
+    const Item = ({name, phone, amount, note, time, transaction_code, e_account}) => (
         <div className="row mx-3 mx-md-auto mybox">
             <div
                 className="col-12 col-md-10 my-3 mx-auto payment_item">
@@ -49,12 +49,24 @@ const App = props => {
                 <div className="row">
                     <div className="col-12 text-center text-md-right">
                         <button className="btn btn-primary mr-3" onClick={() => {
+                            $.cookie("e_account", e_account);
                             $.cookie("name", name);
+                            $.cookie("phone", phone);
                             $.cookie("amount",amount);
-                            //$.cookie("transaction_code", transaction_code);
+                            $.cookie("transaction_code", transaction_code);
                             location.href = "${pageContext.request.contextPath}/transfer";
                         }}>確認</button>
-                        <button className="btn btn-danger">拒絕</button>
+                        <button className="btn btn-danger" onClick={async ()=>{
+                            try{
+                                const res = await instance.post("/api/ePay/receieve", {
+                                    transactionCode: transaction_code,
+                                    status: "N"
+                                });
+                                alert(res.data.message);
+                            }catch(error){
+                                console.log(error);
+                            }
+                        }}>拒絕</button>
                     </div>
                 </div>
             </div>
@@ -62,7 +74,10 @@ const App = props => {
     );
 
     const renderItem = () => {
-        return data.map((val, i) => {
+        //會由時間晚排到時間早
+        return data.sort((a, b) => {
+            return (new Date(b.time) - new Date(a.time));
+        }).map((val, i) => {
             return <Item {...val} key={i}/>;
         });
     };

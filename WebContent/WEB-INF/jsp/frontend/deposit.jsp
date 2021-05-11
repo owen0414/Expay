@@ -195,21 +195,6 @@ contentType="text/html; charset=UTF-8"%>
         }
       };
 
-      //送出時避免input
-      const loadingForm = (status) => {
-        if (status) {
-          $("#bank_account").attr("disabled", true);
-          $("#deposit_amount").attr("disabled", true);
-          $("#deposit-btn").html(
-            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
-          );
-        } else {
-          $("#bank_account").attr("disabled", false);
-          $("#deposit_amount").attr("disabled", false);
-          $("#deposit-btn").html("儲值");
-        }
-      };
-
       // 按鈕
       $(document).ready(() => {
         $("#deposit_amount").change(function (e) {
@@ -281,6 +266,13 @@ contentType="text/html; charset=UTF-8"%>
           if (!login) {
             location.href = `${pageContext.request.contextPath}/user/login`;
             throw new Error("尚未登入!");
+          }
+
+          const {
+            info: { role },
+          } = res.data;
+          if (role === "S") {
+            location.href = `${pageContext.request.contextPath}/`;
           }
 
           store.dispatch({

@@ -134,7 +134,8 @@
 				} else {
 					let dataJSON = {};
 					dataJSON["e_account"] = store.getState().e_account.info.e_account;
-					dataJSON["transactionPwd"] = tPassword;
+					dataJSON["old_t_pwd"] = oldTPassword;
+					dataJSON["new_t_pwd"] = tPassword;
 					
 					instance.put("/api/updateTransactionPwd", dataJSON)
 					.then(res => {

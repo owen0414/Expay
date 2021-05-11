@@ -283,6 +283,11 @@
                         throw new Error('尚未登入!')
                     }
 
+                    const {info: {role}} = res.data;
+                    if(role === "S"){
+                        location.href = `${pageContext.request.contextPath}/`;
+                    }
+
                     store.dispatch({
                         type: 'FETCH_USER',
                         payload: res.data,

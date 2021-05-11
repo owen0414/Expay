@@ -29,6 +29,7 @@
                                 class="form-control w-75 mx-auto"
                                 placeholder="對方的手機號碼"
                             />
+                            <div id="message" class="d-block mt-1 w-75 mx-auto" style="color: red"></div>
                         </div>
                         <div id="postBtn" class="mb-3 d-flex justify-content-end">
                             <button type="button" class="btn btn-secondary">確定</button>
@@ -194,27 +195,30 @@
                     } catch (error) {
                         console.log(error)
                     }
+                } else {
+                    $('#postBtn').children().show()
                 }
             }
 
             //是否完成載入
             const isCompleted = (num) => {
-                if (num) {
-                    $('#second-block').fadeIn(500)
-                    $('#loading').hide()
-                } else {
-                    //尚未完成
-                    $('#second-block').hide()
-                    $('#loading').fadeIn(500)
-                }
-            }
-
-            //errorFormat
-            function isErrorFormat(phone, success, failed) {
-                if (checkPhone(phone)) {
-                    console.log(success(phone))
-                } else {
-                    alert(failed(phone))
+                switch (num) {
+                    case 0:
+                        //尚未完成
+                        $('#second-block').hide()
+                        $('#loading').fadeIn(500)
+                        break
+                    case 1:
+                        //已完成
+                        $('#second-block').fadeIn(500)
+                        $('#loading').hide()
+                        break
+                    case 2:
+                        $('#second-block').hide()
+                        $('#loading').hide()
+                        break
+                    default:
+                        console.log('Sorry, no allowed.')
                 }
             }
 
@@ -236,6 +240,47 @@
                     $('#transfer_amount').attr('disabled', false)
                     $('#plus-100').attr('disabled', false)
                     $('#post2Btn').html('轉帳')
+                }
+            }
+
+            //等待
+            function sleep(sec) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => resolve(), sec * 1000)
+                })
+            }
+
+            //等待
+            function sleepForApiRes(sec) {
+                setTimeout(() => isCompleted(2), 1000)
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve()
+                    }, sec * 1000)
+                })
+            }
+
+            //電話格式錯誤
+            function isErrorFormat(phone, success, failed) {
+                if (checkPhone(phone)) {
+                    $.cookie('receiver_phone', $('#phoneInput').val())
+                    console.log(success(phone))
+                } else {
+                    $('#message').html(failed(phone))
+                }
+            }
+
+            //api取回資料是否存在
+            function apiRes(res, success, failed) {
+                const { status } = res
+                if (status === 200) {
+                    console.log(success(res))
+                } else {
+                    //顯示錯誤信息
+                    sleepForApiRes(1).then(() => {
+                        $.removeCookie('receiver_phone')
+                        $('#message').html(failed(res))
+                    })
                 }
             }
 
@@ -265,12 +310,9 @@
                         isErrorFormat(
                             local_phone,
                             (local_phone) => {
-                                isCompleted(false)
-                                //將接收方電話寫入cookie
-                                $.cookie('receiver_phone', $('#phoneInput').val())
-                                // 取接收方資訊
+                                // 取接收方資訊(get phone from set cookie)
                                 getEAccount()
-                                return `成功`
+                                return `格式驗證成功`
                             },
                             (local_phone) => {
                                 return `請輸入正確格式`
@@ -281,28 +323,46 @@
 
                 //getEAccount(接受方)
                 async function getEAccount() {
+                    //loading...
+                    isCompleted(0)
+
                     try {
                         const currentUser = await instance.get('/api/getCurrentUser')
                         //對方電話號碼讀取
                         const receiver_phone = $.cookie('receiver_phone')
 
-                        if (true) {
-                            const receiverUser = await instance.post('/api/getEAccount', {
-                                phone: receiver_phone,
-                                role: 'M',
-                            })
-                            const timeoutID = window.setTimeout(() => isCompleted(true), 500)
+                        const receiverUser = await instance.post('/api/getEAccount', {
+                            phone: receiver_phone,
+                            role: 'M',
+                        })
 
-                            //dom渲染
-                            $('#current-balance').html(numberWithCommas(currentUser.data.info.balance))
-                            $('#remitter_eAccount').html(currentUser.data.info.e_account)
-                            $('#remitter_name').html(currentUser.data.info.name)
-                            //const mask = 'xxxx' + receiverUser.data.e_account.slice(-4)
-                            $('#receiver_eAccount').html(receiverUser.data.e_account)
-                            $('#receiver_name').html(receiverUser.data.name)
-                        } else {
-                            alert('請輸入正確的電話號碼格式')
-                        }
+                        apiRes(
+                            receiverUser.data,
+                            ({ e_account, name, message, status, timestamp }) => {
+                                sleep(1).then(() => {
+                                    isCompleted(1)
+                                })
+
+                                //dom渲染
+                                $('#current-balance').html(numberWithCommas(currentUser.data.info.balance))
+
+                                $('#remitter_eAccount').html(eAccountToStar(currentUser.data.info.e_account))
+                                $('#remitter_name').html(currentUser.data.info.name)
+                                $('#receiver_eAccount').html(eAccountToStar(receiverUser.data.e_account))
+                                $('#receiver_name').html(receiverUser.data.name)
+
+                                return `getEAccount成功`
+                            },
+                            ({ status, message, timestamp }) => {
+                                return message
+                            }
+                        )
+
+                        // if (receiverUser.data.status == '200') {
+
+                        // } else {
+                        //     alert(receiverUser.data.message)
+                        // }
                     } catch (error) {
                         console.log(error)
                     }
@@ -381,12 +441,16 @@
                     if (typeof $.cookie('transaction_code') !== 'undefined') {
                         //要求轉帳API
                         transferByRequest($.cookie('transaction_code')).then((res) =>
-                            window.setTimeout(() => loadingForm(false), 500)
+                            sleep(1).then(() => {
+                                loadingForm(false)
+                            })
                         )
                     } else {
                         //轉帳API
                         transfer($('input[name="transfer_amount"]').val()).then((res) =>
-                            window.setTimeout(() => loadingForm(false), 500)
+                            sleep(1).then(() => {
+                                loadingForm(false)
+                            })
                         )
                     }
                 })

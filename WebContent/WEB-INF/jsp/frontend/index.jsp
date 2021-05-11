@@ -22,7 +22,7 @@ contentType="text/html; charset=UTF-8"%>
             style="cursor: pointer"
             id="balance"
           >
-            NT$500
+            NT$ 0
           </p>
           <div class="mt-5">
             <button
@@ -77,19 +77,30 @@ contentType="text/html; charset=UTF-8"%>
           //console.log(res);
           location.href = `${pageContext.request.contextPath}/user/login`;
         }
-        
-        const { login, info: { balance, role }, t_password } = res.data;
+
+        const {
+          login,
+          info: { balance, role },
+          t_password,
+        } = res.data;
         if (!t_password) {
           location.href = `${pageContext.request.contextPath}/payment_password`;
         } else {
           $("#balance").text("NT$" + numberWithCommas(balance));
+          $("#notification_count").text(unReceiveTransaction);
         }
 
-        if(role === "S"){
-          $("#deposit").attr("disabled", "disabled").css("cursor", "not-allowed");
+        if (role === "S") {
+          $("#deposit")
+            .attr("disabled", "disabled")
+            .css("cursor", "not-allowed");
           $("#pay").attr("disabled", "disabled").css("cursor", "not-allowed");
-          $("#transfer").attr("disabled", "disabled").css("cursor", "not-allowed");
-          $("#receive").attr("disabled", "disabled").css("cursor", "not-allowed");
+          $("#transfer")
+            .attr("disabled", "disabled")
+            .css("cursor", "not-allowed");
+          $("#receive")
+            .attr("disabled", "disabled")
+            .css("cursor", "not-allowed");
         }
       });
     </script>

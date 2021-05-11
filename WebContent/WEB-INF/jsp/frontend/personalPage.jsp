@@ -40,7 +40,7 @@ contentType="text/html; charset=UTF-8"%>
             <li>
               <a href="${pageContext.request.contextPath}/bank">銀行帳戶管理</a>
             </li>
-            <li>
+            <li id="quota">
               <a href="${pageContext.request.contextPath}/quota">本月額度</a>
             </li>
             <li><a href="${pageContext.request.contextPath}/help">幫助</a></li>
@@ -65,6 +65,7 @@ contentType="text/html; charset=UTF-8"%>
             $("#balance").text("NT$" + balance);
             $("#name").text(shop_name);
             $("#setting").attr("href", "${pageContext.request.contextPath}/shopSetting").html("商店資料維護");
+            $("#quota").css("display", "none");
           }
         }
       });

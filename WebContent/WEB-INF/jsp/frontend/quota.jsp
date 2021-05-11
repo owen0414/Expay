@@ -213,6 +213,11 @@ contentType="text/html; charset=UTF-8"%>
         } else if (!res.data.t_password) {
           location.href = `${pageContext.request.contextPath}/payment_password`;
         }
+
+        const {info: {role}} = res.data;
+        if(role === "S"){
+            location.href = `${pageContext.request.contextPath}/`;
+        }
       });
 
       $(document).ready(function () {

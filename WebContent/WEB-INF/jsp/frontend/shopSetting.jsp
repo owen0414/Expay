@@ -126,6 +126,12 @@
 				}
 			});
 		});
+
+		instance.get("/api/getCurrentUser").then((res) => {
+			if(!res.data.login){
+				location.href=`${pageContext.request.contextPath}/user/login`;
+			}
+		});
 	</script>
 </body>
 </html>

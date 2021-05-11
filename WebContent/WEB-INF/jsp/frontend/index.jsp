@@ -28,12 +28,14 @@ contentType="text/html; charset=UTF-8"%>
             <button
               class="btn addmoney_btn"
               onclick="location.href='${pageContext.request.contextPath}/deposit'"
+              id="deposit"
             >
               儲值
             </button>
             <button
               class="btn withdraw_btn"
               onclick="location.href='${pageContext.request.contextPath}/withdraw'"
+              id="withdraw"
             >
               提領
             </button>
@@ -43,18 +45,21 @@ contentType="text/html; charset=UTF-8"%>
           <button
             class="btn payment_btn mt-5"
             onclick="location.href='${pageContext.request.contextPath}/pay'"
+            id="pay"
           >
             付款給商家
           </button>
           <button
             class="btn transfer_btn mt-3"
             onclick="location.href='${pageContext.request.contextPath}/transfer'"
+            id="transfer"
           >
             轉帳
           </button>
           <button
             class="btn request_btn mt-3"
             onclick="location.href='${pageContext.request.contextPath}/recieve'"
+            id="receive"
           >
             收款
           </button>
@@ -73,11 +78,18 @@ contentType="text/html; charset=UTF-8"%>
           location.href = `${pageContext.request.contextPath}/user/login`;
         }
         
-        const { login, info: { balance }, t_password } = res.data;
+        const { login, info: { balance, role }, t_password } = res.data;
         if (!t_password) {
           location.href = `${pageContext.request.contextPath}/payment_password`;
         } else {
           $("#balance").text("NT$" + numberWithCommas(balance));
+        }
+
+        if(role === "S"){
+          $("#deposit").attr("disabled", "disabled").css("cursor", "not-allowed");
+          $("#pay").attr("disabled", "disabled").css("cursor", "not-allowed");
+          $("#transfer").attr("disabled", "disabled").css("cursor", "not-allowed");
+          $("#receive").attr("disabled", "disabled").css("cursor", "not-allowed");
         }
       });
     </script>

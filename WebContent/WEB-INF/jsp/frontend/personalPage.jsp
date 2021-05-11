@@ -35,9 +35,7 @@ contentType="text/html; charset=UTF-8"%>
         <div class="col-12 col-md-8 d-flex justify-content-center">
           <ul style="list-style: disc; font-size: 28px; line-height: 1.1">
             <li>
-              <a href="${pageContext.request.contextPath}/setting"
-                >個人資料維護</a
-              >
+              <a href="${pageContext.request.contextPath}/setting" id="setting">個人資料維護</a>
             </li>
             <li>
               <a href="${pageContext.request.contextPath}/bank">銀行帳戶管理</a>
@@ -58,9 +56,16 @@ contentType="text/html; charset=UTF-8"%>
             //console.log(res);
             location.href=`${pageContext.request.contextPath}/user/login`;
         } else{
-          const {login, info: { balance, name }} = res.data;
-          $("#balance").text("NT$" + balance);
-          $("#name").text(name);    
+          if(res.data.info.role === "M"){
+            const {info: { balance, name }} = res.data;
+            $("#balance").text("NT$" + balance);
+            $("#name").text(name);
+          } else {
+            const {info: { balance, shop_name }} = res.data;
+            $("#balance").text("NT$" + balance);
+            $("#name").text(shop_name);
+            $("#setting").attr("href", "${pageContext.request.contextPath}/shopSetting").html("商店資料維護");
+          }
         }
       });
     </script>

@@ -41,7 +41,7 @@ const App = () => {
           <a href="${pageContext.request.contextPath}/personalPage" className="nav-link">個人頁面</a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" style={{cursor: "pointer"}} data-toggle="modal" data-target="#paymentNotificationModal">待收款通知 <span className="badge badge-secondary">{userInfo.info.unReceiveTransaction}</span></a>
+          <a className="nav-link" data-toggle="modal" data-target="#paymentNotificationModal" {...((userInfo.info.role === "S") ? {disabled: "disabled", style: {cursor: "not-allowed"}} : {style: {cursor: "pointer"}})} >待收款通知 <span className="badge badge-secondary">{userInfo.info.unReceiveTransaction}</span></a>
         </li>
         <li className="nav-item">
           <a href="${pageContext.request.contextPath}/user/logout" className="nav-link">登出</a>

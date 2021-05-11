@@ -399,6 +399,11 @@
                     //console.log(res);
                     location.href = `${pageContext.request.contextPath}/user/login`
                 }
+
+                const {info: {role}} = res.data;
+                if(role === "S"){
+                    location.href = `${pageContext.request.contextPath}/`;
+                }
             })
         </script>
     </body>

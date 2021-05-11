@@ -161,7 +161,7 @@ function eAccountToStar(eAccount) {
 
     var length = eAccount.length
 
-    NeweAccount = "****" +  eAccount.slice(length - 3)
+    NeweAccount = '****' + eAccount.slice(length - 3)
 
     return NeweAccount
 }

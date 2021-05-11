@@ -17,7 +17,7 @@ const App = () => {
   const fetchData = async () => {
     try{
       //TODO 網址要改!
-      const res = await axios.get("http://172.19.35.97/api/getCurrentUser");
+      const res = await instance.get("/api/getCurrentUser");
       setUserInfo(res.data);
       setIsLogin(res.data.login);
     }catch(error){

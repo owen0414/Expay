@@ -62,15 +62,17 @@ contentType="text/html; charset=UTF-8"%>
             const {
               info: { balance, name },
             } = res.data;
-            $("#balance").text("NT$" + balance);
+            $("#balance").text("NT$" + numberWithCommas(balance));
             $("#name").text(name);
           } else {
             const {
               info: { balance, shop_name },
             } = res.data;
-            $("#balance").text("NT$" + balance);
+            $("#balance").text("NT$" + numberWithCommas(balance));
             $("#name").text(shop_name);
-            $("#setting").attr("href", "${pageContext.request.contextPath}/shopSetting").html("商店資料維護");
+            $("#setting")
+              .attr("href", "${pageContext.request.contextPath}/shopSetting")
+              .html("商店資料維護");
             $("#quota").css("display", "none");
           }
         }

@@ -304,10 +304,7 @@ contentType="text/html; charset=UTF-8"%>
               </div>
               <hr class="transaction_hr" />
               <div class="col-12 mt-2">
-                <p>
-                  轉入者
-                  <span class="font-weight-bold px-2 transfer_name"></span>
-                </p>
+                <p class="transfer_name"></p>
               </div>
             </div>
           </div>
@@ -497,7 +494,10 @@ contentType="text/html; charset=UTF-8"%>
             for (var j = 0; j < returnData.length; j++) {
               if (returnData[j].type == "S") {
                 returnData[j].type = "付款";
-              } else if (returnData[j].type == "T") {
+              } else if (
+                returnData[j].type == "T" ||
+                returnData[j].type == "R"
+              ) {
                 returnData[j].type = "轉帳";
                 returnData[j].name = nameToStar(returnData[j].name);
               } else if (returnData[j].type == "D") {
@@ -594,12 +594,16 @@ contentType="text/html; charset=UTF-8"%>
               if (returntransferData.amount < 0) {
                 $(".transfer_amount").parent().addClass("font-red");
                 $(".transfer_name").html(
-                  nameToStar(returntransferData.receiver_name)
+                  `轉入者<span class="font-weight-bold px-2">` +
+                    nameToStar(returntransferData.receiver_name) +
+                    `</span>`
                 );
               } else if (returntransferData.amount > 0) {
                 $(".transfer_amount").parent().addClass("font-blue");
                 $(".transfer_name").html(
-                  nameToStar(returntransferData.remitter_name)
+                  `轉出者<span class="font-weight-bold px-2">` +
+                    nameToStar(returntransferData.remitter_name) +
+                    `</span>`
                 );
               }
 

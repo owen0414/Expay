@@ -36,7 +36,13 @@ contentType="text/html; charset=UTF-8"%>
                 <label for="id"><span class="font-red">*</span>帳號：</label>
               </div>
               <div class="col-10 col-md-8 px-md-0 mx-auto mx-md-0">
-                <input type="text" class="form-control" id="id" name="id" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="id"
+                  name="id"
+                  placeholder="請輸入帳號"
+                />
                 <p class="is_error">
                   <i class="fas fa-exclamation mr-1"></i>帳號不能為空白
                 </p>
@@ -55,6 +61,7 @@ contentType="text/html; charset=UTF-8"%>
                   id="pwd"
                   name="pwd"
                   maxlength="16"
+                  placeholder="請輸入密碼"
                 />
                 <i class="far fa-eye toggle_regpassword" id="pwd1"></i>
                 <p class="is_error">
@@ -84,6 +91,7 @@ contentType="text/html; charset=UTF-8"%>
                   id="confirm_pwd"
                   name="confirm_pwd"
                   maxlength="16"
+                  placeholder="請輸入確認密碼"
                 />
                 <i class="far fa-eye toggle_regpassword" id="pwd2"></i>
                 <p class="is_error">
@@ -105,6 +113,7 @@ contentType="text/html; charset=UTF-8"%>
                   class="form-control"
                   id="shop_name"
                   name="shop_name"
+                  placeholder="請輸入商家名稱"
                 />
                 <p class="is_error">
                   <i class="fas fa-exclamation mr-1"></i>商家名稱不能為空白
@@ -125,6 +134,7 @@ contentType="text/html; charset=UTF-8"%>
                   name="tax_id"
                   oninput="value=value.replace(/[^\d]/g,'')"
                   maxlength="8"
+                  placeholder="請輸入統一編號"
                 />
                 <p class="is_error">
                   <i class="fas fa-exclamation mr-1"></i>統一編號格式錯誤
@@ -136,7 +146,7 @@ contentType="text/html; charset=UTF-8"%>
                 class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
               >
                 <label for="phone"
-                  ><span class="font-red">*</span>商家電話：</label
+                  ><span class="font-red">*</span>商家手機：</label
                 >
               </div>
               <div class="col-10 col-md-8 px-md-0 mx-auto mx-md-0">
@@ -147,12 +157,13 @@ contentType="text/html; charset=UTF-8"%>
                   name="phone"
                   oninput="value=value.replace(/[^\d]/g,'')"
                   maxlength="10"
+                  placeholder="請輸入手機"
                 />
                 <p class="is_error">
-                  <i class="fas fa-exclamation mr-1"></i>商家電話不能為空白
+                  <i class="fas fa-exclamation mr-1"></i>商家手機不能為空白
                 </p>
                 <p class="is_error">
-                  <i class="fas fa-exclamation mr-1"></i>商家電話格式錯誤
+                  <i class="fas fa-exclamation mr-1"></i>商家手機格式錯誤
                 </p>
               </div>
             </div>
@@ -170,6 +181,7 @@ contentType="text/html; charset=UTF-8"%>
                   class="form-control"
                   id="email"
                   name="email"
+                  placeholder="請輸入電子信箱"
                 />
                 <p class="is_error">
                   <i class="fas fa-exclamation mr-1"></i>商家信箱不能為空白
@@ -207,7 +219,7 @@ contentType="text/html; charset=UTF-8"%>
                         class="form-control"
                         id="address"
                         name="address"
-                        placeholder="路段號樓"
+                        placeholder="請輸入地址(路段號樓)"
                       />
                       <p class="is_error">
                         <i class="fas fa-exclamation mr-1"></i
@@ -216,6 +228,52 @@ contentType="text/html; charset=UTF-8"%>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="row justify-content-start mt-3 mx-auto mx-md-5">
+              <div
+                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+              >
+                <label for="withdraw_name"
+                  ><span class="font-red">*</span>負責人姓名：</label
+                >
+              </div>
+              <div class="col-10 col-md-8 px-md-0 mx-auto mx-md-0">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="withdraw_name"
+                  name="withdraw_name"
+                  placeholder="請輸入負責人姓名"
+                />
+                <p class="is_error">
+                  <i class="fas fa-exclamation mr-1"></i>負責人姓名不能為空白
+                </p>
+              </div>
+            </div>
+            <div class="row justify-content-start mt-3 mx-auto mx-md-5">
+              <div
+                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+              >
+                <label for="identity"
+                  ><span class="font-red">*</span>身分證字號：</label
+                >
+              </div>
+              <div class="col-10 col-md-8 px-md-0 mx-auto mx-md-0">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="identity"
+                  name="identity"
+                  maxlength="10"
+                  placeholder="請輸入負責人身份證字號"
+                />
+                <p class="is_error">
+                  <i class="fas fa-exclamation mr-1"></i>身分證不能為空白
+                </p>
+                <p class="is_error">
+                  <i class="fas fa-exclamation mr-1"></i>身分證格式錯誤
+                </p>
               </div>
             </div>
             <div class="row justify-content-start my-4 mx-auto mx-md-5">
@@ -370,6 +428,8 @@ contentType="text/html; charset=UTF-8"%>
         var county = $("#county");
         var district = $("#district");
         var address = $("#address");
+        var withdraw_name = $("#withdraw_name");
+        var identity = $("#identity");
         var result = true;
 
         //檢查帳號
@@ -471,6 +531,33 @@ contentType="text/html; charset=UTF-8"%>
           result = result && true;
         }
 
+        //檢查負責人姓名
+
+        if (withdraw_name.val().length < 1) {
+          withdraw_name.next(".is_error").show();
+          result = result && false;
+        } else {
+          withdraw_name.next(".is_error").hide();
+          result = result && true;
+        }
+
+        //檢查身分證
+
+        regex = new RegExp("^[A-Z][1-2][0-9]{8}$");
+
+        identity.siblings(".is_error").hide();
+
+        if (identity.val().length < 1) {
+          identity.siblings(".is_error").eq(0).show();
+          result = result && false;
+        } else if (!regex.test(identity.val())) {
+          identity.siblings(".is_error").eq(1).show();
+          result = result && false;
+        } else {
+          identity.siblings(".is_error").hide();
+          result = result && true;
+        }
+
         if (result) {
           event.preventDefault();
 
@@ -483,6 +570,8 @@ contentType="text/html; charset=UTF-8"%>
           dataJSON["phone"] = phone.val();
           dataJSON["email"] = email.val();
           dataJSON["address"] = county.val() + district.val() + address.val();
+          dataJSON["withdraw_name"] = withdraw_name.val();
+          dataJSON["identity"] = identity.val();
 
           $.ajax({
             url: requestURL,

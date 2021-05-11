@@ -3,7 +3,7 @@ contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
   <head>
-    <title>測試</title>
+    <title>首頁</title>
     <%@ include file="/WEB-INF/jsp/frontend/include.jsp"%>
   </head>
   <body>

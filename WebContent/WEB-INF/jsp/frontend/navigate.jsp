@@ -36,7 +36,13 @@
         >
       </li>
       <li class="nav-item">
-        <a class="nav-link" style="cursor: pointer;" data-toggle="modal" data-target="#paymentNotificationModal">待收款通知</a>
+        <a
+          class="nav-link"
+          style="cursor: pointer"
+          data-toggle="modal"
+          data-target="#paymentNotificationModal"
+          >待收款通知 <span class="badge" id="notification_count">0</span></a
+        >
       </li>
       <li class="nav-item">
         <a

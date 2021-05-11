@@ -22,7 +22,7 @@ contentType="text/html; charset=UTF-8"%>
             style="cursor: pointer"
             id="balance"
           >
-            NT$500
+            NT$ 0
           </p>
           <div class="mt-5">
             <button
@@ -72,12 +72,17 @@ contentType="text/html; charset=UTF-8"%>
           //console.log(res);
           location.href = `${pageContext.request.contextPath}/user/login`;
         }
-        
-        const { login, info: { balance }, t_password } = res.data;
+
+        const {
+          login,
+          info: { balance, unReceiveTransaction },
+          t_password,
+        } = res.data;
         if (!t_password) {
           location.href = `${pageContext.request.contextPath}/payment_password`;
         } else {
           $("#balance").text("NT$" + numberWithCommas(balance));
+          $("#notification_count").text(unReceiveTransaction);
         }
       });
     </script>

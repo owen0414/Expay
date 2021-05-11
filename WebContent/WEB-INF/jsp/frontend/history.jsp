@@ -17,7 +17,7 @@ contentType="text/html; charset=UTF-8"%>
           class="col-12 col-sm-3 money_container mx-sm-auto mt-5 px-0 text-center"
         >
           <div>
-            <p class="mt-5 px-5">NT$ <span class="account_balance"></span></p>
+            <p class="mt-5 px-5">NT$ <span id="balance">0</span></p>
           </div>
         </div>
       </div>
@@ -59,7 +59,9 @@ contentType="text/html; charset=UTF-8"%>
               <div class="row justify-content-start text-center">
                 <div
                   class="col-12 col-sm-10 mt-3 mx-auto mx-sm-5 account_number"
-                ></div>
+                >
+                  <span id="account"></span>
+                </div>
               </div>
               <div class="row justify-content-start text-center">
                 <div class="col-12 col-sm-4 mt-3 mx-sm-5 px-0">
@@ -76,7 +78,7 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <!-- 帳戶紀錄  -->
             <div
-              class="tab-pane fade"
+              class="tab-pane fade my-5"
               id="nav-account"
               role="tabpanel"
               aria-labelledby="nav-account-tab"
@@ -137,6 +139,7 @@ contentType="text/html; charset=UTF-8"%>
             <div class="container-fluid">
               <div class="col-12 font-weight-bold">
                 <h4 class="transaction_history_shopname"></h4>
+                <h4 class="transaction_history_remitter_account"></h4>
               </div>
               <div class="col-12 mt-4">
                 <p>
@@ -399,8 +402,24 @@ contentType="text/html; charset=UTF-8"%>
         if (!res.data.login) {
           //console.log(res);
           location.href = `${pageContext.request.contextPath}/user/login`;
-        } else if (!res.data.t_password) {
+        }
+
+        const {
+          login,
+          info: { e_account, balance, role, unReceiveTransaction },
+          t_password,
+        } = res.data;
+        if (!t_password) {
           location.href = `${pageContext.request.contextPath}/payment_password`;
+        } else {
+          $("#balance").text(numberWithCommas(balance));
+          $("#account").html(e_account);
+          $("#notification_count").text(unReceiveTransaction);
+          if (role == "M") {
+            memberHistory();
+          } else if (role == "S") {
+            shopHistory();
+          }
         }
       });
 
@@ -409,250 +428,381 @@ contentType="text/html; charset=UTF-8"%>
         $(this).siblings().removeClass("active");
       });
 
-      //帳戶餘額
-
-      var requestURL1 = `${BASE_URL}/api/getCurrentUser`;
-
-      $.ajax({
-        url: requestURL1,
-        type: "GET",
-        dataType: "json",
-        contentType: "application/json;charset=utf-8",
-        success: function (returnData) {
-          $(".account_balance").html(numberWithCommas(returnData.info.balance));
-          $(".account_number").html(returnData.info.e_account);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-          console.log(xhr.status);
-          console.log(thrownError);
-        },
-      });
-
-      //交易紀錄
-      var requestURL2 = `${BASE_URL}/api/transactionHistory`;
-
-      $.ajax({
-        url: requestURL2,
-        type: "GET",
-        dataType: "json",
-        contentType: "application/json;charset=utf-8",
-        success: function (returnData) {
-          console.log(returnData);
-          $("#transaction_history_area").children().remove();
-          for (var i = 0; i < returnData.length; i++) {
-            const { shop_name, time, amount } = returnData[i];
-            $("#transaction_history_area").append(`
-       						<div class="row justify-content-start" id="transaction_history_item_\${i}">
-       							<div class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 transaction_history">
-       								<div class="row">
-       									<div class="col-12 col-sm-6">
-       										<p>\${time}</p>
-       										<p>\${shop_name}</p>
-       									</div>
-       									<div class="col-12 col-sm-6 text-sm-right">
-       										<p>付款</p>
-       										<p>NT$ <span>\${numberWithCommas(amount)}</span></p>
-       									</div>
-       								</div>
-       							</div>
-       						</div>`);
-            $("#transaction_history_item_" + i).click(function () {
-              $(".transaction_history_shopname").html(
-                returnData[$(this).index()].shop_name
-              );
-              $(".transaction_history_time").html(
-                returnData[$(this).index()].time
-              );
-              $(".transaction_history_code").html(
-                returnData[$(this).index()].transaction_code
-              );
-              $(".transaction_order_code").html(
-                returnData[$(this).index()].order_code
-              );
-              $(".transaction_history_amount").html(
-                numberWithCommas(returnData[$(this).index()].amount)
-              );
-              $("#transaction_modal").modal("show");
-            });
-          }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-          console.log(xhr.status);
-          console.log(thrownError);
-        },
-      });
-
-      //帳戶紀錄
-      var requestURL3 = `${BASE_URL}/api/eAccountHistory`;
-
-      $.ajax({
-        url: requestURL3,
-        type: "GET",
-        dataType: "json",
-        contentType: "application/json;charset=utf-8",
-        success: function (returnData) {
-          console.log(returnData);
-          $("#account_history_area").children().remove();
-          for (var j = 0; j < returnData.length; j++) {
-            if (returnData[j].type == "S") {
-              returnData[j].type = "付款";
-            } else if (returnData[j].type == "T") {
-              returnData[j].type = "轉帳";
-              returnData[j].name = nameToStar(returnData[j].name);
-            } else if (returnData[j].type == "D") {
-              returnData[j].type = "儲值";
-            } else if (returnData[j].type == "W") {
-              returnData[j].type = "提領";
-            }
-
-            const { name, time, amount, type, transaction_code } = returnData[
-              j
-            ];
-
-            $("#account_history_area").append(`
-       						<div class="row justify-content-start" data-transactioncode="\${transaction_code}">
-       							<div class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 account_history">
-       								<div class="row">
-       									<div class="col-12 col-sm-6">
-       										<p>\${time}</p>
-       										<p>\${name}</p>
-       									</div>
-       									<div class="col-12 col-sm-6 text-sm-right">
-       										<p class="type">\${type}</p>
-       										<p>NT$ <span class="amount">\${numberWithCommas(amount)}</span></p>
-       									</div>
-       								</div>
-       							</div>
-       						</div>`);
-
-            if (amount < 0) {
-              $(".type").eq(j).addClass("font-red");
-              $(".amount").eq(j).parent().addClass("font-red");
-            } else {
-              $(".type").eq(j).addClass("font-blue");
-              $(".amount").eq(j).parent().addClass("font-blue");
-            }
-
-            if (type == "付款") {
-              $(".account_history").eq(j).parent().addClass("pay_item");
-            } else if (type == "轉帳") {
-              $(".account_history").eq(j).parent().addClass("transfer_item");
-            } else if (type == "儲值") {
-              $(".account_history").eq(j).parent().addClass("deposit_item");
-            } else if (type == "提領") {
-              $(".account_history").eq(j).parent().addClass("withdraw_item");
-            }
-          }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-          console.log(xhr.status);
-          console.log(thrownError);
-        },
-      });
-
-      $(document).on("click", ".pay_item", function () {
-        var requestURL =
-          `${BASE_URL}/api/paymentDetail/` + $(this).data("transactioncode");
+      //會員交易&帳戶紀錄
+      function memberHistory() {
+        var requestURL2 = `${BASE_URL}/api/transactionHistory`;
 
         $.ajax({
-          url: requestURL,
+          url: requestURL2,
           type: "GET",
           dataType: "json",
           contentType: "application/json;charset=utf-8",
-          success: function (returnpayData) {
-            $(".pay_time").html(returnpayData.time);
-            $(".pay_code").html(returnpayData.transaction_code);
-            $(".pay_amount").html(numberWithCommas(returnpayData.amount));
-            $(".pay_name").html(returnpayData.shop_name);
-            $(".pay_order_code").html(returnpayData.order_code);
-            $("#pay_modal").modal("show");
+          success: function (returnData) {
+            console.log(returnData);
+            $("#transaction_history_area").children().remove();
+            for (var i = 0; i < returnData.length; i++) {
+              const { shop_name, time, amount } = returnData[i];
+              $("#transaction_history_area").append(`
+             <div class="row justify-content-start" id="transaction_history_item_\${i}">
+               <div class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 transaction_history">
+                 <div class="row">
+                   <div class="col-12 col-sm-6">
+                     <p>\${time}</p>
+                     <p>\${shop_name}</p>
+                   </div>
+                   <div class="col-12 col-sm-6 text-sm-right">
+                     <p>付款</p>
+                     <p>NT$ <span>\${numberWithCommas(amount)}</span></p>
+                   </div>
+                 </div>
+               </div>
+             </div>`);
+              $("#transaction_history_item_" + i).click(function () {
+                $(".transaction_history_shopname").html(
+                  returnData[$(this).index()].shop_name
+                );
+                $(".transaction_history_time").html(
+                  returnData[$(this).index()].time
+                );
+                $(".transaction_history_code").html(
+                  returnData[$(this).index()].transaction_code
+                );
+                $(".transaction_order_code").html(
+                  returnData[$(this).index()].order_code
+                );
+                $(".transaction_history_amount").html(
+                  numberWithCommas(returnData[$(this).index()].amount)
+                );
+                $("#transaction_modal").modal("show");
+              });
+            }
           },
           error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
             console.log(thrownError);
           },
         });
-      });
 
-      $(document).on("click", ".transfer_item", function () {
-        var requestURL =
-          `${BASE_URL}/api/transferDetail/` + $(this).data("transactioncode");
+        //帳戶紀錄
+        var requestURL3 = `${BASE_URL}/api/eAccountHistory`;
 
         $.ajax({
-          url: requestURL,
+          url: requestURL3,
           type: "GET",
           dataType: "json",
           contentType: "application/json;charset=utf-8",
-          success: function (returntransferData) {
-            $(".transfer_time").html(returntransferData.time);
-            $(".transfer_code").html(returntransferData.transaction_code);
-            $(".transfer_amount").html(
-              numberWithCommas(returntransferData.amount)
-            );
+          success: function (returnData) {
+            console.log(returnData);
+            $("#account_history_area").children().remove();
+            for (var j = 0; j < returnData.length; j++) {
+              if (returnData[j].type == "S") {
+                returnData[j].type = "付款";
+              } else if (returnData[j].type == "T") {
+                returnData[j].type = "轉帳";
+                returnData[j].name = nameToStar(returnData[j].name);
+              } else if (returnData[j].type == "D") {
+                returnData[j].type = "儲值";
+              } else if (returnData[j].type == "W") {
+                returnData[j].type = "提領";
+              }
 
-            if (returntransferData.amount < 0) {
-              $(".transfer_amount").parent().addClass("font-red");
-              $(".transfer_name").html(
-                nameToStar(returntransferData.receiver_name)
-              );
-            } else if (returntransferData.amount > 0) {
-              $(".transfer_amount").parent().addClass("font-blue");
-              $(".transfer_name").html(
-                nameToStar(returntransferData.remitter_name)
-              );
+              const { name, time, amount, type, transaction_code } = returnData[
+                j
+              ];
+
+              $("#account_history_area").append(`
+             <div class="row justify-content-start" data-transactioncode="\${transaction_code}">
+               <div class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 account_history">
+                 <div class="row">
+                   <div class="col-12 col-sm-6">
+                     <p>\${time}</p>
+                     <p>\${name}</p>
+                   </div>
+                   <div class="col-12 col-sm-6 text-sm-right">
+                     <p class="type">\${type}</p>
+                     <p>NT$ <span class="amount">\${numberWithCommas(amount)}</span></p>
+                   </div>
+                 </div>
+               </div>
+             </div>`);
+
+              if (amount < 0) {
+                $(".type").eq(j).addClass("font-red");
+                $(".amount").eq(j).parent().addClass("font-red");
+              } else {
+                $(".type").eq(j).addClass("font-blue");
+                $(".amount").eq(j).parent().addClass("font-blue");
+              }
+
+              if (type == "付款") {
+                $(".account_history").eq(j).parent().addClass("pay_item");
+              } else if (type == "轉帳") {
+                $(".account_history").eq(j).parent().addClass("transfer_item");
+              } else if (type == "儲值") {
+                $(".account_history").eq(j).parent().addClass("deposit_item");
+              } else if (type == "提領") {
+                $(".account_history").eq(j).parent().addClass("withdraw_item");
+              }
             }
-
-            $("#transfer_modal").modal("show");
           },
           error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
             console.log(thrownError);
           },
         });
-      });
 
-      $(document).on("click", ".deposit_item,.withdraw_item", function () {
-        var requestURL =
-          `${BASE_URL}/api/bankDetail/` + $(this).data("transactioncode");
+        $(document).on("click", ".pay_item", function () {
+          var requestURL =
+            `${BASE_URL}/api/paymentDetail/` + $(this).data("transactioncode");
+
+          $.ajax({
+            url: requestURL,
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (returnpayData) {
+              $(".pay_time").html(returnpayData.time);
+              $(".pay_code").html(returnpayData.transaction_code);
+              $(".pay_amount").html(numberWithCommas(returnpayData.amount));
+              $(".pay_name").html(returnpayData.shop_name);
+              $(".pay_order_code").html(returnpayData.order_code);
+              $("#pay_modal").modal("show");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+              console.log(xhr.status);
+              console.log(thrownError);
+            },
+          });
+        });
+
+        $(document).on("click", ".transfer_item", function () {
+          var requestURL =
+            `${BASE_URL}/api/transferDetail/` + $(this).data("transactioncode");
+
+          $.ajax({
+            url: requestURL,
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (returntransferData) {
+              $(".transfer_time").html(returntransferData.time);
+              $(".transfer_code").html(returntransferData.transaction_code);
+              $(".transfer_amount").html(
+                numberWithCommas(returntransferData.amount)
+              );
+
+              if (returntransferData.amount < 0) {
+                $(".transfer_amount").parent().addClass("font-red");
+                $(".transfer_name").html(
+                  nameToStar(returntransferData.receiver_name)
+                );
+              } else if (returntransferData.amount > 0) {
+                $(".transfer_amount").parent().addClass("font-blue");
+                $(".transfer_name").html(
+                  nameToStar(returntransferData.remitter_name)
+                );
+              }
+
+              $("#transfer_modal").modal("show");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+              console.log(xhr.status);
+              console.log(thrownError);
+            },
+          });
+        });
+
+        $(document).on("click", ".deposit_item,.withdraw_item", function () {
+          var requestURL =
+            `${BASE_URL}/api/bankDetail/` + $(this).data("transactioncode");
+
+          $.ajax({
+            url: requestURL,
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (returnbankdetailData) {
+              $(".deposit_time").html(returnbankdetailData.time);
+              $(".deposit_code").html(returnbankdetailData.transaction_code);
+              $(".deposit_amount").html(
+                numberWithCommas(returnbankdetailData.amount)
+              );
+
+              if (returnbankdetailData.type == "D") {
+                $(".deposit_type").html("儲值");
+                $(".deposit_amount")
+                  .parent()
+                  .removeClass("font-red")
+                  .addClass("font-blue");
+              } else if (returnbankdetailData.type == "W") {
+                $(".deposit_type").html("提領");
+                $(".deposit_amount")
+                  .parent()
+                  .removeClass("font-blue")
+                  .addClass("font-red");
+              }
+
+              $(".deposit_bankcode").html(returnbankdetailData.bank_code);
+              $(".deposit_bankaccount").html(returnbankdetailData.bank_account);
+
+              $("#deposit_modal").modal("show");
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+              console.log(xhr.status);
+              console.log(thrownError);
+            },
+          });
+        });
+      }
+
+      //商家交易&帳戶紀錄
+      function shopHistory() {
+        var requestURL2 = `${BASE_URL}/api/shop/transactionHistory`;
 
         $.ajax({
-          url: requestURL,
+          url: requestURL2,
           type: "GET",
           dataType: "json",
           contentType: "application/json;charset=utf-8",
-          success: function (returnbankdetailData) {
-            $(".deposit_time").html(returnbankdetailData.time);
-            $(".deposit_code").html(returnbankdetailData.transaction_code);
-            $(".deposit_amount").html(
-              numberWithCommas(returnbankdetailData.amount)
-            );
-
-            if (returnbankdetailData.type == "D") {
-              $(".deposit_type").html("儲值");
-              $(".deposit_amount")
-                .parent()
-                .removeClass("font-red")
-                .addClass("font-blue");
-            } else if (returnbankdetailData.type == "W") {
-              $(".deposit_type").html("提領");
-              $(".deposit_amount")
-                .parent()
-                .removeClass("font-blue")
-                .addClass("font-red");
+          success: function (returnData) {
+            console.log(returnData);
+            $("#transaction_history_area").children().remove();
+            for (var i = 0; i < returnData.length; i++) {
+              const { remitter_account, time, amount } = returnData[i];
+              $("#transaction_history_area").append(`
+             <div class="row justify-content-start" id="transaction_history_item_\${i}">
+               <div class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 transaction_history">
+                 <div class="row">
+                   <div class="col-12 col-sm-6">
+                     <p>\${time}</p>
+                     <p>\${remitter_account}</p>
+                   </div>
+                   <div class="col-12 col-sm-6 text-sm-right">
+                     <p>收款</p>
+                     <p>NT$ <span>\${numberWithCommas(amount)}</span></p>
+                   </div>
+                 </div>
+               </div>
+             </div>`);
+              $("#transaction_history_item_" + i).click(function () {
+                $(".transaction_history_remitter_account").html(
+                  returnData[$(this).index()].remitter_account
+                );
+                $(".transaction_history_time").html(
+                  returnData[$(this).index()].time
+                );
+                $(".transaction_history_code").html(
+                  returnData[$(this).index()].transaction_code
+                );
+                $(".transaction_order_code").html(
+                  returnData[$(this).index()].order_code
+                );
+                $(".transaction_history_amount").html(
+                  numberWithCommas(returnData[$(this).index()].amount)
+                );
+                $("#transaction_modal").modal("show");
+              });
             }
-
-            $(".deposit_bankcode").html(returnbankdetailData.bank_code);
-            $(".deposit_bankaccount").html(returnbankdetailData.bank_account);
-
-            $("#deposit_modal").modal("show");
           },
-
           error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
             console.log(thrownError);
           },
         });
-      });
+
+        //帳戶紀錄
+        var requestURL3 = `${BASE_URL}/api/shop/bankHistory`;
+
+        $.ajax({
+          url: requestURL3,
+          type: "GET",
+          dataType: "json",
+          contentType: "application/json;charset=utf-8",
+          success: function (returnData) {
+            console.log(returnData);
+            $("#account_history_area").children().remove();
+            for (var j = 0; j < returnData.length; j++) {
+              if (returnData[j].type == "W") {
+                returnData[j].type = "提領";
+              }
+
+              const { name, time, amount, type, transaction_code } = returnData[
+                j
+              ];
+
+              $("#account_history_area").append(`
+             <div class="row justify-content-start" data-transactioncode="\${transaction_code}">
+               <div class="col-12 col-sm-10 my-3 mx-auto mx-sm-5 account_history">
+                 <div class="row">
+                   <div class="col-12 col-sm-6">
+                     <p>\${time}</p>
+                     <p>\${name}</p>
+                   </div>
+                   <div class="col-12 col-sm-6 text-sm-right">
+                     <p class="type">\${type}</p>
+                     <p>NT$ <span class="amount">\${numberWithCommas(amount)}</span></p>
+                   </div>
+                 </div>
+               </div>
+             </div>`);
+
+              if (amount < 0) {
+                $(".type").eq(j).addClass("font-red");
+                $(".amount").eq(j).parent().addClass("font-red");
+              } else {
+                $(".type").eq(j).addClass("font-blue");
+                $(".amount").eq(j).parent().addClass("font-blue");
+              }
+
+              if (type == "提領") {
+                $(".account_history").eq(j).parent().addClass("withdraw_item");
+              }
+            }
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status);
+            console.log(thrownError);
+          },
+        });
+
+        $(document).on("click", ".withdraw_item", function () {
+          var requestURL =
+            `${BASE_URL}/api/bankDetail/` + $(this).data("transactioncode");
+
+          $.ajax({
+            url: requestURL,
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (returnbankdetailData) {
+              $(".deposit_time").html(returnbankdetailData.time);
+              $(".deposit_code").html(returnbankdetailData.transaction_code);
+              $(".deposit_amount").html(
+                numberWithCommas(returnbankdetailData.amount)
+              );
+
+              if (returnbankdetailData.type == "W") {
+                $(".deposit_type").html("提領");
+                $(".deposit_amount")
+                  .parent()
+                  .removeClass("font-blue")
+                  .addClass("font-red");
+              }
+
+              $(".deposit_bankcode").html(returnbankdetailData.bank_code);
+              $(".deposit_bankaccount").html(returnbankdetailData.bank_account);
+
+              $("#deposit_modal").modal("show");
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+              console.log(xhr.status);
+              console.log(thrownError);
+            },
+          });
+        });
+      }
     </script>
   </body>
 </html>

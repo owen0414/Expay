@@ -14,7 +14,14 @@ contentType="text/html; charset=UTF-8"%>
     <div class="login_container">
       <div class="row mx-4 mx-md-2">
         <div
-          class="col-12 col-md-5 mx-md-auto mt-4 px-md-0 font-weight-bold text-center"
+          class="
+            col-12 col-md-5
+            mx-md-auto
+            mt-4
+            px-md-0
+            font-weight-bold
+            text-center
+          "
         >
           <h4>登入</h4>
         </div>
@@ -268,7 +275,7 @@ contentType="text/html; charset=UTF-8"%>
       <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalScrollableTitle">提示</h5>
+            <h5 class="modal-title" id="exampleModalScrollableTitle">錯誤</h5>
             <button
               type="button"
               class="close"

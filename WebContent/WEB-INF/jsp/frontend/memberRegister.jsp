@@ -499,6 +499,60 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
 
+    <!-- Success Modal -->
+    <div
+      class="modal fade"
+      id="successModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalScrollableTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalScrollableTitle">提示</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!--成功 -->
+            <div class="row successPage">
+              <div class="col-12 d-flex justify-content-center">
+                <div class="m-2 text-center">
+                  <p class="h5" style="font-weight: bold">註冊成功</p>
+                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-center">
+                <div class="m-2">
+                  <div class="success-checkmark">
+                    <div class="check-icon">
+                      <span class="icon-line line-tip"></span>
+                      <span class="icon-line line-long"></span>
+                      <div class="icon-circle"></div>
+                      <div class="icon-fix"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-center">
+                <div class="fadeIn">
+                  <p style="font-weight: bold">將回到登入頁面重新登入</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Footer -->
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
     <script>
@@ -537,10 +591,15 @@ contentType="text/html; charset=UTF-8"%>
         }
       });
 
-      //註冊失敗的提示
+      //註冊提交的提示
+
+      function successInit() {
+        $("#successModal").modal("show"); //顯示成功
+        $(".fadeIn").fadeIn(1000);
+      }
 
       function failInit() {
-        $("#errorModal").modal("show");
+        $("#errorModal").modal("show"); //顯示失敗
         $(".fadeIn").fadeIn(1000);
       }
 
@@ -711,14 +770,12 @@ contentType="text/html; charset=UTF-8"%>
             contentType: "application/json;charset=utf-8",
             success: function (returnData) {
               if (returnData.status == 200) {
-                console.log(returnData.message);
-                // location.href = `${pageContext.request.contextPath}/payment_password`;
-              } else if (returnData.status == 400) {
+                successInit();
+              } else if (returnData.status == 400 || returnData.status == 401) {
                 $(".responseMessage").html(returnData.message);
                 console.log(returnData.message);
                 failInit();
               }
-              console.log(returnData);
             },
             error: function (xhr, ajaxOptions, thrownError) {
               console.log(xhr.status);
@@ -728,6 +785,10 @@ contentType="text/html; charset=UTF-8"%>
         } else {
           return result;
         }
+      });
+
+      $("#successModal").on("hidden.bs.modal", function (e) {
+        location.href = `${pageContext.request.contextPath}/user/login`;
       });
     </script>
   </body>

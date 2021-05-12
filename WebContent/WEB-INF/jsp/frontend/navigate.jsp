@@ -34,6 +34,19 @@ const App = () => {
     }
   }, []);
 
+  const handleLogout = async () => {
+    try{
+      const res = await instance.get("/api/logout");
+      const { status } = res.data;
+      if(status === 200){
+        location.href = "${pageContext.request.contextPath}/user/login";
+      }
+      console.log(res);
+    }catch(error){
+      console.log(error);  
+    }
+  };
+
   const renderNavItem = () => {
     return (isLogin ? (
       <ul className="navbar-nav">
@@ -44,7 +57,7 @@ const App = () => {
           <a className="nav-link" data-toggle="modal" data-target="#paymentNotificationModal" {...((userInfo.info.role === "S") ? {disabled: "disabled", style: {cursor: "not-allowed"}} : {style: {cursor: "pointer"}})} >待收款通知 <span className="badge badge-secondary">{userInfo.info.unReceiveTransaction}</span></a>
         </li>
         <li className="nav-item">
-          <a href="${pageContext.request.contextPath}/user/logout" className="nav-link">登出</a>
+          <a className="nav-link" onClick={handleLogout} style={{cursor: 'pointer'}}>登出</a>
         </li>
       </ul>
     ):(

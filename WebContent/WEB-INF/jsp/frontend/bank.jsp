@@ -521,7 +521,15 @@
                     console.log('currentUser.data.info.name:' + currentUser.data.info.name)
 
                     //初始讀取卡片陣列
-                    createCards(response.data.banks, currentUser.data.info.name)
+                    if (currentUser.data.info.role == 'M') {
+                        createCards(response.data.banks, currentUser.data.info.name, currentUser.data.info.role)
+                    } else {
+                        createCards(
+                            response.data.banks,
+                            currentUser.data.info.withdraw_name,
+                            currentUser.data.info.role
+                        )
+                    }
 
                     //編輯卡片陣列
                     editCards(response.data.banks)
@@ -642,7 +650,7 @@
 
             //建立卡片s(由getLinkedBank呼叫)
             //若資料為[] 渲染假資料
-            function createCards(banks, name) {
+            function createCards(banks, name, role) {
                 //先清空
                 $('.carousel-inner').html('<div class="cardDefault carousel-item active"></div>')
                 $('.carousel-indicators').html()
@@ -690,7 +698,7 @@
                     //範例檔
 
                     var cardHtml =
-                        '<div class="d-flex justify-content-center align-items-center h-100"><div class="col-12 pt-5 col-sm-12 py-sm-0 d-flex justify-content-center"style="width: 100vw"><div class="card"style="border: 0; min-width: 320px; min-height: 190px; max-width: 320px; max-height: 190px; width: calc(30vw - 20px); height: calc(( 30vw - 20px)* 0.5625);"><div class="card__front card__part" style="width: 100%; height: 100%"><img class="card__front-square card__square" src="<c:url value="/resources/img/esun.png"/>"> <img class="card__front-logo card__logo" src="<c:url value="/resources/img/touch.png"/>"><p class="card_numer">******** 0000</p><div class="card__space-75"><span class="card__label">卡片持有人</span><p class="card__info">彭麟翔</p></div><div class="card__space-25"><div><img class="institution"src="<c:url value="/resources/img/masterCard.png"/>"height="50px"></div></div></div></div></div></div>'
+                        '<div class="d-flex justify-content-center align-items-center h-100"><div class="col-12 pt-5 col-sm-12 py-sm-0 d-flex justify-content-center"style="width: 100vw"><div class="card"style="border: 0; min-width: 320px; min-height: 190px; max-width: 320px; max-height: 190px; width: calc(30vw - 20px); height: calc(( 30vw - 20px)* 0.5625);"><div class="card__front card__part" style="width: 100%; height: 100%"><img class="card__front-square card__square" src="<c:url value="/resources/img/esun.png"/>"> <img class="card__front-logo card__logo" src="<c:url value="/resources/img/touch.png"/>"><p class="card_numer">******** 0000</p><div class="card__space-75"><span class="card__label">卡片持有者</span><p class="card__info">彭麟翔</p></div><div class="card__space-25"><div><img class="institution"src="<c:url value="/resources/img/masterCard.png"/>"height="50px"></div></div></div></div></div></div>'
                     var indicatorHtml =
                         '<li style="display: none; width: 15px; height: 15px; border-radius: 100%; background-color: black"data-target="#carouselExampleInterval" data-slide-to="0"class="indicatorDefault "></li>'
                     $('.cardDefault').html(cardHtml)
@@ -951,6 +959,15 @@
                 $('#exampleModalScrollable,#editCardModal').on('hidden.bs.modal', function () {
                     init()
                 })
+            })
+        </script>
+
+        <script>
+            instance.get('/api/getCurrentUser').then((res) => {
+                if (!res.data.login) {
+                    //console.log(res);
+                    location.href = `${pageContext.request.contextPath}/user/login`
+                }
             })
         </script>
     </body>

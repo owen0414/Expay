@@ -37,13 +37,8 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
 
-    <div class="advantage">
+    <div class="advantage my-5">
       <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-8 col-12">
-            <h2>優勢</h2>
-          </div>
-        </div>
         <div class="row justify-content-center text-center">
           <div class="col-md-4 col-12">
             <i class="far fa-thumbs-up fa-7x"></i>
@@ -68,7 +63,7 @@ contentType="text/html; charset=UTF-8"%>
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-8 col-12">
-            <h2>比較</h2>
+            <h2 class="text-center my-3">比較</h2>
             <table class="table">
               <thead class="thead-dark">
                 <tr>
@@ -126,7 +121,7 @@ contentType="text/html; charset=UTF-8"%>
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-8 col-12">
-            <h2>聯繫我們</h2>
+            <h2 class="text-center my-3">聯繫我們</h2>
             <form action="" class="mybox">
               <div class="mb-2">
                 <label for="fullname">姓名:</label>

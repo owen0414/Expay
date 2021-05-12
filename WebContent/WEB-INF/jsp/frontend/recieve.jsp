@@ -10,7 +10,7 @@
         <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
 
         <!-- Content -->
-        <div class="container">
+        <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-5">
                     <h2 class="text-center my-3">收款</h2>
@@ -26,11 +26,17 @@
                                             id="from_phone"
                                             pattern="09[0-9]{8}"
                                             maxlength="10"
-                                            placeholder="09xxxxxxxx"
+                                            placeholder="對方的手機號碼"
                                             class="form-control"
+                                            onkeyup="validation(0)"
                                         />
                                     </li>
                                 </ul>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-end">
+                                    <span id="message" style="color: white" class="mt-2 badge"></span>
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3 mybox container">
@@ -48,8 +54,9 @@
                                                 name="recieve_amount"
                                                 min="1"
                                                 max="50000"
-                                                value="1"
+                                                value="0"
                                                 class="form-control"
+                                                onkeyup="validation(1)"
                                             />
                                         </div>
                                     </li>
@@ -74,11 +81,15 @@
                                         rows="3"
                                         placeholder="收款備註"
                                         maxlength="50"
+                                        onkeyup="validation(1)"
                                     ></textarea>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">這會寄送收款通知給對方</div>
+                                <div class="col d-flex justify-content-end">
+                                    <span id="form-message" style="color: white" class="badge"></span>
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3 mybox container text-center">
@@ -140,13 +151,15 @@
                         state.response,
                         ({ status, message, timestamp }) => {
                             return `
-						付款者大名: \${name}<br>
-						收款金額: NT\$\${numberWithCommas(amount)}<br>
-						預計收款後餘額: NT\$\${numberWithCommas(afterBalance)}
-					`
+            						付款者大名: \${name}<br>
+            						收款金額: NT\$\${numberWithCommas(amount)}<br>
+            						預計收款後餘額: NT\$\${numberWithCommas(afterBalance)}
+            					`
                         },
-                        () => {
-                            return '收款通知失敗!'
+                        ({ status, message, timestamp }) => {
+                            return `
+                                    收款通知失敗!<br>
+            					`
                         }
                     )
                 }
@@ -184,6 +197,16 @@
                 }
             }
 
+            const validation = (num) => {
+                if (num == 0) {
+                    //清除電話錯誤訊息
+                    $('#message').html('')
+                } else {
+                    //清除其他
+                    $('#form-message').html('')
+                }
+            }
+
             //按鈕
             $(document).ready(() => {
                 $('#recieve_amount').change(function (e) {
@@ -203,33 +226,47 @@
                     setRecieveAmount(amount)
                 })
 
+                //重整
+                $('#resultModal').on('hidden.bs.modal', function (e) {
+                    location.reload()
+                })
+
                 //根據輸入的手機號碼抓取對方大名
                 $('#from_phone').keyup(function () {
                     let fromPhone = $('#from_phone').val()
-                    if (checkPhone(fromPhone)) {
-                        let dataJSON = {}
-                        dataJSON['phone'] = fromPhone
-                        dataJSON['role'] = 'M'
+                    if (fromPhone.length == 10) {
+                        if (checkPhone(fromPhone)) {
+                            let dataJSON = {}
+                            dataJSON['phone'] = fromPhone
+                            dataJSON['role'] = 'M'
 
-                        instance
-                            .post('/api/getEAccount', dataJSON)
-                            .then((res) => {
-                                if (res.data.status === 200) {
-                                    const { name } = res.data
-                                    store.dispatch({
-                                        type: 'FETCH',
-                                        payload: { from: { name } },
-                                    })
-                                } else {
-                                    alert('手機不存在!')
-                                }
-                            })
-                            .catch((error) => {
-                                handleError(error.response.data)
-                                console.log(error)
-                            })
-                    } else {
-                        console.log('x')
+                            instance
+                                .post('/api/getEAccount', dataJSON)
+                                .then((res) => {
+                                    if (res.data.status === 200) {
+                                        const { name } = res.data
+                                        store.dispatch({
+                                            type: 'FETCH',
+                                            payload: { from: { name } },
+                                        })
+
+                                        $('#message').html('OK').removeClass('badge-danger').addClass('badge-success')
+                                    } else {
+                                        $('#message')
+                                            .html(res.data.message)
+                                            .addClass('badge-danger')
+                                            .removeClass('badge-success')
+                                    }
+                                })
+                                .catch((error) => {
+                                    handleError(error.response.data)
+                                    console.log(error)
+                                })
+                        } else {
+                            $('#message').html('手機格式錯誤')
+                            $('#message').addClass('badge-danger')
+                            $('#message').removeClass('badge-success')
+                        }
                     }
                 })
 
@@ -240,12 +277,22 @@
                     const note = $('#note').val()
 
                     if (!checkPhone(remitter)) {
-                        alert('付款方手機不符格式!')
-                    } else if (amount <= 0 || amount > 50000) {
-                        alert('收款金額必須1~50000')
+                        $('#form-message')
+                            .html('付款方手機不符格式!')
+                            .addClass('badge-danger')
+                            .removeClass('badge-success')
+                    } else if (amount <= 0 || amount > 50000 || isNaN(amount)) {
+                        $('#form-message')
+                            .html('收款金額須介於1~50000新台幣')
+                            .addClass('badge-danger')
+                            .removeClass('badge-success')
                     } else if (note.length == 0 || note.length > 50) {
-                        alert('收款備註字元需介於1~50字之間!')
+                        $('#form-message')
+                            .html('收款備註字元需介於1~50字之間!')
+                            .addClass('badge-danger')
+                            .removeClass('badge-success')
                     } else {
+                        $('#form-message').html('OK').removeClass('badge-danger').addClass('badge-success')
                         let dataJSON = {}
                         dataJSON['remitter'] = remitter
                         dataJSON['receiver'] = store.getState().e_account
@@ -283,9 +330,11 @@
                         throw new Error('尚未登入!')
                     }
 
-                    const {info: {role}} = res.data;
-                    if(role === "S"){
-                        location.href = `${pageContext.request.contextPath}/`;
+                    const {
+                        info: { role },
+                    } = res.data
+                    if (role === 'S') {
+                        location.href = `${pageContext.request.contextPath}/`
                     }
 
                     store.dispatch({

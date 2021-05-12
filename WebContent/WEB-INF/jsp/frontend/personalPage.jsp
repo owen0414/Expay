@@ -11,7 +11,7 @@ contentType="text/html; charset=UTF-8"%>
     <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
 
     <!-- Content -->
-    <div class="container my-3">
+    <div class="container py-5">
       <div class="row justify-content-center">
         <div class="col-12 col-md-8 d-flex justify-content-center">
           <div class="mybox text-center mr-3">

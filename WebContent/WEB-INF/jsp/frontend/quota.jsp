@@ -11,7 +11,7 @@ contentType="text/html; charset=UTF-8"%>
     <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
 
     <!-- Content -->
-    <div class="content_container" style="height: auto; min-height: 450px">
+    <div class="content_container py-5" style="height: auto; min-height: 450px">
       <!-- 本日支出 -->
       <div class="row mx-4 mx-md-2">
         <div class="col-12 col-md-5 quota_item mx-md-auto mt-4 px-0">

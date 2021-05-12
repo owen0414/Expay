@@ -10,7 +10,7 @@
         <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
 
         <!-- Content -->
-        <div class="container">
+        <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-5">
                     <h2 class="text-center my-3">提領</h2>

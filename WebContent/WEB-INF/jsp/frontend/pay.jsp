@@ -10,7 +10,7 @@
         <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
 
         <!-- Content -->
-        <div class="container">
+        <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-5">
                     <h2 class="text-center my-3">付款</h2>
@@ -29,10 +29,15 @@
                                             pattern="09[0-9]{8}"
                                             maxlength="10"
                                             class="form-control"
-                                            placeholder="09xxxxxxxx"
+                                            placeholder="商家的手機號碼"
                                         />
                                     </li>
                                 </ul>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-end">
+                                    <span id="message" style="color: white" class="mt-2 badge"></span>
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3 mybox container">
@@ -58,7 +63,7 @@
                                                 type="number"
                                                 id="pay_amount"
                                                 name="pay_amount"
-                                                min="0"
+                                                min="1"
                                                 max="50000"
                                                 value="0"
                                                 class="form-control"
@@ -193,33 +198,52 @@
                     setPayWithDrawAmount(amount)
                 })
 
+                document.getElementById('store_phone').onkeyup = function () {
+                    //清除錯誤訊息與資訊
+                    $('#message').html('')
+                    $('#e_account-name').html('合作店家')
+                }
+
+                //重整
+                $('#resultModal').on('hidden.bs.modal', function (e) {
+                    location.reload()
+                })
+
                 //根據輸入的手機號碼抓取對方大名
                 $('#store_phone').keyup(function () {
                     let storePhone = $('#store_phone').val()
-                    if (checkPhone(storePhone)) {
-                        let dataJSON = {}
-                        dataJSON['phone'] = storePhone
-                        dataJSON['role'] = 'S'
+                    if (storePhone.length == 10) {
+                        if (checkPhone(storePhone)) {
+                            let dataJSON = {}
+                            dataJSON['phone'] = storePhone
+                            dataJSON['role'] = 'S'
 
-                        instance
-                            .post('/api/getEAccount', dataJSON)
-                            .then((res) => {
-                                if (res.data.status === 200) {
-                                    const { name } = res.data
-                                    store.dispatch({
-                                        type: 'FETCH',
-                                        payload: { to: { name } },
-                                    })
-                                } else {
-                                    alert('手機不存在!')
-                                }
-                            })
-                            .catch((error) => {
-                                handleError(error.response.data)
-                                console.log(error)
-                            })
-                    } else {
-                        console.log('x')
+                            instance
+                                .post('/api/getEAccount', dataJSON)
+                                .then((res) => {
+                                    if (res.data.status === 200) {
+                                        const { name } = res.data
+                                        store.dispatch({
+                                            type: 'FETCH',
+                                            payload: { to: { name } },
+                                        })
+                                        $('#message').html('OK').removeClass('badge-danger').addClass('badge-success')
+                                    } else {
+                                        $('#message')
+                                            .html('商家不存在，請確認手機是否正確')
+                                            .addClass('badge-danger')
+                                            .removeClass('badge-success')
+                                    }
+                                })
+                                .catch((error) => {
+                                    handleError(error.response.data)
+                                    console.log(error)
+                                })
+                        } else {
+                            $('#message').html('手機格式錯誤')
+                            $('#message').addClass('badge-danger')
+                            $('#message').removeClass('badge-success')
+                        }
                     }
                 })
 
@@ -229,10 +253,11 @@
                     const amount = parseInt($('#pay_amount').val())
 
                     if (!checkPhone(phone)) {
-                        alert('商家手機不符格式!')
+                        $('#message').html('商家手機不符格式!').addClass('badge-danger').removeClass('badge-success')
                     } else if (amount <= 0 || amount > 50000) {
-                        alert('付款金額必須1~50000')
+                        $('#message').html('付款金額必須1~50000').addClass('badge-danger').removeClass('badge-success')
                     } else {
+                        $('#message').html('OK').removeClass('badge-danger').addClass('badge-success')
                         let dataJSON = {}
                         dataJSON['remitter'] = store.getState().e_account
                             ? store.getState().e_account.info.phone
@@ -270,9 +295,11 @@
                         throw new Error('尚未登入!')
                     }
 
-                    const {info: {role}} = res.data;
-                    if(role === "S"){
-                        location.href = `${pageContext.request.contextPath}/`;
+                    const {
+                        info: { role },
+                    } = res.data
+                    if (role === 'S') {
+                        location.href = `${pageContext.request.contextPath}/`
                     }
 
                     store.dispatch({

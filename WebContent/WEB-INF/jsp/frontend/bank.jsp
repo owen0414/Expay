@@ -9,7 +9,6 @@
     <body>
         <!-- Navigation -->
         <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
-
         <!-- Content -->
         <div class="content_container" style="height: auto; min-height: 450px">
             <div class="row mx-auto mx-sm-auto">

@@ -18,42 +18,38 @@ const App = props => {
         return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     };
 
+    const handleLogin = async () => {
+        const res = await instance.get("/api/getCurrentUser");
+        if(!res.data.login){
+            throw new Error("您尚未登入!");
+        }
+    }
+
     const fetchData = async () => {
-        const res = await instance.get("/api/getPaymentNotification");
-        if(res.data.status){
-            setData([
-                {
-                    name: "通知訊息",
-                    phone: "0900000000",
-                    amount: 50000,
-                    note: res.data.message,
-                    transaction_code: "T000000000000000000",
-                    time: "0000-00-00 00:00:00"
-                }
-            ]);
-        } else {
-            setData(oldState => res.data);
+        try{
+            await handleLogin();
+            const res = await instance.get("/api/getPaymentNotification");
+            if(res.data.status){
+                setData([
+                    {
+                        name: "通知訊息",
+                        phone: "0900000000",
+                        amount: 50000,
+                        note: res.data.message,
+                        transaction_code: "T000000000000000000",
+                        time: "0000-00-00 00:00:00"
+                    }
+                ]);
+            } else {
+                setData(oldState => res.data);
+            }
+        }catch(error){
+            console.log(error);
         }
     };
 
     useEffect(() => {
         fetchData();
-        // setData([
-        //     {
-        //         name: "張登凱",
-        //         phone: "0912345678",
-        //         amount: 1000,
-        //         note: "快付錢!",
-        //         transaction_code: "T202105060000000008"
-        //     },
-        //     {
-        //         name: "呂承昊",
-        //         phone: "0988777666",
-        //         amount: 30000,
-        //         note: "還錢!",
-        //         transaction_code: "T202105060000000009"
-        //     }
-        // ]);
     }, []);
 
     $("#paymentNotificationModal").on("show.bs.modal", () => {

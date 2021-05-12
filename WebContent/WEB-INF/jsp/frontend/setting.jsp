@@ -66,6 +66,7 @@ contentType="text/html; charset=UTF-8"%>
                     name="birthday"
                     id="birthday"
                     class="form-control w-auto"
+                    readonly="readonly"
                   />
                 </li>
                 <li class="list-group-item">

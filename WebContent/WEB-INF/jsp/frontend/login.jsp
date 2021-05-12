@@ -11,7 +11,7 @@ contentType="text/html; charset=UTF-8"%>
     <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
 
     <!-- Content -->
-    <div class="login_container">
+    <div class="login_container  py-5">
       <div class="row mx-4 mx-md-2">
         <div
           class="

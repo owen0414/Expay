@@ -37,6 +37,33 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
 
+    <div class="advantage">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-12">
+            <h2>優勢</h2>
+          </div>
+        </div>
+        <div class="row justify-content-center text-center">
+          <div class="col-md-4 col-12">
+            <i class="far fa-thumbs-up fa-7x"></i>
+            <h3>方便</h3>
+            <p>我們的服務講求方便，讓使用者用得開心。</p>
+          </div>
+          <div class="col-md-4 col-12">
+            <i class="fas fa-fighter-jet fa-7x"></i>
+            <h3>快速</h3>
+            <p>時間就是金錢，快速收付就是贏。</p>
+          </div>
+          <div class="col-md-4 col-12">
+            <i class="fas fa-user-ninja fa-7x"></i>
+            <h3>潮流</h3>
+            <p>電子支付就是夯，來用我們準沒錯。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="compare-table">
       <div class="container">
         <div class="row justify-content-center">
@@ -98,7 +125,7 @@ contentType="text/html; charset=UTF-8"%>
     <div class="contact-us">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-md-6 col-12">
+          <div class="col-md-8 col-12">
             <h2>聯繫我們</h2>
             <form action="" class="mybox">
               <div class="mb-2">
@@ -169,6 +196,25 @@ contentType="text/html; charset=UTF-8"%>
 
       .cta2 .shadow{
         background:rgba(0,0,0,0.35);
+      }
+
+      .advantage{
+        padding: 20px 0;
+      }
+
+      .advantage h2{
+        font-size: 35px;
+        font-weight: bold;
+        margin-bottom: 30px;
+      }
+
+      .advantage i{
+        margin-bottom: 10px;
+      }
+
+      .advantage h3{
+        font-size: 20px;
+        margin-bottom: 10px;
       }
 
       .compare-table{

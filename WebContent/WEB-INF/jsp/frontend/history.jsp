@@ -504,7 +504,7 @@ contentType="text/html; charset=UTF-8"%>
           type: "GET",
           dataType: "json",
           contentType: "application/json;charset=utf-8",
-          success: function (returnData) {
+          success: async function (returnData) {
             console.log(returnData);
             $("#account_history_area").children().remove();
             for (var j = 0; j < returnData.length; j++) {
@@ -520,6 +520,13 @@ contentType="text/html; charset=UTF-8"%>
                 returnData[j].type = "儲值";
               } else if (returnData[j].type == "W") {
                 returnData[j].type = "提領";
+              }
+
+              if (returnData[j].type == "轉帳" && returnData[j].amount > 0) {
+                const res = await instance.get(
+                  "/api/getUserName/" + returnData[j].remitter_account
+                );
+                returnData[j].name = nameToStar(res.data.user_name);
               }
 
               const { name, time, amount, type, transaction_code } =

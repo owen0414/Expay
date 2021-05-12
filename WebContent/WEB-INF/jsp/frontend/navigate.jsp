@@ -74,7 +74,7 @@ const App = () => {
 
   return (
     <nav className="navbar bg-light navbar-expand-lg navbar-light py-3">
-      <a className="navbar-brand" href="${pageContext.request.contextPath}/">EX Pay</a>
+      <a className="navbar-brand" href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="Ex Pay" style={{ height: '60px'}}/></a>
       <button
         className="navbar-toggler"
         type="button"

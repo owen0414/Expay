@@ -214,6 +214,7 @@
                         $('#loading').hide()
                         break
                     case 2:
+                        //隱藏全部
                         $('#second-block').hide()
                         $('#loading').hide()
                         break
@@ -286,6 +287,11 @@
 
             $(document).ready(() => {
                 initRender()
+
+                document.getElementById('phoneInput').onkeyup = function () {
+                    //清除錯誤訊息
+                    $('#message').html('')
+                }
 
                 // keyup event
                 // $('#transfer_amount').on('keyup', function () {
@@ -464,9 +470,11 @@
                     location.href = `${pageContext.request.contextPath}/user/login`
                 }
 
-                const {info: {role}} = res.data;
-                if(role === "S"){
-                    location.href = `${pageContext.request.contextPath}/`;
+                const {
+                    info: { role },
+                } = res.data
+                if (role === 'S') {
+                    location.href = `${pageContext.request.contextPath}/`
                 }
             })
         </script>

@@ -129,4 +129,9 @@ public class PageController {
 		return "frontend/bank";
 
 	}
+	
+	@GetMapping("/intro")
+	public String intro() {
+		return "frontend/intro";
+	}
 }

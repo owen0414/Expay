@@ -103,6 +103,23 @@ contentType="text/html; charset=UTF-8"%>
                     class="form-control w-auto"
                   />
                 </li>
+                <li
+                  class="
+                    list-group-item
+                    d-flex
+                    justify-content-between
+                    align-items-center
+                  "
+                >
+                  <label for="withdraw_name" class="d-block">負責人姓名</label>
+                  <input
+                    type="text"
+                    name="withdraw_name"
+                    id="withdraw_name"
+                    class="form-control w-auto"
+                    readonly="readonly"
+                  />
+                </li>
                 <li class="list-group-item">
                   <a href="${pageContext.request.contextPath}/updatePassword"
                     >變更密碼</a
@@ -131,12 +148,14 @@ contentType="text/html; charset=UTF-8"%>
         console.log(state);
 
         if (state.request) {
-          const { shop_name, tax_id, address, phone, email } = state.request;
+          const { shop_name, tax_id, address, phone, email, withdraw_name } =
+            state.request;
           $("#shop_name").val(shop_name);
           $("#tax_id").val(tax_id);
           $("#address").val(address);
           $("#phone").val(phone);
           $("#email").val(email);
+          $("#withdraw_name").val(withdraw_name);
         }
 
         if (state.response) {

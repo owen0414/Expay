@@ -16,7 +16,13 @@ contentType="text/html; charset=UTF-8"%>
         <div class="col-12 col-md-5 register_item mx-md-auto mt-4 px-0">
           <form id="mem_register_form" autocomplete="off" method="post">
             <div
-              class="row justify-content-start mt-3 text-center font-weight-bold"
+              class="
+                row
+                justify-content-start
+                mt-3
+                text-center
+                font-weight-bold
+              "
             >
               <div class="col-12">
                 <h4>輸入基本資料</h4>
@@ -24,7 +30,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-0 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-0
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="identity">身分證字號：</label>
               </div>
@@ -47,7 +58,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-0 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-0
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="pwd">密碼：</label>
               </div>
@@ -75,7 +91,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-0 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-0
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="confirm_pwd">確認密碼：</label>
               </div>
@@ -96,7 +117,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-0 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-0
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="name">姓名：</label>
               </div>
@@ -115,7 +141,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-0 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-0
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="birthday">出生年月日：</label>
               </div>
@@ -143,7 +174,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-0 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-0
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="phone">手機：</label>
               </div>
@@ -167,7 +203,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-0 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-0
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="email">電子信箱：</label>
               </div>
@@ -186,105 +227,109 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-0 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-0
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="issue_year">發證日期：</label>
               </div>
-              <div class="row">
-                <div class="col-10 col-md-3 mb-2 px-md-1 mx-auto mx-md-0">
-                  <select
-                    class="form-control"
-                    id="issue_year"
-                    name="issue_year"
-                  >
-                    <option value="">年</option>
-                    <option value="110">110</option>
-                    <option value="109">109</option>
-                    <option value="108">108</option>
-                    <option value="107">107</option>
-                    <option value="106">106</option>
-                    <option value="105">105</option>
-                    <option value="104">104</option>
-                    <option value="103">103</option>
-                    <option value="102">102</option>
-                    <option value="101">101</option>
-                    <option value="100">100</option>
-                    <option value="99">99</option>
-                    <option value="98">98</option>
-                    <option value="97">97</option>
-                    <option value="96">96</option>
-                    <option value="95">95</option>
-                    <option value="94">94</option>
-                  </select>
-                </div>
-                <div class="col-10 col-md-3 mb-2 px-md-1 mx-auto mx-md-0">
-                  <select
-                    class="form-control"
-                    id="issue_month"
-                    name="issue_month"
-                  >
-                    <option value="">月</option>
-                    <option value="01">1</option>
-                    <option value="02">2</option>
-                    <option value="03">3</option>
-                    <option value="04">4</option>
-                    <option value="05">5</option>
-                    <option value="06">6</option>
-                    <option value="07">7</option>
-                    <option value="08">8</option>
-                    <option value="09">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                  </select>
-                </div>
-                <div class="col-10 col-md-3 mb-2 px-md-1 mx-auto mx-md-0">
-                  <select class="form-control" id="issue_day" name="issue_day">
-                    <option value="">日</option>
-                    <option value="01">1</option>
-                    <option value="02">2</option>
-                    <option value="03">3</option>
-                    <option value="04">4</option>
-                    <option value="05">5</option>
-                    <option value="06">6</option>
-                    <option value="07">7</option>
-                    <option value="08">8</option>
-                    <option value="09">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                    <option value="24">24</option>
-                    <option value="25">25</option>
-                    <option value="26">26</option>
-                    <option value="27">27</option>
-                    <option value="28">28</option>
-                    <option value="29">29</option>
-                    <option value="30">30</option>
-                    <option value="31">31</option>
-                  </select>
-                </div>
+              <div class="col-10 col-md-3 mb-2 px-md-1 mx-auto mx-md-0">
+                <select class="form-control" id="issue_year" name="issue_year">
+                  <option value="">年</option>
+                  <option value="110">110</option>
+                  <option value="109">109</option>
+                  <option value="108">108</option>
+                  <option value="107">107</option>
+                  <option value="106">106</option>
+                  <option value="105">105</option>
+                  <option value="104">104</option>
+                  <option value="103">103</option>
+                  <option value="102">102</option>
+                  <option value="101">101</option>
+                  <option value="100">100</option>
+                  <option value="99">99</option>
+                  <option value="98">98</option>
+                  <option value="97">97</option>
+                  <option value="96">96</option>
+                  <option value="95">95</option>
+                  <option value="94">94</option>
+                </select>
               </div>
-              <div class="col-10 col-md-3 mb-2 px-md-1 mx-auto mx-md-0"></div>
-              <div class="col-10 col-md-8 mb-2 px-md-1 mx-auto mx-md-0">
-                <p class="is_error issue_error">
-                  <i class="fas fa-exclamation mr-1"></i>發證日期不能為空白
-                </p>
+              <div class="col-10 col-md-3 mb-2 px-md-1 mx-auto mx-md-0">
+                <select
+                  class="form-control"
+                  id="issue_month"
+                  name="issue_month"
+                >
+                  <option value="">月</option>
+                  <option value="01">1</option>
+                  <option value="02">2</option>
+                  <option value="03">3</option>
+                  <option value="04">4</option>
+                  <option value="05">5</option>
+                  <option value="06">6</option>
+                  <option value="07">7</option>
+                  <option value="08">8</option>
+                  <option value="09">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
               </div>
+              <div class="col-10 col-md-3 mb-2 px-md-1 mx-auto mx-md-0">
+                <select class="form-control" id="issue_day" name="issue_day">
+                  <option value="">日</option>
+                  <option value="01">1</option>
+                  <option value="02">2</option>
+                  <option value="03">3</option>
+                  <option value="04">4</option>
+                  <option value="05">5</option>
+                  <option value="06">6</option>
+                  <option value="07">7</option>
+                  <option value="08">8</option>
+                  <option value="09">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                  <option value="26">26</option>
+                  <option value="27">27</option>
+                  <option value="28">28</option>
+                  <option value="29">29</option>
+                  <option value="30">30</option>
+                  <option value="31">31</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-10 col-md-3 mb-2 px-md-1 mx-auto mx-md-0"></div>
+            <div class="col-10 col-md-8 mb-2 px-md-1 mx-auto mx-md-0">
+              <p class="is_error issue_error">
+                <i class="fas fa-exclamation mr-1"></i>發證日期不能為空白
+              </p>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-0 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-0
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="issue_city">發證地點：</label>
               </div>
@@ -328,7 +373,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-0 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-0
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="issue_type">領補換類別：</label>
               </div>

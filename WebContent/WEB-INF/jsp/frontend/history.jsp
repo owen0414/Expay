@@ -14,7 +14,14 @@ contentType="text/html; charset=UTF-8"%>
     <div class="content_container">
       <div class="row mx-5 mx-sm-auto">
         <div
-          class="col-12 col-sm-3 money_container mx-sm-auto mt-5 px-0 text-center"
+          class="
+            col-12 col-sm-3
+            money_container
+            mx-sm-auto
+            mt-5
+            px-0
+            text-center
+          "
         >
           <div>
             <p class="mt-5 px-5">NT$ <span id="balance">0</span></p>
@@ -139,9 +146,11 @@ contentType="text/html; charset=UTF-8"%>
             <div class="container-fluid">
               <div class="col-12 font-weight-bold">
                 <h4 class="transaction_history_shopname"></h4>
-                <h4 class="transaction_history_remitter_account"></h4>
               </div>
-              <div class="col-12 mt-4">
+              <div class="col-12 mt-2">
+                <p class="transaction_history_remitter_account"></p>
+              </div>
+              <div class="col-12 mt-2">
                 <p>
                   付款日期<span
                     class="font-weight-bold mx-2 transaction_history_time"
@@ -151,20 +160,28 @@ contentType="text/html; charset=UTF-8"%>
               <div class="col-12 mt-2">
                 <p>
                   交易編號<span
-                    class="font-lightblue font-weight-bold mx-2 transaction_history_code"
+                    class="
+                      font-lightblue font-weight-bold
+                      mx-2
+                      transaction_history_code
+                    "
                   ></span>
                 </p>
               </div>
               <div class="col-12 mt-2">
                 <p>
                   訂單編號<span
-                    class="font-lightblue font-weight-bold mx-2 transaction_order_code"
+                    class="
+                      font-lightblue font-weight-bold
+                      mx-2
+                      transaction_order_code
+                    "
                   ></span>
                 </p>
               </div>
               <div class="col-12 mt-2">
                 <p>
-                  合計金額<span class="font-blue font-weight-bold mx-2"
+                  交易金額<span class="font-blue font-weight-bold mx-2"
                     >NT$
                     <span class="transaction_history_amount">60</span></span
                   >
@@ -435,7 +452,6 @@ contentType="text/html; charset=UTF-8"%>
           dataType: "json",
           contentType: "application/json;charset=utf-8",
           success: function (returnData) {
-            console.log(returnData);
             $("#transaction_history_area").children().remove();
             for (var i = 0; i < returnData.length; i++) {
               const { shop_name, time, amount } = returnData[i];
@@ -506,9 +522,8 @@ contentType="text/html; charset=UTF-8"%>
                 returnData[j].type = "提領";
               }
 
-              const { name, time, amount, type, transaction_code } = returnData[
-                j
-              ];
+              const { name, time, amount, type, transaction_code } =
+                returnData[j];
 
               $("#account_history_area").append(`
              <div class="row justify-content-start" data-transactioncode="\${transaction_code}">
@@ -592,14 +607,20 @@ contentType="text/html; charset=UTF-8"%>
               );
 
               if (returntransferData.amount < 0) {
-                $(".transfer_amount").parent().addClass("font-red");
+                $(".transfer_amount")
+                  .parent()
+                  .removeClass("font-blue")
+                  .addClass("font-red");
                 $(".transfer_name").html(
                   `轉入者<span class="font-weight-bold px-2">` +
                     nameToStar(returntransferData.receiver_name) +
                     `</span>`
                 );
               } else if (returntransferData.amount > 0) {
-                $(".transfer_amount").parent().addClass("font-blue");
+                $(".transfer_amount")
+                  .parent()
+                  .removeClass("font-red")
+                  .addClass("font-blue");
                 $(".transfer_name").html(
                   `轉出者<span class="font-weight-bold px-2">` +
                     nameToStar(returntransferData.remitter_name) +
@@ -670,7 +691,6 @@ contentType="text/html; charset=UTF-8"%>
           dataType: "json",
           contentType: "application/json;charset=utf-8",
           success: function (returnData) {
-            console.log(returnData);
             $("#transaction_history_area").children().remove();
             for (var i = 0; i < returnData.length; i++) {
               const { remitter_account, time, amount } = returnData[i];
@@ -691,7 +711,11 @@ contentType="text/html; charset=UTF-8"%>
              </div>`);
               $("#transaction_history_item_" + i).click(function () {
                 $(".transaction_history_remitter_account").html(
-                  returnData[$(this).index()].remitter_account
+                  `付款帳戶<span
+                    class="font-weight-bold mx-2"
+                  >` +
+                    returnData[$(this).index()].remitter_account +
+                    `</span>`
                 );
                 $(".transaction_history_time").html(
                   returnData[$(this).index()].time
@@ -724,16 +748,13 @@ contentType="text/html; charset=UTF-8"%>
           dataType: "json",
           contentType: "application/json;charset=utf-8",
           success: function (returnData) {
-            console.log(returnData);
             $("#account_history_area").children().remove();
             for (var j = 0; j < returnData.length; j++) {
               if (returnData[j].type == "W") {
                 returnData[j].type = "提領";
               }
 
-              const { name, time, amount, type, transaction_code } = returnData[
-                j
-              ];
+              const { time, amount, type, transaction_code } = returnData[j];
 
               $("#account_history_area").append(`
              <div class="row justify-content-start" data-transactioncode="\${transaction_code}">
@@ -741,7 +762,6 @@ contentType="text/html; charset=UTF-8"%>
                  <div class="row">
                    <div class="col-12 col-sm-6">
                      <p>\${time}</p>
-                     <p>\${name}</p>
                    </div>
                    <div class="col-12 col-sm-6 text-sm-right">
                      <p class="type">\${type}</p>

@@ -16,7 +16,13 @@ contentType="text/html; charset=UTF-8"%>
         <div class="col-12 col-md-5 login_item mx-md-auto mt-4 px-0">
           <form id="paymentpwd_form" autocomplete="off" method="post">
             <div
-              class="row justify-content-start mt-4 text-center font-weight-bold"
+              class="
+                row
+                justify-content-start
+                mt-4
+                text-center
+                font-weight-bold
+              "
             >
               <div class="col-12">
                 <h4>設定支付密碼</h4>
@@ -24,7 +30,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-4 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-4 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-4
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="pwd">支付密碼：</label>
               </div>
@@ -51,7 +62,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-4 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-4 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-4
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="confirm_pwd">確認支付密碼：</label>
               </div>

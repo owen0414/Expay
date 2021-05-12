@@ -16,7 +16,13 @@ contentType="text/html; charset=UTF-8"%>
         <div class="col-12 col-md-5 register_item mx-md-auto mt-4 px-0">
           <form id="shop_register_form" autocomplete="off" method="post">
             <div
-              class="row justify-content-start mt-3 text-center font-weight-bold"
+              class="
+                row
+                justify-content-start
+                mt-3
+                text-center
+                font-weight-bold
+              "
             >
               <div class="col-12">
                 <h4>輸入基本資料</h4>
@@ -24,14 +30,24 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold font-red"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold font-red
+                "
               >
                 *為必填欄位
               </div>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="id"><span class="font-red">*</span>帳號：</label>
               </div>
@@ -50,7 +66,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="pwd"><span class="font-red">*</span>密碼：</label>
               </div>
@@ -78,7 +99,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="confirm_pwd"
                   ><span class="font-red">*</span>確認密碼：</label
@@ -101,7 +127,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="shop_name"
                   ><span class="font-red">*</span>商家名稱：</label
@@ -122,7 +153,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="tax_id">統一編號：</label>
               </div>
@@ -143,7 +179,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="phone"
                   ><span class="font-red">*</span>商家手機：</label
@@ -169,7 +210,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="email"
                   ><span class="font-red">*</span>商家信箱：</label
@@ -190,7 +236,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="address"
                   ><span class="font-red">*</span>商家地址：</label
@@ -232,7 +283,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="withdraw_name"
                   ><span class="font-red">*</span>負責人姓名：</label
@@ -253,7 +309,12 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="row justify-content-start mt-3 mx-auto mx-md-5">
               <div
-                class="col-12 col-md-3 px-md-2 text-center text-md-right font-weight-bold"
+                class="
+                  col-12 col-md-3
+                  px-md-2
+                  text-center text-md-right
+                  font-weight-bold
+                "
               >
                 <label for="identity"
                   ><span class="font-red">*</span>身分證字號：</label
@@ -381,6 +442,60 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
 
+    <!-- Success Modal -->
+    <div
+      class="modal fade"
+      id="successModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalScrollableTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalScrollableTitle">提示</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!--成功 -->
+            <div class="row successPage">
+              <div class="col-12 d-flex justify-content-center">
+                <div class="m-2 text-center">
+                  <p class="h5" style="font-weight: bold">註冊成功</p>
+                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-center">
+                <div class="m-2">
+                  <div class="success-checkmark">
+                    <div class="check-icon">
+                      <span class="icon-line line-tip"></span>
+                      <span class="icon-line line-long"></span>
+                      <div class="icon-circle"></div>
+                      <div class="icon-fix"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-center">
+                <div class="fadeIn">
+                  <p style="font-weight: bold">將回到登入頁面重新登入</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Footer -->
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
     <script>
@@ -410,10 +525,15 @@ contentType="text/html; charset=UTF-8"%>
         zipcodeIntoDistrict: true,
       });
 
-      //註冊失敗的提示
+      //註冊提交的提示
+
+      function successInit() {
+        $("#successModal").modal("show"); //顯示成功
+        $(".fadeIn").fadeIn(1000);
+      }
 
       function failInit() {
-        $("#errorModal").modal("show");
+        $("#errorModal").modal("show"); //顯示失敗
         $(".fadeIn").fadeIn(1000);
       }
 
@@ -581,7 +701,7 @@ contentType="text/html; charset=UTF-8"%>
             contentType: "application/json;charset=utf-8",
             success: function (returnData) {
               if (returnData.status == 200) {
-                location.href = `${pageContext.request.contextPath}/payment_password`;
+                successInit();
               } else if (returnData.status == 400) {
                 $(".responseMessage").html(returnData.message);
                 console.log(returnData.message);
@@ -597,6 +717,11 @@ contentType="text/html; charset=UTF-8"%>
           return result;
         }
       });
+
+      $("#successModal").on("hidden.bs.modal", function (e) {
+        location.href = `${pageContext.request.contextPath}/user/login`;
+      });
+      
     </script>
   </body>
 </html>

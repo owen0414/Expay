@@ -87,7 +87,6 @@ contentType="text/html; charset=UTF-8"%>
           location.href = `${pageContext.request.contextPath}/payment_password`;
         } else {
           $("#balance").text("NT$" + numberWithCommas(balance));
-          $("#notification_count").text(unReceiveTransaction);
         }
 
         if (role === "S") {

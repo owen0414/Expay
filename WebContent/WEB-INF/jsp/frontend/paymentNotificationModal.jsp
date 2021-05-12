@@ -12,9 +12,32 @@ const { render } = ReactDOM;
 const App = props => {
     const [data, setData] = useState([]);
 
-    useEffect(async () => {
+    //從unix時間戳記到一般的datetime
+    const convertTimestampToDateTime = (timestamp) => {
+        const date = new Date(timestamp);
+        return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    };
+
+    const fetchData = async () => {
         const res = await instance.get("/api/getPaymentNotification");
-        setData(oldState => res.data);
+        if(res.data.status){
+            setData([
+                {
+                    name: "通知訊息",
+                    phone: "0900000000",
+                    amount: 50000,
+                    note: res.data.message,
+                    transaction_code: "T000000000000000000",
+                    time: "0000-00-00 00:00:00"
+                }
+            ]);
+        } else {
+            setData(oldState => res.data);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
         // setData([
         //     {
         //         name: "張登凱",
@@ -33,9 +56,8 @@ const App = props => {
         // ]);
     }, []);
 
-    $("#paymentNotificationModal").on("show.bs.modal", async () => {
-        const res = await instance.get("/api/getPaymentNotification");
-        setData(oldState => res.data);
+    $("#paymentNotificationModal").on("show.bs.modal", () => {
+        fetchData();
     });
 
     const Item = ({name, phone, amount, note, time, transaction_code, e_account}) => (

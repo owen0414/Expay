@@ -61,6 +61,9 @@ const App = () => {
           <a className="nav-link" style={{cursor: "not-allowed"}} disabled="disabled">待收款通知 <span className="badge badge-secondary">{userInfo.info.unReceiveTransaction}</span></a>
         </li>}
         <li className="nav-item">
+          <a href="${pageContext.request.contextPath}/help" className="nav-link">幫助</a>
+        </li>
+        <li className="nav-item">
           <a className="nav-link" onClick={handleLogout} style={{cursor: 'pointer'}}>登出</a>
         </li>
       </ul>
@@ -71,6 +74,9 @@ const App = () => {
         </li>
         <li className="nav-item">
           <a href="${pageContext.request.contextPath}/user/register" className="nav-link">註冊</a>
+        </li>
+        <li className="nav-item">
+          <a href="${pageContext.request.contextPath}/help" className="nav-link">幫助</a>
         </li>
       </ul>
     ));

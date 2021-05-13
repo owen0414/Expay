@@ -389,8 +389,8 @@ contentType="text/html; charset=UTF-8"%>
               <hr class="transaction_hr" />
               <div class="col-12 mt-2">
                 <p>
-                  銀行代碼
-                  <span class="font-weight-bold px-2 deposit_bankcode"></span>
+                  銀行名稱
+                  <span class="font-weight-bold px-2 deposit_bankname"></span>
                 </p>
               </div>
               <div class="col-12 mt-2">
@@ -505,7 +505,6 @@ contentType="text/html; charset=UTF-8"%>
           dataType: "json",
           contentType: "application/json;charset=utf-8",
           success: async function (returnData) {
-            console.log(returnData);
             $("#account_history_area").children().remove();
             for (var j = 0; j < returnData.length; j++) {
               if (returnData[j].type == "S") {
@@ -674,7 +673,11 @@ contentType="text/html; charset=UTF-8"%>
                   .addClass("font-red");
               }
 
-              $(".deposit_bankcode").html(returnbankdetailData.bank_code);
+              $(".deposit_bankname").html(
+                returnbankdetailData.bank_code +
+                  "  " +
+                  bankList[returnbankdetailData.bank_code]
+              );
               $(".deposit_bankaccount").html(returnbankdetailData.bank_account);
 
               $("#deposit_modal").modal("show");
@@ -707,7 +710,7 @@ contentType="text/html; charset=UTF-8"%>
                  <div class="row">
                    <div class="col-12 col-sm-6">
                      <p>\${time}</p>
-                     <p>\${remitter_account}</p>
+                     <p>\${eAccountToStar(remitter_account)}</p>
                    </div>
                    <div class="col-12 col-sm-6 text-sm-right">
                      <p>收款</p>
@@ -821,7 +824,11 @@ contentType="text/html; charset=UTF-8"%>
                   .addClass("font-red");
               }
 
-              $(".deposit_bankcode").html(returnbankdetailData.bank_code);
+              $(".deposit_bankname").html(
+                returnbankdetailData.bank_code +
+                  "  " +
+                  bankList[returnbankdetailData.bank_code]
+              );
               $(".deposit_bankaccount").html(returnbankdetailData.bank_account);
 
               $("#deposit_modal").modal("show");

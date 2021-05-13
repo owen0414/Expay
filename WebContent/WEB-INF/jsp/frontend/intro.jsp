@@ -5,6 +5,7 @@ contentType="text/html; charset=UTF-8"%>
   <head>
     <title>介紹</title>
     <%@ include file="/WEB-INF/jsp/frontend/include.jsp"%>
+    <link rel="stylesheet" href="<c:url value="/resources/css/index-style.css"/>">
   </head>
   <body>
     <!-- Navigation -->
@@ -24,8 +25,9 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
     
-    <div class="call-to-action cta2">
+    <div class="call-to-action cta-blur cta2">
       <div class="shadow"></div>
+      <div class="cta-image"></div>
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-8 col-12">
@@ -40,17 +42,17 @@ contentType="text/html; charset=UTF-8"%>
     <div class="advantage my-5">
       <div class="container">
         <div class="row justify-content-center text-center">
-          <div class="col-md-4 col-12">
+          <div class="col-md-4 col-12 mb-3">
             <i class="far fa-thumbs-up fa-7x"></i>
             <h3>方便</h3>
             <p>我們的服務講求方便，讓使用者用得開心。</p>
           </div>
-          <div class="col-md-4 col-12">
+          <div class="col-md-4 col-12 mb-3">
             <i class="fas fa-fighter-jet fa-7x"></i>
             <h3>快速</h3>
             <p>時間就是金錢，快速收付就是贏。</p>
           </div>
-          <div class="col-md-4 col-12">
+          <div class="col-md-4 col-12 mb-3">
             <i class="fas fa-user-ninja fa-7x"></i>
             <h3>潮流</h3>
             <p>電子支付就是夯，來用我們準沒錯。</p>
@@ -150,92 +152,5 @@ contentType="text/html; charset=UTF-8"%>
 
     <!-- Footer -->
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
-    <style>
-      .call-to-action{
-      	display: flex;
-      	align-items: center;
-        color: #fff;
-        position: relative;
-        margin-top: 40px;
-        background: url("${pageContext.request.contextPath}/resources/img/cta-bg.jpg") #0a2279;
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-        min-height: 600px;
-      }
-      
-      .call-to-action h2{
-      	font-size: 40px;
-      	margin-bottom: 10px;
-      }
-      
-      .call-to-action p{
-      	font-size: 20px;
-      	margin-bottom: 10px;
-      }
-
-      .shadow{
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: rgba(0,0,0,0.2);
-        min-height: 600px;
-      }
-      
-      .call-to-action.cta2{
-        margin-top: 0;
-      	background-image: url("${pageContext.request.contextPath}/resources/img/cta2-bg.jpg");
-        text-align: right;
-      }
-
-      .cta2 .shadow{
-        background:rgba(0,0,0,0.35);
-      }
-
-      .advantage{
-        padding: 20px 0;
-      }
-
-      .advantage h2{
-        font-size: 35px;
-        font-weight: bold;
-        margin-bottom: 30px;
-      }
-
-      .advantage i{
-        margin-bottom: 10px;
-      }
-
-      .advantage h3{
-        font-size: 20px;
-        margin-bottom: 10px;
-      }
-
-      .compare-table{
-        padding: 20px 0;
-        font-size: 20px;
-      }
-
-      .compare-table h2{
-        font-size: 35px;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-
-      .contact-us{
-        padding: 20px 0;
-      }
-
-      .contact-us h2{
-        font-size: 35px;
-        font-weight: bold;
-        margin-bottom: 30px;
-      }
-
-      .contact-us label{
-        margin-bottom: 5px;
-      }
-    </style>
   </body>
 </html>

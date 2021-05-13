@@ -61,6 +61,9 @@ const App = () => {
           <a className="nav-link" style={{cursor: "not-allowed"}} disabled="disabled">待收款通知 <span className="badge badge-secondary">{userInfo.info.unReceiveTransaction}</span></a>
         </li>}
         <li className="nav-item">
+          <a href="${pageContext.request.contextPath}/intro" className="nav-link">介紹</a>
+        </li>
+        <li className="nav-item">
           <a href="${pageContext.request.contextPath}/help" className="nav-link">幫助</a>
         </li>
         <li className="nav-item">
@@ -74,6 +77,9 @@ const App = () => {
         </li>
         <li className="nav-item">
           <a href="${pageContext.request.contextPath}/user/register" className="nav-link">註冊</a>
+        </li>
+        <li className="nav-item">
+          <a href="${pageContext.request.contextPath}/intro" className="nav-link">介紹</a>
         </li>
         <li className="nav-item">
           <a href="${pageContext.request.contextPath}/help" className="nav-link">幫助</a>

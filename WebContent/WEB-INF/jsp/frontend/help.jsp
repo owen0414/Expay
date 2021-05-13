@@ -52,7 +52,7 @@
 							<div id="collapseRegister" class="collapse"
 								aria-labelledby="headingRegister" data-parent="#accordionExample">
 								<div class="card-body">
-									照著網頁註冊步驟即可完成註冊
+									本系統有嚴謹的kyc審核，請照著網頁註冊步驟即可完成註冊。
 								</div>
 							</div>
 						</div>
@@ -122,8 +122,9 @@
 								<div class="card-body">
 									收款須知
 									<ol>
-										<li>不可以XXX</li>
-										<li>不可以OOO</li>
+										<li>單筆最多限額50000元</li>
+										<li>至少需要在備註欄留言1字</li>
+										<li>如果後續使用者確認轉帳後會立即進入您的電支帳戶</li>
 									</ol>
 								</div>
 							</div>

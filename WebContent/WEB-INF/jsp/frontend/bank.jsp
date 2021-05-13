@@ -5,6 +5,96 @@
     <head>
         <title>銀行帳戶管理</title>
         <%@ include file="/WEB-INF/jsp/frontend/include.jsp"%>
+        <style>
+            body {
+                font-family: 'Varela Round', sans-serif;
+            }
+            .modal-confirm {
+                color: #636363;
+                width: 400px;
+            }
+            .modal-confirm .modal-content {
+                padding: 20px;
+                border-radius: 5px;
+                border: none;
+                text-align: center;
+                font-size: 14px;
+            }
+            .modal-confirm .modal-header {
+                border-bottom: none;
+                position: relative;
+            }
+            .modal-confirm h4 {
+                text-align: center;
+                font-size: 26px;
+                margin: 30px 0 -10px;
+            }
+            .modal-confirm .close {
+                position: absolute;
+                top: -5px;
+                right: -2px;
+            }
+            .modal-confirm .modal-body {
+                color: #999;
+            }
+            .modal-confirm .modal-footer {
+                border: none;
+                text-align: center;
+                border-radius: 5px;
+                font-size: 13px;
+                padding: 10px 15px 25px;
+            }
+            .modal-confirm .modal-footer a {
+                color: #999;
+            }
+            .modal-confirm .icon-box {
+                width: 80px;
+                height: 80px;
+                margin: 0 auto;
+                border-radius: 50%;
+                z-index: 9;
+                text-align: center;
+                border: 3px solid #f15e5e;
+            }
+            .modal-confirm .icon-box i {
+                color: #f15e5e;
+                font-size: 46px;
+                display: inline-block;
+                margin-top: 13px;
+            }
+            .modal-confirm .btn,
+            .modal-confirm .btn:active {
+                color: #fff;
+                border-radius: 4px;
+                background: #60c7c1;
+                text-decoration: none;
+                transition: all 0.4s;
+                line-height: normal;
+                min-width: 120px;
+                border: none;
+                min-height: 40px;
+                border-radius: 3px;
+                margin: 0 5px;
+            }
+            .modal-confirm .btn-secondary {
+                background: #c1c1c1;
+            }
+            .modal-confirm .btn-secondary:hover,
+            .modal-confirm .btn-secondary:focus {
+                background: #a8a8a8;
+            }
+            .modal-confirm .btn-danger {
+                background: #f15e5e;
+            }
+            .modal-confirm .btn-danger:hover,
+            .modal-confirm .btn-danger:focus {
+                background: #ee3535;
+            }
+            .trigger-btn {
+                display: inline-block;
+                margin: 100px auto;
+            }
+        </style>
     </head>
     <body>
         <!-- Navigation -->
@@ -391,36 +481,28 @@
         </div>
 
         <!--Modal 刪除雙重確認 -->
-        <!-- <div
-            class="modal fade"
-            id="confirm-delete"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="myModalLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog">
+        <div id="confirm-delete" class="modal fade">
+            <div class="modal-dialog modal-confirm">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">
-                            <b>刪除卡片</b>
-                        </h4>
+                    <div class="modal-header flex-column">
+                        <div class="icon-box">
+                            <i class="fa fa-trash fa-sm"></i>
+                        </div>
+                        <h4 class="modal-title w-100">確認刪除</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-
-                    <div class="h4 modal-body">
+                    <div class="modal-body">
                         <p>您將刪除卡片, 此操作無法回復.</p>
                         <p>您確定要繼續嗎?</p>
                         <p class="debug-url"></p>
                     </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <a class="btn btn-danger btn-ok">刪除卡片</a>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger btn-ok">刪除卡片</button>
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <!-- Footer -->
         <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
@@ -810,6 +892,7 @@
                         $('#' + data[i].bankAddress)
                             .children()
                             .attr('data-id', data[i].bankAddress)
+                            .attr('data-target', '#confirm-delete')
                             .html('<i class="far fa-trash-alt"></i> ' + data[i].bankAddress)
                     }
                     $('#editCardsdefault').remove()
@@ -877,6 +960,15 @@
                 }
             }
 
+            //刪除雙重確認(modal)
+            $('#confirm-delete').on('show.bs.modal', function (e) {
+                //取data-xxx的值並塞屬性給(.btn_ok)
+                $(this).find('.btn-ok').attr('id', $(e.relatedTarget).data('id'))
+                //塞文字到(.debug-url)
+                $('.debug-url').html('銀行卡號:  <strong>' + $(e.relatedTarget).data('id') + '</strong>')
+                console.log($(e.relatedTarget).data('id'))
+            })
+
             $(document).ready(function () {
                 //資料渲染與預設編輯卡片隱藏
                 init()
@@ -898,20 +990,13 @@
                     formInit()
                 })
 
-                //當按下刪除卡片時
-                $(document).on('click', '.unlinkBankBtn', function (event) {
-                    //刪除雙重確認(modal)
-                    // $('#confirm-delete').on('show.bs.modal', function (e) {
-                    //     //取data-xxx的值並塞屬性給(.btn_ok)
-                    //     $(this).find('.btn-ok').attr('id', $(e.relatedTarget).data('id'))
-                    //     //塞文字到(.debug-url)
-                    //     $('.debug-url').html('銀行卡號:  <strong>' + $(e.relatedTarget).data('id') + '</strong>')
-
-                    //     console.log($(e.relatedTarget).data('id'))
-                    // })
-
-                    //解綁api
-                    unlinkBank($(this).attr('id'))
+                //當按下刪除卡片時解綁api
+                $('.btn-ok').click(function () {
+                    unlinkBank($(this).attr('id')).then(function () {
+                        $('#confirm-delete').modal('hide')
+                        $('#editCardModal').modal('hide')
+                        alert('刪除成功')
+                    })
                 })
 
                 //監測到輸入驗證碼時，進行驗證

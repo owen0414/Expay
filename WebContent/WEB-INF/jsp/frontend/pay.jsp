@@ -92,13 +92,13 @@
                                     <span>您的電支帳戶</span>
                                 </div>
                                 <div class="col d-flex justify-content-center">
-                                    <img alt="箭頭" src="<c:url value="/resources/img/arrow.png" />"
+                                    <img alt=">" src="<c:url value="/resources/img/arrow.png" />"
                                     class="align-self-center">
                                 </div>
                                 <div class="col">
-                                    <img alt="家樂福" src="<c:url value="/resources/img/shop.png" />"
+                                    <img alt="合作商家" src="<c:url value="/resources/img/shop.png" />"
                                     id="e_account-icon">
-                                    <span id="e_account-name">家樂福</span>
+                                    <span id="e_account-name">合作商家</span>
                                 </div>
                             </div>
                         </div>

@@ -287,6 +287,11 @@
             }
 
             $(document).ready(() => {
+                $(window).on('beforeunload', function (e) {
+                    console.log('離開前...')
+                    cleanCookieAndContent()
+                })
+
                 initRender()
 
                 document.getElementById('phoneInput').onkeyup = function () {
@@ -469,6 +474,7 @@
                 if (!res.data.login) {
                     //console.log(res);
                     location.href = `${pageContext.request.contextPath}/user/login`
+                    cleanCookieAndContent()
                 }
 
                 const {
@@ -476,6 +482,7 @@
                 } = res.data
                 if (role === 'S') {
                     location.href = `${pageContext.request.contextPath}/`
+                    cleanCookieAndContent()
                 }
             })
         </script>

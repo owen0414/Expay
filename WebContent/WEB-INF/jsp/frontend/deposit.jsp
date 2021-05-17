@@ -102,27 +102,27 @@
         <!-- 交易密碼 -->
         <%@ include file="/WEB-INF/jsp/frontend/transactionPwModal.jsp"%>
         <script>
-            initFetch()
+            initFetch();
 
             store.subscribe(() => {
-                const state = store.getState()
-                console.log(store.getState())
+                const state = store.getState();
+                console.log(store.getState());
 
                 if (state.e_account) {
                     const {
                         info: { balance },
-                    } = state.e_account
-                    $('#current-balance').text(numberWithCommas(balance))
+                    } = state.e_account;
+                    $('#current-balance').text(numberWithCommas(balance));
                 }
 
                 if (state.request) {
-                    $('#bank_account').empty()
-                    const { banks } = state.request
+                    $('#bank_account').empty();
+                    const { banks } = state.request;
                     banks.forEach(({ bankCode, bankAddress }) => {
                         $('#bank_account').append(
                             `<option value=\${bankCode},\${bankAddress}>\${bankList[bankCode]} \${last5Address(bankAddress)}</option>`
-                        )
-                    })
+                        );
+                    });
                 }
 
                 if (state.response) {
@@ -133,148 +133,151 @@
 						儲值銀行: \${bankList[bankCode]}<br>
 						儲值金額: NT\$\${numberWithCommas(amount)}<br>
 						儲值後餘額: NT\$\${numberWithCommas(balance)}
-					`
+					`;
                         },
                         () => {
-                            return '儲值失敗!'
+                            return '儲值失敗!';
                         }
-                    )
+                    );
                 }
-            })
+            });
 
             // 儲值填寫設定
             const setDepositAmount = (value) => {
-                let currentBalance = parseInt(undoNumberWithCommas($('#current-balance').text()))
-                let upperBound = 50000 - currentBalance
+                let currentBalance = parseInt(undoNumberWithCommas($('#current-balance').text()));
+                let upperBound = 50000 - currentBalance;
                 if (value > upperBound) {
-                    $('#deposit_amount').val(upperBound)
+                    $('#deposit_amount').val(upperBound);
                 } else {
-                    $('#deposit_amount').val(value)
+                    $('#deposit_amount').val(value);
                 }
-            }
+            };
 
             // 儲值後餘額設定
             const updateAfterDepositBalance = () => {
-                let currentBalance = parseInt(undoNumberWithCommas($('#current-balance').text()))
-                let amount = parseInt($('#deposit_amount').val()) + currentBalance
+                let currentBalance = parseInt(undoNumberWithCommas($('#current-balance').text()));
+                let amount = parseInt($('#deposit_amount').val()) + currentBalance;
                 if (amount > 50000) {
-                    $('#after-deposit-balance').text(numberWithCommas(50000))
+                    $('#after-deposit-balance').text(numberWithCommas(50000));
                 } else {
-                    $('#after-deposit-balance').text(numberWithCommas(amount))
+                    $('#after-deposit-balance').text(numberWithCommas(amount));
                 }
-            }
+            };
 
             //送出時避免input
             const loadingForm = (status) => {
                 if (status) {
-                    $('#bank_account').attr('disabled', true)
-                    $('#deposit_amount').attr('disabled', true)
+                    $('#bank_account').attr('disabled', true);
+                    $('#deposit_amount').attr('disabled', true);
                     $('#deposit-btn').html(
                         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
-                    )
+                    );
                 } else {
-                    $('#bank_account').attr('disabled', false)
-                    $('#deposit_amount').attr('disabled', false)
-                    $('#deposit-btn').html('儲值')
+                    $('#bank_account').attr('disabled', false);
+                    $('#deposit_amount').attr('disabled', false);
+                    $('#deposit-btn').html('儲值');
                 }
-            }
+            };
 
             // 按鈕
             $(document).ready(() => {
                 $('#deposit_amount').change(function (e) {
-                    let amount = parseInt(e.target.value)
-                    setDepositAmount(amount)
-                    updateAfterDepositBalance()
-                })
+                    let amount = parseInt(e.target.value);
+                    setDepositAmount(amount);
+                    updateAfterDepositBalance();
+                });
                 $('#plus-100').click(function () {
-                    let amount = parseInt($('#deposit_amount').val()) + 100
-                    setDepositAmount(amount)
-                    updateAfterDepositBalance()
-                })
+                    let amount = parseInt($('#deposit_amount').val()) + 100;
+                    setDepositAmount(amount);
+                    updateAfterDepositBalance();
+                });
                 $('#plus-1000').click(function () {
-                    let amount = parseInt($('#deposit_amount').val()) + 1000
-                    setDepositAmount(amount)
-                    updateAfterDepositBalance()
-                })
+                    let amount = parseInt($('#deposit_amount').val()) + 1000;
+                    setDepositAmount(amount);
+                    updateAfterDepositBalance();
+                });
                 $('#plus-10000').click(function () {
-                    let amount = parseInt($('#deposit_amount').val()) + 10000
-                    setDepositAmount(amount)
-                    updateAfterDepositBalance()
-                })
+                    let amount = parseInt($('#deposit_amount').val()) + 10000;
+                    setDepositAmount(amount);
+                    updateAfterDepositBalance();
+                });
 
                 // 儲值按鈕 TODO
                 $('#deposit-btn').click(() => {
-                    let [bankCode, bankAddress] = $('#bank_account').val().split(',') //銀行代碼和帳戶
-                    let amount = parseInt($('#deposit_amount').val()) //儲值金額
+                    let [bankCode, bankAddress] = $('#bank_account').val().split(','); //銀行代碼和帳戶
+                    let amount = parseInt($('#deposit_amount').val()); //儲值金額
 
                     if (amount <= 0 || amount > 50000) {
-                        alert('儲值金額必須1~50000')
+                        alert('儲值金額必須1~50000');
                     } else {
-                        let dataJSON = {}
+                        let dataJSON = {};
 
                         dataJSON['e_account'] = store.getState().e_account
                             ? store.getState().e_account.info.e_account
-                            : '0210000001' //TODO 抓使用者真實的e_account
-                        dataJSON['bankCode'] = bankCode
-                        dataJSON['bankAddress'] = bankAddress
-                        dataJSON['amount'] = amount
-                        dataJSON['type'] = 'D'
+                            : '0210000001'; //TODO 抓使用者真實的e_account
+                        dataJSON['bankCode'] = bankCode;
+                        dataJSON['bankAddress'] = bankAddress;
+                        dataJSON['amount'] = amount;
+                        dataJSON['type'] = 'D';
 
-                        loadingForm(true)
+                        loadingForm(true);
                         instance
                             .post('/api/bank/transaction', dataJSON)
                             .then((res) => {
                                 store.dispatch({
                                     type: 'SUBMIT',
                                     payload: res.data,
-                                })
+                                });
 
-                                window.setTimeout(() => loadingForm(false), 500)
-                                initFetch()
-                                updateAfterDepositBalance()
+                                window.setTimeout(() => loadingForm(false), 500);
+                                initFetch();
+                                updateAfterDepositBalance();
                             })
                             .catch((error) => {
-                                handleError(error.response.data)
-                                window.setTimeout(() => loadingForm(false), 500)
-                                console.log(error)
-                            })
+                                handleError(error.response.data);
+                                window.setTimeout(() => loadingForm(false), 500);
+                                console.log(error);
+                            });
                     }
-                })
-            })
+                });
+            });
 
             async function initFetch() {
                 try {
                     //取得當前的使用者
-                    let res = await instance.get('/api/getCurrentUser')
-                    const { login } = res.data
+                    let res = await instance.get('/api/getCurrentUser');
+                    const { login } = res.data;
                     if (!login) {
-                        location.href = `${pageContext.request.contextPath}/user/login`
-                        throw new Error('尚未登入!')
+                        location.href = `${pageContext.request.contextPath}/user/login`;
+                        throw new Error('尚未登入!');
                     }
 
                     const {
                         info: { role },
-                    } = res.data
+                    } = res.data;
                     if (role === 'S') {
-                        location.href = `${pageContext.request.contextPath}/`
+                        location.href = `${pageContext.request.contextPath}/`;
                     }
 
                     store.dispatch({
                         type: 'FETCH_USER',
                         payload: res.data,
-                    })
+                    });
 
                     //抓取目前使用者已綁定的銀行帳號
-                    res = await instance.get('/api/getLinkedBank')
+                    res = await instance.get('/api/getLinkedBank');
+                    if (res.data.banks.length === 0) {
+                        location.href = '${pageContext.request.contextPath}/bank';
+                    }
                     store.dispatch({
                         type: 'FETCH',
                         payload: { ...res.data },
-                    })
+                    });
 
-                    showBankAccountIconName('${pageContext.request.contextPath}')
+                    showBankAccountIconName('${pageContext.request.contextPath}');
                 } catch (error) {
-                    handleError(error.response.data)
-                    console.log(error)
+                    handleError(error.response.data);
+                    console.log(error);
                 }
             }
         </script>

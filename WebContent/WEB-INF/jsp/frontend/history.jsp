@@ -91,11 +91,24 @@ contentType="text/html; charset=UTF-8"%>
               aria-labelledby="nav-account-tab"
             >
               <div class="row justify-content-start text-center condition_item">
-                <div class="col-12 col-sm-4 mt-3 account_condition active">
+                <div
+                  class="col-12 col-sm-4 mt-3 account_condition active"
+                  id="all_btn"
+                >
                   全部
                 </div>
-                <div class="col-12 col-sm-4 mt-3 account_condition">收入</div>
-                <div class="col-12 col-sm-4 mt-3 account_condition">支出</div>
+                <div
+                  class="col-12 col-sm-4 mt-3 account_condition"
+                  id="income_btn"
+                >
+                  收入
+                </div>
+                <div
+                  class="col-12 col-sm-4 mt-3 account_condition"
+                  id="expenditure_btn"
+                >
+                  支出
+                </div>
               </div>
               <div class="row justify-content-start text-center">
                 <div class="col-12 col-sm-4 mt-3 mx-sm-5 px-0">
@@ -107,7 +120,7 @@ contentType="text/html; charset=UTF-8"%>
                 </div>
               </div>
               <div id="account_history_area">
-                <h4 class="text-center mt-3">沒有帳戶異動紀錄</h4>
+                <h4 class="text-center mt-3 no_record">沒有帳戶異動紀錄</h4>
               </div>
             </div>
           </div>
@@ -332,10 +345,10 @@ contentType="text/html; charset=UTF-8"%>
     <!-- Deposit Modal -->
     <div
       class="modal fade"
-      id="deposit_modal"
+      id="account_modal"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="depositModalTitle"
+      aria-labelledby="accountModalTitle"
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -343,7 +356,7 @@ contentType="text/html; charset=UTF-8"%>
           <div class="modal-header text-center">
             <h5
               class="modal-title text-center font-weight-bold"
-              id="depositModalTitle"
+              id="accountModalTitle"
             >
               帳戶紀錄明細
             </h5>
@@ -356,25 +369,25 @@ contentType="text/html; charset=UTF-8"%>
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body deposit_modal">
+          <div class="modal-body account_modal">
             <div class="container-fluid">
               <div class="col-12 mt-2">
                 <p>
                   交易類別
-                  <span class="font-weight-bold px-2 deposit_type"></span>
+                  <span class="font-weight-bold px-2 account_type"></span>
                 </p>
               </div>
               <div class="col-12 mt-2">
                 <p>
                   交易日期
-                  <span class="font-weight-bold px-2 deposit_time"></span>
+                  <span class="font-weight-bold px-2 account_time"></span>
                 </p>
               </div>
               <div class="col-12 mt-2">
                 <p>
                   交易編號
                   <span
-                    class="font-lightblue font-weight-bold px-2 deposit_code"
+                    class="font-lightblue font-weight-bold px-2 account_code"
                   ></span>
                 </p>
               </div>
@@ -382,7 +395,7 @@ contentType="text/html; charset=UTF-8"%>
                 <p>
                   交易金額
                   <span class="font-weight-bold px-2"
-                    >NT$ <span class="deposit_amount">73</span></span
+                    >NT$ <span class="account_amount">73</span></span
                   >
                 </p>
               </div>
@@ -390,14 +403,14 @@ contentType="text/html; charset=UTF-8"%>
               <div class="col-12 mt-2">
                 <p>
                   銀行名稱
-                  <span class="font-weight-bold px-2 deposit_bankname"></span>
+                  <span class="font-weight-bold px-2 account_bankname"></span>
                 </p>
               </div>
               <div class="col-12 mt-2">
                 <p>
                   銀行帳號
                   <span
-                    class="font-weight-bold px-2 deposit_bankaccount"
+                    class="font-weight-bold px-2 account_bankaccount"
                   ></span>
                 </p>
               </div>
@@ -440,6 +453,40 @@ contentType="text/html; charset=UTF-8"%>
       $(".account_condition").click(function () {
         $(this).addClass("active");
         $(this).siblings().removeClass("active");
+      });
+
+      $("#all_btn").click(function () {
+        $("#account_history_area").children(".no_record").hide();
+        $(".account_history").show();
+        if ($(".account_history:visible").length == 0) {
+          $("#account_history_area").children(".no_record").show();
+        }
+      });
+
+      $("#income_btn").click(function () {
+        $("#account_history_area").children(".no_record").hide();
+        $(".amount").each(function (index) {
+          $(".account_history").eq(index).hide();
+          if ($(this).text().slice(0, 1) == "+") {
+            $(".account_history").eq(index).show();
+          }
+        });
+        if ($(".account_history:visible").length == 0) {
+          $("#account_history_area").children(".no_record").show();
+        }
+      });
+
+      $("#expenditure_btn").click(function () {
+        $("#account_history_area").children(".no_record").hide();
+        $(".amount").each(function (index) {
+          $(".account_history").eq(index).hide();
+          if ($(this).text().slice(0, 1) == "-") {
+            $(".account_history").eq(index).show();
+          }
+        });
+        if ($(".account_history:visible").length == 0) {
+          $("#account_history_area").children(".no_record").show();
+        }
       });
 
       //會員交易&帳戶紀錄
@@ -505,8 +552,8 @@ contentType="text/html; charset=UTF-8"%>
           dataType: "json",
           contentType: "application/json;charset=utf-8",
           success: async function (returnData) {
-            $("#account_history_area").children().remove();
             for (var j = 0; j < returnData.length; j++) {
+              $("#account_history_area").children(".no_record").hide();
               if (returnData[j].type == "S") {
                 returnData[j].type = "付款";
               } else if (
@@ -653,34 +700,34 @@ contentType="text/html; charset=UTF-8"%>
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (returnbankdetailData) {
-              $(".deposit_time").html(returnbankdetailData.time);
-              $(".deposit_code").html(returnbankdetailData.transaction_code);
-              $(".deposit_amount").html(
+              $(".account_time").html(returnbankdetailData.time);
+              $(".account_code").html(returnbankdetailData.transaction_code);
+              $(".account_amount").html(
                 numberWithCommas(returnbankdetailData.amount)
               );
 
               if (returnbankdetailData.type == "D") {
-                $(".deposit_type").html("儲值");
-                $(".deposit_amount")
+                $(".account_type").html("儲值");
+                $(".account_amount")
                   .parent()
                   .removeClass("font-red")
                   .addClass("font-blue");
               } else if (returnbankdetailData.type == "W") {
-                $(".deposit_type").html("提領");
-                $(".deposit_amount")
+                $(".account_type").html("提領");
+                $(".account_amount")
                   .parent()
                   .removeClass("font-blue")
                   .addClass("font-red");
               }
 
-              $(".deposit_bankname").html(
+              $(".account_bankname").html(
                 returnbankdetailData.bank_code +
                   "  " +
                   bankList[returnbankdetailData.bank_code]
               );
-              $(".deposit_bankaccount").html(returnbankdetailData.bank_account);
+              $(".account_bankaccount").html(returnbankdetailData.bank_account);
 
-              $("#deposit_modal").modal("show");
+              $("#account_modal").modal("show");
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
@@ -758,8 +805,8 @@ contentType="text/html; charset=UTF-8"%>
           dataType: "json",
           contentType: "application/json;charset=utf-8",
           success: function (returnData) {
-            $("#account_history_area").children().remove();
             for (var j = 0; j < returnData.length; j++) {
+              $("#account_history_area").children(".no_record").hide();
               if (returnData[j].type == "W") {
                 returnData[j].type = "提領";
               }
@@ -810,28 +857,28 @@ contentType="text/html; charset=UTF-8"%>
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (returnbankdetailData) {
-              $(".deposit_time").html(returnbankdetailData.time);
-              $(".deposit_code").html(returnbankdetailData.transaction_code);
-              $(".deposit_amount").html(
+              $(".account_time").html(returnbankdetailData.time);
+              $(".account_code").html(returnbankdetailData.transaction_code);
+              $(".account_amount").html(
                 numberWithCommas(returnbankdetailData.amount)
               );
 
               if (returnbankdetailData.type == "W") {
-                $(".deposit_type").html("提領");
-                $(".deposit_amount")
+                $(".account_type").html("提領");
+                $(".account_amount")
                   .parent()
                   .removeClass("font-blue")
                   .addClass("font-red");
               }
 
-              $(".deposit_bankname").html(
+              $(".account_bankname").html(
                 returnbankdetailData.bank_code +
                   "  " +
                   bankList[returnbankdetailData.bank_code]
               );
-              $(".deposit_bankaccount").html(returnbankdetailData.bank_account);
+              $(".account_bankaccount").html(returnbankdetailData.bank_account);
 
-              $("#deposit_modal").modal("show");
+              $("#account_modal").modal("show");
             },
 
             error: function (xhr, ajaxOptions, thrownError) {

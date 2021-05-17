@@ -12,7 +12,7 @@
         <!-- Content -->
         <div class="content_container py-5" style="height: auto; min-height: 450px">
             <div class="row mx-5 mx-sm-auto">
-                <div class="col-12 col-sm-3 money_container mx-sm-auto mt-5 text-center">
+                <div class="col-12 col-sm-3 money_container mx-sm-auto mt-5 text-center mybox" style="border: none">
                     <p
                         class="mt-5 px-5"
                         onclick="location.href='${pageContext.request.contextPath}/history'"
@@ -72,27 +72,27 @@
             instance.get('/api/getCurrentUser').then((res) => {
                 if (!res.data.login) {
                     //console.log(res);
-                    location.href = `${pageContext.request.contextPath}/user/login`
+                    location.href = `${pageContext.request.contextPath}/user/login`;
                 }
 
                 const {
                     login,
                     info: { balance, role },
                     t_password,
-                } = res.data
+                } = res.data;
                 if (!t_password) {
-                    location.href = `${pageContext.request.contextPath}/payment_password`
+                    location.href = `${pageContext.request.contextPath}/payment_password`;
                 } else {
-                    $('#balance').text('NT$' + numberWithCommas(balance))
+                    $('#balance').text('NT$' + numberWithCommas(balance));
                 }
 
                 if (role === 'S') {
-                    $('#deposit').attr('disabled', 'disabled').css('cursor', 'not-allowed')
-                    $('#pay').attr('disabled', 'disabled').css('cursor', 'not-allowed')
-                    $('#transfer').attr('disabled', 'disabled').css('cursor', 'not-allowed')
-                    $('#receive').attr('disabled', 'disabled').css('cursor', 'not-allowed')
+                    $('#deposit').attr('disabled', 'disabled').css('cursor', 'not-allowed');
+                    $('#pay').attr('disabled', 'disabled').css('cursor', 'not-allowed');
+                    $('#transfer').attr('disabled', 'disabled').css('cursor', 'not-allowed');
+                    $('#receive').attr('disabled', 'disabled').css('cursor', 'not-allowed');
                 }
-            })
+            });
         </script>
     </body>
 </html>

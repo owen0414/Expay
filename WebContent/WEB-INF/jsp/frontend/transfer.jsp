@@ -13,9 +13,7 @@
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-5">
-                    <h2 class="text-center my-3">
-                        <b>轉帳</b>
-                    </h2>
+                    <h2 class="text-center my-3">轉帳</h2>
 
                     <form onkeydown="return event.key != 'Enter';">
                         <div id="first-block" class="mb-3 mybox">
@@ -140,6 +138,30 @@
             </div>
         </div>
 
+        <!--Modal 刪除雙重確認 -->
+        <div id="confirm-delete" class="modal fade">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header flex-column">
+                        <div class="icon-box">
+                            <i class="fa fa-trash fa-sm"></i>
+                        </div>
+                        <h4 class="modal-title w-100">確認刪除</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>您將刪除卡片, 此操作無法回復.</p>
+                        <p>您確定要繼續嗎?</p>
+                        <p class="debug-url"></p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger btn-ok">刪除卡片</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer -->
         <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 
@@ -151,8 +173,9 @@
         <script>
             //限制加總不超過餘額及上限
             const setTransferAmount = (value) => {
-                if (value > 50000) {
-                    $('#transfer_amount').val(50000)
+                let currentBalance = parseInt(undoNumberWithCommas($('#current-balance').text()))
+                if (value > currentBalance) {
+                    $('#transfer_amount').val(currentBalance)
                 } else {
                     $('#transfer_amount').val(value)
                 }
@@ -180,11 +203,11 @@
                         const currentUser = await instance.get('/api/getCurrentUser')
                         //dom渲染
                         $('#current-balance').html(numberWithCommas(currentUser.data.info.balance))
-                        $('#remitter_eAccount').html(currentUser.data.info.e_account)
+                        $('#remitter_eAccount').html(eAccountToStar(currentUser.data.info.e_account))
                         $('#remitter_name').html(currentUser.data.info.name)
 
                         $('#phoneInput').val($.cookie('phone'))
-                        $('#receiver_eAccount').html($.cookie('e_account'))
+                        $('#receiver_eAccount').html(eAccountToStar($.cookie('e_account')))
                         $('#receiver_name').html($.cookie('name'))
                         $('#transfer_amount').val($.cookie('amount'))
 
@@ -287,9 +310,16 @@
             }
 
             $(document).ready(() => {
+                let flag = false
+                $('#paymentNotificationModal').on('show.bs.modal', function (event) {
+                    flag = true
+                })
+
                 $(window).on('beforeunload', function (e) {
-                    console.log('離開前...')
-                    cleanCookieAndContent()
+                    if (!flag) {
+                        console.log('離開前清除cookie...')
+                        cleanCookieAndContent()
+                    }
                 })
 
                 initRender()
@@ -299,10 +329,11 @@
                     $('#message').html('')
                 }
 
-                // keyup event
-                // $('#transfer_amount').on('keyup', function () {
-                //     $(this).attr(max)
-                // })
+                //最高上限
+                $('#transfer_amount').change(function (e) {
+                    let amount = parseInt(e.target.value)
+                    setTransferAmount(amount)
+                })
 
                 //按下快捷鍵
                 $('#plus-100').click(function () {
@@ -395,16 +426,16 @@
                                 transferRes.data,
                                 ({ amount, balance, message, name, status, timestamp }) => {
                                     return `
-                                        訊息: \${message}<br>
-                                        轉帳金額: NT\$\${numberWithCommas(amount)}<br>
-                                        轉帳後餘額: NT\$\${numberWithCommas(balance)}
-                                    `
+                                                    訊息: \${message}<br>
+                                                    轉帳金額: NT\$\${numberWithCommas(amount)}<br>
+                                                    轉帳後餘額: NT\$\${numberWithCommas(balance)}
+                                                `
                                 },
                                 ({ amount, balance, message, name, status, timestamp }) => {
                                     return `
-                                        訊息: \${message}<br>
-                                        轉帳失敗
-                                    `
+                                                    訊息: \${message}<br>
+                                                    轉帳失敗
+                                                `
                                 }
                             )
                         }
@@ -426,16 +457,16 @@
                                 transferRes.data,
                                 ({ amount, balance, message, name, status, timestamp }) => {
                                     return `
-                                        訊息: \${message}<br>
-                                        轉帳金額: NT\$\${numberWithCommas(amount)}<br>
-                                        轉帳後餘額: NT\$\${numberWithCommas(balance)}
-                                    `
+                                                    訊息: \${message}<br>
+                                                    轉帳金額: NT\$\${numberWithCommas(amount)}<br>
+                                                    轉帳後餘額: NT\$\${numberWithCommas(balance)}
+                                                `
                                 },
                                 ({ amount, balance, message, name, status, timestamp }) => {
                                     return `
-                                        訊息: \${message}<br>
-                                        轉帳失敗
-                                    `
+                                                    訊息: \${message}<br>
+                                                    轉帳失敗
+                                                `
                                 }
                             )
                         }

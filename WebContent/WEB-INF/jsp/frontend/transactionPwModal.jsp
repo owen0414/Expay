@@ -55,42 +55,43 @@
 </div>
 <script>
     $(document).ready(() => {
-        $('#transactionPwModal').modal('toggle')
+        $('#transactionPwModal').modal('toggle');
 
         $('#transactionPw').keyup(async function () {
-            let tpw = $(this).val()
+            let tpw = $(this).val();
             if (tpw.length === 6) {
                 try {
-                    let res = await instance.get('/api/getCurrentUser')
+                    let res = await instance.get('/api/getCurrentUser');
                     const {
                         login,
                         info: { role },
-                    } = res.data
+                    } = res.data;
                     if (!login) {
-                        alert('尚未登入!')
-                        throw new Error('尚未登入!')
+                        alert('尚未登入!');
+                        throw new Error('尚未登入!');
                     }
 
-                    let dataJSON = {}
-                    dataJSON['transactionPwd'] = tpw
-                    dataJSON['role'] = role
+                    let dataJSON = {};
+                    dataJSON['transactionPwd'] = tpw;
+                    dataJSON['role'] = role;
 
-                    res = await instance.post('/api/checkTransactionPwd', dataJSON)
-                    const { valid } = res.data
+                    res = await instance.post('/api/checkTransactionPwd', dataJSON);
+                    const { valid } = res.data;
                     if (!valid) {
-                        $('#hint').html('交易密碼錯誤').css('color', 'red')
+                        $('#hint').html('交易密碼錯誤').css('color', 'red');
                     } else {
-                        $('#transactionPwModal').modal('hide')
+                        $('#transactionPwModal').modal('hide');
                     }
                 } catch (error) {
-                    handleError(error.response.data)
-                    console.log(error)
+                    handleError(error.response.data);
+                    console.log(error);
+                    $('#transactionPwModal').modal('toggle');
                 }
             }
-        })
+        });
 
         $('.modal').on('shown.bs.modal', function () {
-            $(this).find('[autofocus]').focus()
-        })
-    })
+            $(this).find('[autofocus]').focus();
+        });
+    });
 </script>

@@ -6,12 +6,34 @@
         <title>銀行帳戶管理</title>
         <%@ include file="/WEB-INF/jsp/frontend/include.jsp"%>
         <style>
+            /* 由下彈出式modal */
+            .modal-p-bottom .modal-dialog {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                max-width: 100% !important;
+                margin: 0;
+                transform: translateY(100%) !important;
+            }
+            .modal-p-bottom .modal-dialog .modal-content {
+                border-radius: 0.3rem 0.3rem 0 0;
+            }
+            .modal-p-bottom.show {
+                overflow: hidden;
+            }
+            .modal-p-bottom.show .modal-dialog {
+                transform: translateY(0%) !important;
+                min-height: 80px;
+            }
+
+            /* 美觀的再確認modal */
             body {
                 font-family: 'Varela Round', sans-serif;
             }
             .modal-confirm {
                 color: #636363;
-                width: 400px;
+                max-width: 400px;
             }
             .modal-confirm .modal-content {
                 padding: 20px;
@@ -481,7 +503,15 @@
         </div>
 
         <!--Modal 刪除雙重確認 -->
-        <div id="confirm-delete" class="modal fade">
+        <div
+            id="confirm-delete"
+            class="modal fade"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="delete"
+            aria-hidden="true"
+            data-backdrop="static"
+        >
             <div class="modal-dialog modal-confirm">
                 <div class="modal-content">
                     <div class="modal-header flex-column">
@@ -503,6 +533,23 @@
                 </div>
             </div>
         </div>
+
+        <!-- modal bottom -->
+        <!-- <div class="modal fade modal-p-bottom" id="confirm-delete-old">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body py-5">
+                        <p>您將刪除卡片, 此操作無法回復.</p>
+                        <p>您確定要繼續嗎?</p>
+                        <p class="debug-url"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                        <button type="button" class="btn btn-danger btn-ok">刪除卡片</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
 
         <!-- Footer -->
         <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
@@ -526,7 +573,7 @@
         <script type="text/javascript">
             function init() {
                 getLinkedBank() //取得卡片
-                modalEditBankBtnInit(false) //預設隱藏編輯卡片
+                modalEditBankBtnInit(true) //預設隱藏編輯卡片
             }
 
             function bankInit() {
@@ -601,7 +648,7 @@
                     console.log('response.data:' + response)
                     console.log('currentUser.data.info.name:' + currentUser.data.info.name)
 
-                    //初始讀取卡片陣列
+                    //讀取新增卡片陣列
                     if (currentUser.data.info.role == 'M') {
                         createCards(response.data.banks, currentUser.data.info.name, currentUser.data.info.role)
                     } else {
@@ -612,7 +659,7 @@
                         )
                     }
 
-                    //編輯卡片陣列
+                    //讀取編輯卡片陣列
                     editCards(response.data.banks)
                 } catch (error) {
                     console.log('error: ' + error)
@@ -677,8 +724,7 @@
                         //failInit()
                         console.log('unlinkbank error: 401')
                     } else if (response.data.status === 200) {
-                        unlinkBankInit()
-                        console.log('unlinkbank error: 200')
+                        console.log('unlinkbank success: 200')
                     } else {
                         console.log('unlinkbank error: 非200 401 402')
                     }
@@ -821,56 +867,61 @@
 
             //卡片詳細資訊
             function cardInfo(data, new_index, name) {
-                console.log('CARDINFO:' + name)
-                // var local_bank = data.bank;
-                // var local_card_numer = data.card_numer;
-                // var local_user = data.user;
-                // var local_intitution = data.intitution;
+                console.log('data cardInfo: ' + data)
+                if (typeof data !== 'undefined') {
+                    console.log('CARDINFO:' + name)
+                    // var local_bank = data.bank;
+                    // var local_card_numer = data.card_numer;
+                    // var local_user = data.user;
+                    // var local_intitution = data.intitution;
 
-                var local_bank = data.bankCode
-                var local_card_numer = data.bankAddress
-                var local_user = name
-                var local_intitution = 'masterCard'
+                    var local_bank = data.bankCode
+                    var local_card_numer = data.bankAddress
+                    var local_user = name
+                    var local_intitution = 'masterCard'
 
-                //銀行
-                if (local_bank == '012') {
+                    //銀行
+                    if (local_bank == '012') {
+                        $('.card' + new_index)
+                            .find('.card__front-square')
+                            .attr('src', '${imgUrl_fubon}')
+                    } else if (local_bank == '808') {
+                        $('.card' + new_index)
+                            .find('.card__front-square')
+                            .attr('src', '${imgUrl_esun}')
+                    } else {
+                        $('.card' + new_index)
+                            .find('.card__front-square')
+                            .attr('src', '')
+                    }
+                    //卡號(去識別化)
+                    var trim_Id = '********' + local_card_numer.slice(10)
                     $('.card' + new_index)
-                        .find('.card__front-square')
-                        .attr('src', '${imgUrl_fubon}')
-                } else if (local_bank == '808') {
+                        .find('.card_numer')
+                        .html(trim_Id)
+
+                    //持卡人(留第一位與最後位) (by session name)
+                    var trim_Name = local_user.slice(0, 1) + '*' + local_user.slice(-1)
                     $('.card' + new_index)
-                        .find('.card__front-square')
-                        .attr('src', '${imgUrl_esun}')
+                        .find('.card__info')
+                        .html(trim_Name)
+
+                    //機構(default)
+                    if (local_intitution == 'masterCard') {
+                        $('.card' + new_index)
+                            .find('.institution')
+                            .attr('src', '${imgUrl_masterCard}')
+                    } else if (local_intitution == 'visa') {
+                        $('.card' + new_index)
+                            .find('.institution')
+                            .attr('src', '${imgUrl_visa}')
+                    } else {
+                        $('.card' + new_index)
+                            .find('.institution')
+                            .attr('src', '')
+                    }
                 } else {
-                    $('.card' + new_index)
-                        .find('.card__front-square')
-                        .attr('src', '')
-                }
-                //卡號(去識別化)
-                var trim_Id = '********' + local_card_numer.slice(10)
-                $('.card' + new_index)
-                    .find('.card_numer')
-                    .html(trim_Id)
-
-                //持卡人(留第一位與最後位) (by session name)
-                var trim_Name = local_user.slice(0, 1) + '*' + local_user.slice(-1)
-                $('.card' + new_index)
-                    .find('.card__info')
-                    .html(trim_Name)
-
-                //機構(default)
-                if (local_intitution == 'masterCard') {
-                    $('.card' + new_index)
-                        .find('.institution')
-                        .attr('src', '${imgUrl_masterCard}')
-                } else if (local_intitution == 'visa') {
-                    $('.card' + new_index)
-                        .find('.institution')
-                        .attr('src', '${imgUrl_visa}')
-                } else {
-                    $('.card' + new_index)
-                        .find('.institution')
-                        .attr('src', '')
+                    console.log('cardInfo no data')
                 }
             }
 
@@ -882,7 +933,7 @@
 
                     //範例檔
                     var cardHtml =
-                        '<div id="editCardsdefault" class="unlinkBankBtn m-2 col-12 d-flex justify-content-center"> <button type="button" class="btn btn-secondary btn-block"  data-toggle="modal" data-id="#" data-target="#confirm-delete" style="text-align: left; width: 90%" > <i class="far fa-trash-alt"></i> xxxxxxxxxxxxxxxx </button> </div>'
+                        '<div id="editCardsdefault" class="unlinkBankBtn m-2 col-12 d-flex justify-content-center"> <button type="button" class="btn btn-secondary btn-block"  data-toggle="modal" data-id="#" data-target="#confirm-delete" data-target="#staticBackdrop" style="text-align: left; width: 90%" > <i class="far fa-trash-alt"></i> xxxxxxxxxxxxxxxx </button> </div>'
                     $('#allCards').html(cardHtml)
 
                     var num = data.length
@@ -897,12 +948,13 @@
                     }
                     $('#editCardsdefault').remove()
                 } else {
-                    console.log('你的資料是空的!' + data)
+                    var cardHtml =
+                        '<div id="editCardsNoData" class="unlinkBankBtn m-2 col-12 d-flex justify-content-center"> <button type="button" class="btn btn-secondary btn-block"  disabled style="text-align: left; width: 90%" >  尚未新增卡片 </button> </div>'
+                    $('#allCards').html(cardHtml)
                 }
             }
 
             //獲取驗證碼
-
             function getCaptcha() {
                 loadingCaptcha()
 
@@ -962,11 +1014,19 @@
 
             //刪除雙重確認(modal)
             $('#confirm-delete').on('show.bs.modal', function (e) {
+                //關閉編輯modal
+                $('#editCardModal').modal('hide')
+
                 //取data-xxx的值並塞屬性給(.btn_ok)
                 $(this).find('.btn-ok').attr('id', $(e.relatedTarget).data('id'))
                 //塞文字到(.debug-url)
                 $('.debug-url').html('銀行卡號:  <strong>' + $(e.relatedTarget).data('id') + '</strong>')
                 console.log($(e.relatedTarget).data('id'))
+            })
+
+            $('#confirm-delete').on('hidden.bs.modal', function (e) {
+                //顯示編輯modal
+                $('#editCardModal').modal('show')
             })
 
             $(document).ready(function () {
@@ -1021,9 +1081,9 @@
                 $('form').on('submit', function (event) {
                     event.preventDefault()
                     //console.log($(this).serialize());
-                    console.log($('input[name="bank_Id"]').val())
-                    console.log($('input[name="birthday"]').val())
-                    console.log($('input[name="captchaInput"]').val())
+                    // console.log($('input[name="bank_Id"]').val())
+                    // console.log($('input[name="birthday"]').val())
+                    // console.log($('input[name="captchaInput"]').val())
 
                     $('.responseBankAccount').html($('input[name="bank_Id"]').val())
 
@@ -1039,8 +1099,8 @@
                     $('#addBankAccountForm')[0].reset()
                 })
 
-                //關閉modal重整
-                $('#exampleModalScrollable,#editCardModal').on('hidden.bs.modal', function () {
+                //關閉modal重整(新增卡片/編輯卡片/刪除確認)
+                $('#exampleModalScrollable,#editCardModal,#confirm-delete').on('hidden.bs.modal', function () {
                     init()
                 })
             })

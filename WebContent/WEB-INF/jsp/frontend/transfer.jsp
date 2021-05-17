@@ -138,30 +138,6 @@
             </div>
         </div>
 
-        <!--Modal 刪除雙重確認 -->
-        <div id="confirm-delete" class="modal fade">
-            <div class="modal-dialog modal-confirm">
-                <div class="modal-content">
-                    <div class="modal-header flex-column">
-                        <div class="icon-box">
-                            <i class="fa fa-trash fa-sm"></i>
-                        </div>
-                        <h4 class="modal-title w-100">確認刪除</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>您將刪除卡片, 此操作無法回復.</p>
-                        <p>您確定要繼續嗎?</p>
-                        <p class="debug-url"></p>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-danger btn-ok">刪除卡片</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Footer -->
         <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 

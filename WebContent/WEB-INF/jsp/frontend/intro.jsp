@@ -12,7 +12,7 @@ contentType="text/html; charset=UTF-8"%>
     <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
 
     <!-- Content -->
-    <div class="call-to-action">
+    <div class="call-to-action" style="background-attachment: fixed;">
       <div class="shadow"></div>
       <div class="container">
         <div class="row justify-content-center">
@@ -27,7 +27,7 @@ contentType="text/html; charset=UTF-8"%>
     
     <div class="call-to-action cta-blur cta2">
       <div class="shadow"></div>
-      <div class="cta-image"></div>
+      <div class="cta-image" style="background-attachment: fixed;"></div>
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-8 col-12">

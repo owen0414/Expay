@@ -200,7 +200,7 @@ contentType="text/html; charset=UTF-8"%>
               </div>
               <div class="col-12 mt-2">
                 <p>
-                  交易金額<span class="font-blue font-weight-bold mx-2"
+                  交易金額<span class="font-weight-bold mx-2"
                     >NT$
                     <span class="transaction_history_amount">60</span></span
                   >
@@ -525,20 +525,24 @@ contentType="text/html; charset=UTF-8"%>
              </div>`);
               $("#transaction_history_item_" + i).click(function () {
                 $(".transaction_history_shopname").html(
-                  returnData[$(this).index()].shop_name
+                  returnData[$(this).index() - 1].shop_name
                 );
                 $(".transaction_history_time").html(
-                  returnData[$(this).index()].time
+                  returnData[$(this).index() - 1].time
                 );
                 $(".transaction_history_code").html(
-                  returnData[$(this).index()].transaction_code
+                  returnData[$(this).index() - 1].transaction_code
                 );
                 $(".transaction_order_code").html(
-                  returnData[$(this).index()].order_code
+                  returnData[$(this).index() - 1].order_code
                 );
                 $(".transaction_history_amount").html(
-                  numberWithCommas(returnData[$(this).index()].amount)
+                  numberWithCommas(returnData[$(this).index() - 1].amount)
                 );
+                $(".transaction_history_amount")
+                  .parent()
+                  .removeClass("font-blue")
+                  .addClass("font-red");
                 $("#transaction_modal").modal("show");
               });
             }
@@ -772,26 +776,32 @@ contentType="text/html; charset=UTF-8"%>
                  </div>
                </div>
              </div>`);
+
               $("#transaction_history_item_" + i).click(function () {
                 $(".transaction_history_remitter_account").html(
                   `付款帳戶<span
                     class="font-weight-bold mx-2"
                   >` +
-                    returnData[$(this).index()].remitter_account +
+                    returnData[$(this).index() - 1].remitter_account +
                     `</span>`
                 );
                 $(".transaction_history_time").html(
-                  returnData[$(this).index()].time
+                  returnData[$(this).index() - 1].time
                 );
                 $(".transaction_history_code").html(
-                  returnData[$(this).index()].transaction_code
+                  returnData[$(this).index() - 1].transaction_code
                 );
                 $(".transaction_order_code").html(
-                  returnData[$(this).index()].order_code
+                  returnData[$(this).index() - 1].order_code
                 );
                 $(".transaction_history_amount").html(
-                  numberWithCommas(returnData[$(this).index()].amount)
+                  numberWithCommas(returnData[$(this).index() - 1].amount)
                 );
+
+                $(".transaction_history_amount")
+                  .parent()
+                  .removeClass("font-red")
+                  .addClass("font-blue");
                 $("#transaction_modal").modal("show");
               });
             }

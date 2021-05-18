@@ -52,7 +52,7 @@ contentType="text/html; charset=UTF-8"%>
             </div>
             <div class="col-6 my-5 py-2">
               <h1 class="font-weight-bold">商家</h1>
-              <p>專業的賣家或商店</p>
+              <p>專業賣家或商店</p>
             </div>
             <div class="col-12 mb-5">
               <ul class="shop_ul">

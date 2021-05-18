@@ -208,6 +208,11 @@ contentType="text/html; charset=UTF-8"%>
         }
       };
 
+      //重整
+      $("#resultModal").on("hidden.bs.modal", function (e) {
+        location.reload();
+      });
+
       //按鈕
       $(document).ready(() => {
         $("#withdraw_amount").change(function (e) {

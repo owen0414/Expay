@@ -12,12 +12,16 @@
         <!-- Content -->
         <div class="content_container py-5" style="height: auto; min-height: 450px">
             <div class="row mx-5 mx-sm-auto">
-                <div class="col-12 col-sm-3 money_container mx-sm-auto mt-5 text-center mybox" style="border: none">
+                <div
+                    class="col-12 col-sm-3 money_container mx-sm-auto mt-5 text-center mybox amount-box"
+                    style="border: none"
+                >
                     <p
                         class="mt-5 px-5"
                         onclick="location.href='${pageContext.request.contextPath}/history'"
                         style="cursor: pointer"
                         id="balance"
+                        title="交易紀錄"
                     >
                         NT$ 0
                     </p>

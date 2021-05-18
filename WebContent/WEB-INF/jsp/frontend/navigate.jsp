@@ -55,10 +55,10 @@ const App = () => {
         </li>
         {userInfo.info.role === "M" ?
         <li className="nav-item">
-          <a className="nav-link" data-toggle="modal" data-target="#paymentNotificationModal" style={{cursor: "pointer"}}>待收款通知 <span className="badge badge-secondary">{userInfo.info.unReceiveTransaction}</span></a>
+          <a className="nav-link" data-toggle="modal" data-target="#paymentNotificationModal" style={{cursor: "pointer"}}>待付款通知 <span className="badge badge-secondary">{userInfo.info.unReceiveTransaction}</span></a>
         </li> : 
         <li className="nav-item">
-          <a className="nav-link" style={{cursor: "not-allowed"}} disabled="disabled">待收款通知 <span className="badge badge-secondary">{userInfo.info.unReceiveTransaction}</span></a>
+          <a className="nav-link" style={{cursor: "not-allowed"}} disabled="disabled">待付款通知 <span className="badge badge-secondary">{userInfo.info.unReceiveTransaction}</span></a>
         </li>}
         <li className="nav-item">
           <a href="${pageContext.request.contextPath}/intro" className="nav-link">介紹</a>

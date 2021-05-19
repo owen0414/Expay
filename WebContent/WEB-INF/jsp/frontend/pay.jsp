@@ -119,24 +119,27 @@
         <!--交易密碼-->
         <%@ include file="/WEB-INF/jsp/frontend/transactionPwModal.jsp"%>
         <script>
-            initFetch()
+            initFetch();
 
             store.subscribe(() => {
-                const state = store.getState()
-                console.log(state)
+                const state = store.getState();
+                console.log(state);
 
+                //如果redux e_account有值
                 if (state.e_account) {
                     const {
                         info: { balance },
-                    } = state.e_account
-                    $('#current-balance').text(numberWithCommas(balance))
+                    } = state.e_account;
+                    $('#current-balance').text(numberWithCommas(balance));
                 }
 
+                //如果redux request有值
                 if (state.request) {
-                    const { name } = state.request.to
-                    $('#e_account-name').text(name)
+                    const { name } = state.request.to;
+                    $('#e_account-name').text(name);
                 }
 
+                //如果redux response有值
                 if (state.response) {
                     renderModalBody(
                         state.response,
@@ -145,170 +148,174 @@
 						付款商家: \${name}<br>
 						付款金額: NT\$\${numberWithCommas(amount)}<br>
 						付款後餘額: NT\$\${numberWithCommas(balance)}
-					`
+					`;
                         },
                         () => {
-                            return '付款失敗!'
+                            return '付款失敗!';
                         }
-                    )
+                    );
                 }
-            })
+            });
 
             //付款金額
             const setPayWithDrawAmount = (value) => {
-                let currentBalance = parseInt(undoNumberWithCommas($('#current-balance').text()))
+                let currentBalance = parseInt(undoNumberWithCommas($('#current-balance').text()));
                 if (value > currentBalance) {
-                    $('#pay_amount').val(currentBalance)
+                    $('#pay_amount').val(currentBalance);
                 } else {
-                    $('#pay_amount').val(value)
+                    $('#pay_amount').val(value);
                 }
-            }
+            };
 
             //送出時避免輸入
             const loadingForm = (status) => {
                 if (status) {
-                    $('#store_phone').attr('disabled', true)
-                    $('#pay_amount').attr('disabled', true)
+                    $('#store_phone').attr('disabled', true);
+                    $('#pay_amount').attr('disabled', true);
                     $('#pay-btn').html(
                         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>確認中...'
-                    )
+                    );
                 } else {
-                    $('#store_phone').attr('disabled', false)
-                    $('#pay_amount').attr('disabled', false)
-                    $('#pay-btn').html('付款')
+                    $('#store_phone').attr('disabled', false);
+                    $('#pay_amount').attr('disabled', false);
+                    $('#pay-btn').html('付款');
                 }
-            }
+            };
 
             //按鈕
             $(document).ready(() => {
                 $('#pay_amount').change(function (e) {
-                    let amount = parseInt(e.target.value)
-                    setPayWithDrawAmount(amount)
-                })
+                    let amount = parseInt(e.target.value);
+                    setPayWithDrawAmount(amount);
+                });
                 $('#plus-100').click(function () {
-                    let amount = parseInt($('#pay_amount').val()) + 100
-                    setPayWithDrawAmount(amount)
-                })
+                    let amount = parseInt($('#pay_amount').val()) + 100;
+                    setPayWithDrawAmount(amount);
+                });
                 $('#plus-1000').click(function () {
-                    let amount = parseInt($('#pay_amount').val()) + 1000
-                    setPayWithDrawAmount(amount)
-                })
+                    let amount = parseInt($('#pay_amount').val()) + 1000;
+                    setPayWithDrawAmount(amount);
+                });
                 $('#plus-10000').click(function () {
-                    let amount = parseInt($('#pay_amount').val()) + 10000
-                    setPayWithDrawAmount(amount)
-                })
+                    let amount = parseInt($('#pay_amount').val()) + 10000;
+                    setPayWithDrawAmount(amount);
+                });
 
                 document.getElementById('store_phone').onkeyup = function () {
                     //清除錯誤訊息與資訊
-                    $('#message').html('')
-                    $('#e_account-name').html('合作店家')
-                }
+                    $('#message').html('');
+                    $('#e_account-name').html('合作店家');
+                };
 
                 //重整
                 $('#resultModal').on('hidden.bs.modal', function (e) {
-                    location.reload()
-                })
+                    location.reload();
+                });
 
                 //根據輸入的手機號碼抓取對方大名
                 $('#store_phone').keyup(function () {
-                    let storePhone = $('#store_phone').val()
+                    let storePhone = $('#store_phone').val();
                     if (storePhone.length == 10) {
                         if (checkPhone(storePhone)) {
-                            let dataJSON = {}
-                            dataJSON['phone'] = storePhone
-                            dataJSON['role'] = 'S'
+                            let dataJSON = {};
+                            dataJSON['phone'] = storePhone;
+                            dataJSON['role'] = 'S';
 
                             instance
                                 .post('/api/getEAccount', dataJSON)
                                 .then((res) => {
                                     if (res.data.status === 200) {
-                                        const { name } = res.data
+                                        const { name } = res.data;
                                         store.dispatch({
                                             type: 'FETCH',
                                             payload: { to: { name } },
-                                        })
-                                        $('#message').html('OK').removeClass('badge-danger').addClass('badge-success')
+                                        });
+                                        $('#message').html('OK').removeClass('badge-danger').addClass('badge-success');
                                     } else {
                                         $('#message')
                                             .html('商家不存在，請確認手機是否正確')
                                             .addClass('badge-danger')
-                                            .removeClass('badge-success')
+                                            .removeClass('badge-success');
                                     }
                                 })
                                 .catch((error) => {
-                                    handleError(error.response.data)
-                                    console.log(error)
-                                })
+                                    handleError(error.response.data);
+                                    console.log(error);
+                                });
                         } else {
-                            $('#message').html('手機格式錯誤')
-                            $('#message').addClass('badge-danger')
-                            $('#message').removeClass('badge-success')
+                            $('#message').html('手機格式錯誤');
+                            $('#message').addClass('badge-danger');
+                            $('#message').removeClass('badge-success');
                         }
                     }
-                })
+                });
 
                 //付款
                 $('#pay-btn').click(() => {
-                    const phone = $('#store_phone').val()
-                    const amount = parseInt($('#pay_amount').val())
+                    const phone = $('#store_phone').val();
+                    const amount = parseInt($('#pay_amount').val());
 
+                    //前端欄位檢核
                     if (!checkPhone(phone)) {
-                        $('#message').html('商家手機不符格式!').addClass('badge-danger').removeClass('badge-success')
+                        $('#message').html('商家手機不符格式!').addClass('badge-danger').removeClass('badge-success');
                     } else if (amount <= 0 || amount > 50000) {
-                        $('#message').html('付款金額必須1~50000').addClass('badge-danger').removeClass('badge-success')
+                        $('#message').html('付款金額必須1~50000').addClass('badge-danger').removeClass('badge-success');
                     } else {
-                        $('#message').html('OK').removeClass('badge-danger').addClass('badge-success')
-                        let dataJSON = {}
+                        $('#message').html('OK').removeClass('badge-danger').addClass('badge-success');
+                        let dataJSON = {};
                         dataJSON['remitter'] = store.getState().e_account
                             ? store.getState().e_account.info.phone
-                            : '0912345678' //TODO 抓使用者真實的手機
-                        dataJSON['receiver'] = phone
-                        dataJSON['amount'] = amount
-                        dataJSON['type'] = 'S'
+                            : '0912345678'; //TODO 抓使用者真實的手機
+                        dataJSON['receiver'] = phone;
+                        dataJSON['amount'] = amount;
+                        dataJSON['type'] = 'S';
 
-                        loadingForm(true)
+                        loadingForm(true);
+                        //執行付款
                         instance
                             .post('/api/ePay/transaction', dataJSON)
                             .then((res) => {
                                 store.dispatch({
                                     type: 'SUBMIT',
                                     payload: res.data,
-                                })
-                                window.setTimeout(() => loadingForm(false), 500)
-                                initFetch()
+                                });
+                                window.setTimeout(() => loadingForm(false), 500);
+                                initFetch();
                             })
                             .catch((error) => {
-                                handleError(error.response.data)
-                                window.setTimeout(() => loadingForm(false), 500)
-                                console.log(error)
-                            })
+                                handleError(error.response.data);
+                                window.setTimeout(() => loadingForm(false), 500);
+                                console.log(error);
+                            });
                     }
-                })
-            })
+                });
+            });
 
             async function initFetch() {
                 try {
-                    let res = await instance.get('/api/getCurrentUser')
-                    const { login } = res.data
+                    //抓取當前使用者
+                    let res = await instance.get('/api/getCurrentUser');
+                    const { login } = res.data;
                     if (!login) {
-                        location.href = `${pageContext.request.contextPath}/user/login`
-                        throw new Error('尚未登入!')
+                        location.href = `${pageContext.request.contextPath}/user/login`;
+                        throw new Error('尚未登入!');
                     }
 
+                    //如果是商家就跳轉至首頁
                     const {
                         info: { role },
-                    } = res.data
+                    } = res.data;
                     if (role === 'S') {
-                        location.href = `${pageContext.request.contextPath}/`
+                        location.href = `${pageContext.request.contextPath}/`;
                     }
 
                     store.dispatch({
                         type: 'FETCH_USER',
                         payload: res.data,
-                    })
+                    });
                 } catch (error) {
-                    handleError(error.response.data)
-                    console.log(error)
+                    handleError(error.response.data);
+                    console.log(error);
                 }
             }
         </script>

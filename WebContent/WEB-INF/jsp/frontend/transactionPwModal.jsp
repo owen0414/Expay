@@ -55,12 +55,15 @@
 </div>
 <script>
     $(document).ready(() => {
+        //跳出交易密碼框
         $('#transactionPwModal').modal('toggle');
 
+        //監聽交易密碼輸入
         $('#transactionPw').keyup(async function () {
             let tpw = $(this).val();
             if (tpw.length === 6) {
                 try {
+                    //抓取當前使用者
                     let res = await instance.get('/api/getCurrentUser');
                     const {
                         login,
@@ -75,6 +78,7 @@
                     dataJSON['transactionPwd'] = tpw;
                     dataJSON['role'] = role;
 
+                    //確認交易密碼
                     res = await instance.post('/api/checkTransactionPwd', dataJSON);
                     const { valid } = res.data;
                     if (!valid) {
@@ -90,6 +94,7 @@
             }
         });
 
+        //當交易密碼modal顯示，自動focus它
         $('.modal').on('shown.bs.modal', function () {
             $(this).find('[autofocus]').focus();
         });

@@ -12,6 +12,7 @@
         const [data, setData] = useState([]);
 
         //從unix時間戳記到一般的datetime
+        //depreciated
         const convertTimestampToDateTime = (timestamp) => {
             const date = new Date(timestamp);
             return `${date.getFullYear()}-${
@@ -19,6 +20,7 @@
             }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
         };
 
+        //抓取目前使用者
         const handleLogin = async () => {
             const res = await instance.get('/api/getCurrentUser');
             if (!res.data.login) {
@@ -26,6 +28,7 @@
             }
         };
 
+        //抓取付款通知的資料
         const fetchData = async () => {
             try {
                 await handleLogin();
@@ -49,6 +52,7 @@
             }
         };
 
+        //剛渲染ui即觸發此useEffect
         useEffect(() => {
             fetchData();
         }, []);

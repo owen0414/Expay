@@ -19,7 +19,7 @@
             </div>
             <div class="col-md-12 col-12 p-3">
                 <h5>技術支持</h5>
-                <p>玉山銀行</p>
+                <img src="<c:url value="/resources/img/esun2.jpg" />" width="100px" />
             </div>
         </div>
     </div>

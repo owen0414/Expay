@@ -14,6 +14,7 @@ const App = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState({});
 
+  //抓取現在的使用者資料
   const fetchData = async () => {
     try{
       //TODO 網址要改!
@@ -25,6 +26,7 @@ const App = () => {
     }
   }
 
+  //當一渲染ui就執行useEffect
   useEffect(() => {
     fetchData();
 
@@ -34,10 +36,12 @@ const App = () => {
     }
   }, []);
 
+  //處理登出邏輯
   const handleLogout = async () => {
     try{
       const res = await instance.get("/api/logout");
       const { status } = res.data;
+      //如果狀態為200，跳轉至登入頁面
       if(status === 200){
         location.href = "${pageContext.request.contextPath}/user/login";
       }
@@ -47,6 +51,7 @@ const App = () => {
     }
   };
 
+  //渲染nav item
   const renderNavItem = () => {
     return (isLogin ? (
       <ul className="navbar-nav">
@@ -88,6 +93,7 @@ const App = () => {
     ));
   }
 
+  //渲染navbar ui
   return (
     <nav className="navbar bg-light navbar-expand-lg navbar-light py-3">
       <a className="navbar-brand" href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="Ex Pay" style={{ height: '60px'}}/></a>

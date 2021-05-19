@@ -157,7 +157,7 @@
                 }
             }
 
-            //清除cookie
+            //清除cookie(當收款轉帳中途離開頁面/完成收款轉帳時)
             const cleanCookieAndContent = () => {
                 $('#phoneInput').val()
                 $.removeCookie('transaction_code')
@@ -168,14 +168,16 @@
             }
 
             const initRender = async () => {
-                //預先隱藏second-block與loading
+                //進入頁面先隱藏second-block與loading
                 $('#second-block').hide()
                 $('#loading').hide()
 
+                //作為收款轉帳頁面
                 if (typeof $.cookie('transaction_code') !== 'undefined') {
                     $('#second-block').fadeIn(500)
                     $('#postBtn').children().hide()
                     try {
+                        //api獲取當前使用者資訊並渲染
                         const currentUser = await instance.get('/api/getCurrentUser')
                         //dom渲染
                         $('#current-balance').html(numberWithCommas(currentUser.data.info.balance))
@@ -195,6 +197,7 @@
                         console.log(error)
                     }
                 } else {
+                    //作為一般轉帳頁面
                     $('#postBtn').children().show()
                 }
             }
@@ -250,7 +253,7 @@
                 })
             }
 
-            //等待
+            //隱藏全部並等待
             function sleepForApiRes(sec) {
                 setTimeout(() => isCompleted(2), 1000)
                 return new Promise((resolve, reject) => {
@@ -260,7 +263,7 @@
                 })
             }
 
-            //電話格式錯誤
+            //電話格式驗證
             function isErrorFormat(phone, success, failed) {
                 // console.log('bb im the sheap')
                 if (checkPhone(phone)) {
@@ -271,7 +274,7 @@
                 }
             }
 
-            //api取回資料是否存在
+            //電話是否存在之驗證
             function apiRes(res, success, failed) {
                 const { status } = res
                 if (status === 200) {
@@ -286,11 +289,15 @@
             }
 
             $(document).ready(() => {
+                //設定令牌為false
                 let flag = false
+
+                //若是由收款通知導向此頁，flag設為true
                 $('#paymentNotificationModal').on('show.bs.modal', function (event) {
                     flag = true
                 })
 
+                //離開此頁面皆會清除cookie資訊(收款通知例外)
                 $(window).on('beforeunload', function (e) {
                     if (!flag) {
                         console.log('離開前清除cookie...')
@@ -298,8 +305,10 @@
                     }
                 })
 
+                //初始渲染
                 initRender()
 
+                //當輸入電話時，清除提示訊息
                 document.getElementById('phoneInput').onkeyup = function () {
                     //清除錯誤訊息
                     $('#message').html('')
@@ -322,7 +331,7 @@
                     $('#nowtime').text(new Date())
                 }, 1000)
 
-                //按下確定，獲取接收方資訊
+                //按下確定，獲取接收方資訊並顯示結果
                 $('#postBtn').click(function () {
                     const local_phone = $('#phoneInput').val()
                     if (local_phone) {
@@ -340,7 +349,7 @@
                     }
                 })
 
-                //getEAccount(接受方)
+                //getEAccount(獲取收款方資訊)
                 async function getEAccount() {
                     //loading...
                     isCompleted(0)
@@ -376,18 +385,12 @@
                                 return message
                             }
                         )
-
-                        // if (receiverUser.data.status == '200') {
-
-                        // } else {
-                        //     alert(receiverUser.data.message)
-                        // }
                     } catch (error) {
                         console.log(error)
                     }
                 }
 
-                //轉帳API
+                //轉帳
                 async function transfer(price) {
                     try {
                         const currentUser = await instance.get('/api/getCurrentUser')
@@ -421,7 +424,7 @@
                     }
                 }
 
-                //要求轉帳API
+                //收款轉帳
                 async function transferByRequest(transaction_code) {
                     try {
                         const transferRes = await instance.post('/api/ePay/receive', {
@@ -458,7 +461,7 @@
                     loadingForm(true)
 
                     if (typeof $.cookie('transaction_code') !== 'undefined') {
-                        //要求轉帳API
+                        //收款轉帳API
                         transferByRequest($.cookie('transaction_code')).then((res) =>
                             sleep(1).then(() => {
                                 loadingForm(false)
@@ -477,18 +480,22 @@
         </script>
 
         <script>
+            //確認是否登入狀態(無登入則跳轉首頁)
             instance.get('/api/getCurrentUser').then((res) => {
                 if (!res.data.login) {
-                    //console.log(res);
                     location.href = `${pageContext.request.contextPath}/user/login`
+                    //離開前清除cookie
                     cleanCookieAndContent()
                 }
 
                 const {
                     info: { role },
                 } = res.data
+
+                //是否為商家(S)，若符合則限縮功能
                 if (role === 'S') {
                     location.href = `${pageContext.request.contextPath}/`
+                    //離開前清除cookie
                     cleanCookieAndContent()
                 }
             })

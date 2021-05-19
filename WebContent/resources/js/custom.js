@@ -1,8 +1,9 @@
 //使用axios前請先設定
 // BASE_URL
-// const BASE_URL = 'http://172.19.35.133/'
+ const BASE_URL = 'http://172.19.35.133/'
 // const BASE_URL = "http://172.19.35.97/";
-const BASE_URL = "http://172.19.35.31/";
+// const BASE_URL = "http://172.19.35.31/";
+
 
 // $('body').css('padding-top', $('.navbar').outerHeight() + 'px')
 

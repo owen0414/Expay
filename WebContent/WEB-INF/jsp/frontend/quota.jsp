@@ -125,7 +125,14 @@ contentType="text/html; charset=UTF-8"%>
       <div class="row mx-4 mx-md-2">
         <!-- 本月收入-->
         <div
-          class="col-12 col-md-5 quota_item mx-md-auto mt-4 mb-auto mb-md-4 px-0"
+          class="
+            col-12 col-md-5
+            quota_item
+            mx-md-auto
+            mt-4
+            mb-auto mb-md-4
+            px-0
+          "
         >
           <div class="row mx-3 mx-md-auto">
             <div class="col-12 font-weight-bold">
@@ -208,15 +215,17 @@ contentType="text/html; charset=UTF-8"%>
       //檢查是否登入及設定交易密碼
       instance.get("/api/getCurrentUser").then((res) => {
         if (!res.data.login) {
-          //console.log(res);
           location.href = `${pageContext.request.contextPath}/user/login`;
         } else if (!res.data.t_password) {
           location.href = `${pageContext.request.contextPath}/payment_password`;
         }
 
-        const {info: {role}} = res.data;
-        if(role === "S"){
-            location.href = `${pageContext.request.contextPath}/`;
+        const {
+          info: { role },
+        } = res.data;
+        //會員才有的功能
+        if (role === "S") {
+          location.href = `${pageContext.request.contextPath}/`;
         }
       });
 

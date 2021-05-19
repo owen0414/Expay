@@ -134,7 +134,7 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
 
-    <!-- Transaction Modal -->
+    <!-- 交易 Modal -->
     <div
       class="modal fade"
       id="transaction_modal"
@@ -212,7 +212,7 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
 
-    <!-- Pay Modal -->
+    <!-- 付款 Modal -->
     <div
       class="modal fade"
       id="pay_modal"
@@ -284,7 +284,7 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
 
-    <!-- Transfer Modal -->
+    <!-- 轉帳 Modal -->
     <div
       class="modal fade"
       id="transfer_modal"
@@ -348,7 +348,7 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
 
-    <!-- Deposit Modal -->
+    <!-- 儲值&提領 Modal -->
     <div
       class="modal fade"
       id="account_modal"
@@ -433,7 +433,6 @@ contentType="text/html; charset=UTF-8"%>
       //檢查是否登入及設定交易密碼
       instance.get("/api/getCurrentUser").then((res) => {
         if (!res.data.login) {
-          //console.log(res);
           location.href = `${pageContext.request.contextPath}/user/login`;
         }
 
@@ -449,18 +448,22 @@ contentType="text/html; charset=UTF-8"%>
           $("#account").html(e_account);
           $("#notification_count").text(unReceiveTransaction);
           if (role == "M") {
+            //顯示會員的紀錄
             memberHistory();
           } else if (role == "S") {
+            //顯示商家的紀錄
             shopHistory();
           }
         }
       });
 
+      //收入支出按鈕 active
       $(".account_condition").click(function () {
         $(this).addClass("active");
         $(this).siblings().removeClass("active");
       });
 
+      //全部
       $("#all_btn").click(function () {
         $("#account_history_area").children(".no_brecord").hide();
         $(".account_history").show();
@@ -469,6 +472,7 @@ contentType="text/html; charset=UTF-8"%>
         }
       });
 
+      //收入
       $("#income_btn").click(function () {
         $("#account_history_area").children(".no_brecord").hide();
         $(".amount").each(function (index) {
@@ -482,6 +486,7 @@ contentType="text/html; charset=UTF-8"%>
         }
       });
 
+      //支出
       $("#expenditure_btn").click(function () {
         $("#account_history_area").children(".no_brecord").hide();
         $(".amount").each(function (index) {
@@ -497,6 +502,7 @@ contentType="text/html; charset=UTF-8"%>
 
       //會員交易&帳戶紀錄
       function memberHistory() {
+        //交易紀錄
         var requestURL2 = `${BASE_URL}/api/transactionHistory`;
 
         $.ajax({
@@ -629,6 +635,7 @@ contentType="text/html; charset=UTF-8"%>
           },
         });
 
+        //付款詳細紀錄
         $(document).on("click", ".pay_item", function () {
           var requestURL =
             `${BASE_URL}/api/paymentDetail/` + $(this).data("transactioncode");
@@ -653,6 +660,7 @@ contentType="text/html; charset=UTF-8"%>
           });
         });
 
+        //轉帳詳細紀錄
         $(document).on("click", ".transfer_item", function () {
           var requestURL =
             `${BASE_URL}/api/transferDetail/` + $(this).data("transactioncode");
@@ -700,6 +708,7 @@ contentType="text/html; charset=UTF-8"%>
           });
         });
 
+        //儲值&提領詳細紀錄
         $(document).on("click", ".deposit_item,.withdraw_item", function () {
           var requestURL =
             `${BASE_URL}/api/bankDetail/` + $(this).data("transactioncode");
@@ -750,16 +759,16 @@ contentType="text/html; charset=UTF-8"%>
 
       //商家交易&帳戶紀錄
       function shopHistory() {
+        //交易紀錄
         var requestURL2 = `${BASE_URL}/api/shop/transactionHistory`;
-
         $.ajax({
           url: requestURL2,
           type: "GET",
           dataType: "json",
           contentType: "application/json;charset=utf-8",
           success: function (returnData) {
-            $("#transaction_history_area").children(".no_trecord").hide();
             for (var i = 0; i < returnData.length; i++) {
+              $("#transaction_history_area").children(".no_trecord").hide();
               const { remitter_account, time, amount } = returnData[i];
               $("#transaction_history_area").append(`
              <div class="row justify-content-start" id="transaction_history_item_\${i}">
@@ -814,7 +823,6 @@ contentType="text/html; charset=UTF-8"%>
 
         //帳戶紀錄
         var requestURL3 = `${BASE_URL}/api/shop/bankHistory`;
-
         $.ajax({
           url: requestURL3,
           type: "GET",
@@ -863,6 +871,7 @@ contentType="text/html; charset=UTF-8"%>
           },
         });
 
+        //提領詳細記錄
         $(document).on("click", ".withdraw_item", function () {
           var requestURL =
             `${BASE_URL}/api/bankDetail/` + $(this).data("transactioncode");

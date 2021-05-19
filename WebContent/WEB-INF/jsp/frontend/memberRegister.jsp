@@ -428,7 +428,6 @@ contentType="text/html; charset=UTF-8"%>
             </button>
           </div>
           <div class="modal-body">
-            <!-- 失敗 -->
             <div class="row errorPage">
               <div class="col-12 d-flex justify-content-center">
                 <div class="m-2 text-center">
@@ -523,7 +522,6 @@ contentType="text/html; charset=UTF-8"%>
             </button>
           </div>
           <div class="modal-body">
-            <!--成功 -->
             <div class="row successPage">
               <div class="col-12 d-flex justify-content-center">
                 <div class="m-2 text-center">
@@ -566,10 +564,7 @@ contentType="text/html; charset=UTF-8"%>
         toggleActive: true,
       });
 
-      $("#birthday").change(function () {
-        console.log($("#birthday").val());
-      });
-
+      //查看密碼
       $("#pwd1").click(function () {
         $(this).toggleClass("fa-eye-slash");
         var pwd1 = $("#pwd");
@@ -593,7 +588,6 @@ contentType="text/html; charset=UTF-8"%>
       });
 
       //註冊提交的提示
-
       function successInit() {
         $("#successModal").modal("show"); //顯示成功
         $(".fadeIn").fadeIn(1000);
@@ -788,6 +782,7 @@ contentType="text/html; charset=UTF-8"%>
         }
       });
 
+      //回登入頁
       $("#successModal").on("hidden.bs.modal", function (e) {
         location.href = `${pageContext.request.contextPath}/user/login`;
       });

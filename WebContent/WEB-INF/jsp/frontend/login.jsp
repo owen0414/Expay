@@ -11,7 +11,7 @@ contentType="text/html; charset=UTF-8"%>
     <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>
 
     <!-- Content -->
-    <div class="login_container  py-5">
+    <div class="login_container py-5">
       <div class="row mx-4 mx-md-2">
         <div
           class="
@@ -263,7 +263,7 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
 
-    <!-- Modal -->
+    <!--Error Modal -->
     <div
       class="modal fade"
       id="errorModal"
@@ -286,7 +286,6 @@ contentType="text/html; charset=UTF-8"%>
             </button>
           </div>
           <div class="modal-body">
-            <!-- 失敗 -->
             <div class="row errorPage">
               <div class="col-12 d-flex justify-content-center">
                 <div class="m-2 text-center">
@@ -361,8 +360,7 @@ contentType="text/html; charset=UTF-8"%>
     <!-- Footer -->
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
     <script>
-      //login
-
+      //查看密碼
       $(".toggle_password").click(function () {
         $(this).toggleClass("fa-eye-slash");
         var input = $(".input_password");
@@ -373,6 +371,7 @@ contentType="text/html; charset=UTF-8"%>
         }
       });
 
+      //切換商家
       $(".shop_lg").click(function () {
         $("#mem_item").hide();
         $("#shop_item").show();
@@ -381,6 +380,7 @@ contentType="text/html; charset=UTF-8"%>
         $("#mem_login_form")[0].reset();
       });
 
+      //切換會員
       $(".mem_lg").click(function () {
         $("#shop_item").hide();
         $("#mem_item").show();
@@ -396,7 +396,7 @@ contentType="text/html; charset=UTF-8"%>
         $(".fadeIn").fadeIn(1000);
       }
 
-      //一般使用者登入
+      //會員登入
 
       $("#mem_login_form").submit(async function (e) {
         e.preventDefault();
@@ -594,9 +594,7 @@ contentType="text/html; charset=UTF-8"%>
             withCredentials: true,
           },
           crossDomain: true,
-          error() {
-            console.log("驗證碼載入失敗!");
-          },
+          error() {},
           success(data) {
             loadedCaptcha();
             const url = window.URL || window.webkitURL;
@@ -604,9 +602,7 @@ contentType="text/html; charset=UTF-8"%>
             $(".captchaLoading").hide();
             $(".captcha").attr("src", src);
           },
-          complete() {
-            console.log("驗證碼載入結束");
-          },
+          complete() {},
         });
       }
 

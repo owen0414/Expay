@@ -1,33 +1,33 @@
-<%@ include file="/WEB-INF/jsp/includes.jsp"%>
-<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-	<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="resultModalLabel"></h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body" id="resultModelBody">
-	      	<div id="result-area" class="alert d-flex flex-column align-items-center">
-	      	</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
-	<script>
-	function renderModalBody(res, successHint, failedHint){
-		const { status } = res;
-		let resultTitle, resultBody;
-		
-		if(status === 200){
-			resultTitle = "成功!";
-			resultBody = `
+<%@ include file="/WEB-INF/jsp/includes.jsp"%> <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resultModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="resultModelBody">
+                <div id="result-area" class="alert d-flex flex-column align-items-center"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function renderModalBody(res, successHint, failedHint) {
+        const { status } = res;
+        let resultTitle, resultBody;
+
+        //如果回應狀態是200，代表成功!
+        if (status === 200) {
+            resultTitle = '成功!';
+            resultBody =
+                `
 			<svg viewBox="0 0 87 87" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 				<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					<g id="Group-3" transform="translate(2.000000, 2.000000)">
@@ -38,11 +38,13 @@
 				</g>
 			</svg>
 			` + successHint(res);
-			$("#result-area").addClass("alert-success");
-			$("#result-area").removeClass("alert-danger");
-		} else {
-			resultTitle = "失敗!";
-			resultBody = `
+            $('#result-area').addClass('alert-success');
+            $('#result-area').removeClass('alert-danger');
+        } else {
+            //如果是其他回應狀態
+            resultTitle = '失敗!';
+            resultBody =
+                `
 			<svg  viewBox="0 0 87 87" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 				<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					<g id="Group-2" transform="translate(2.000000, 2.000000)">
@@ -54,12 +56,12 @@
 				</g>
 			</svg>
 			` + failedHint(res);
-			$("#result-area").addClass("alert-danger");
-			$("#result-area").removeClass("alert-success");
-		}
-		
-		$("#resultModalLabel").text(resultTitle);
-		$("#result-area").html(resultBody);
-		$("#resultModal").modal("toggle");
-	}
-	</script>
+            $('#result-area').addClass('alert-danger');
+            $('#result-area').removeClass('alert-success');
+        }
+
+        $('#resultModalLabel').text(resultTitle);
+        $('#result-area').html(resultBody);
+        $('#resultModal').modal('toggle');
+    }
+</script>

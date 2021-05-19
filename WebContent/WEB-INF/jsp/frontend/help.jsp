@@ -186,11 +186,13 @@
         <!-- Footer -->
         <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
         <script>
+            //點擊換icon
             const toggleDownUp = (obj) => {
                 let className = obj.attr('class');
                 obj.toggleClass('fa-chevron-up');
                 obj.toggleClass('fa-chevron-down');
             };
+            //監聽換icon的button
             $(document).ready(() => {
                 $('#headingRegister').click(() => {
                     toggleDownUp($('#headingRegister i'));

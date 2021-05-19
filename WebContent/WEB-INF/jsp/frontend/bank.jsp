@@ -5,118 +5,6 @@
     <head>
         <title>銀行帳戶管理</title>
         <%@ include file="/WEB-INF/jsp/frontend/include.jsp"%>
-        <style>
-            /* 由下彈出式modal */
-            .modal-p-bottom .modal-dialog {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                max-width: 100% !important;
-                margin: 0;
-                transform: translateY(100%) !important;
-            }
-            .modal-p-bottom .modal-dialog .modal-content {
-                border-radius: 0.3rem 0.3rem 0 0;
-            }
-            .modal-p-bottom.show {
-                overflow: hidden;
-            }
-            .modal-p-bottom.show .modal-dialog {
-                transform: translateY(0%) !important;
-                min-height: 80px;
-            }
-
-            /* 美觀的再確認modal */
-            body {
-                font-family: 'Varela Round', sans-serif;
-            }
-            .modal-confirm {
-                color: #636363;
-                max-width: 400px;
-            }
-            .modal-confirm .modal-content {
-                padding: 20px;
-                border-radius: 5px;
-                border: none;
-                text-align: center;
-                font-size: 14px;
-            }
-            .modal-confirm .modal-header {
-                border-bottom: none;
-                position: relative;
-            }
-            .modal-confirm h4 {
-                text-align: center;
-                font-size: 26px;
-                margin: 30px 0 -10px;
-            }
-            .modal-confirm .close {
-                position: absolute;
-                top: -5px;
-                right: -2px;
-            }
-            .modal-confirm .modal-body {
-                color: #999;
-            }
-            .modal-confirm .modal-footer {
-                border: none;
-                text-align: center;
-                border-radius: 5px;
-                font-size: 13px;
-                padding: 10px 15px 25px;
-            }
-            .modal-confirm .modal-footer a {
-                color: #999;
-            }
-            .modal-confirm .icon-box {
-                width: 80px;
-                height: 80px;
-                margin: 0 auto;
-                border-radius: 50%;
-                z-index: 9;
-                text-align: center;
-                border: 3px solid #f15e5e;
-            }
-            .modal-confirm .icon-box i {
-                color: #f15e5e;
-                font-size: 46px;
-                display: inline-block;
-                margin-top: 13px;
-            }
-            .modal-confirm .btn,
-            .modal-confirm .btn:active {
-                color: #fff;
-                border-radius: 4px;
-                background: #60c7c1;
-                text-decoration: none;
-                transition: all 0.4s;
-                line-height: normal;
-                min-width: 120px;
-                border: none;
-                min-height: 40px;
-                border-radius: 3px;
-                margin: 0 5px;
-            }
-            .modal-confirm .btn-secondary {
-                background: #c1c1c1;
-            }
-            .modal-confirm .btn-secondary:hover,
-            .modal-confirm .btn-secondary:focus {
-                background: #a8a8a8;
-            }
-            .modal-confirm .btn-danger {
-                background: #f15e5e;
-            }
-            .modal-confirm .btn-danger:hover,
-            .modal-confirm .btn-danger:focus {
-                background: #ee3535;
-            }
-            .trigger-btn {
-                display: inline-block;
-                margin: 100px auto;
-            }
-        </style>
     </head>
     <body>
         <!-- Navigation -->
@@ -534,23 +422,6 @@
             </div>
         </div>
 
-        <!-- modal bottom -->
-        <!-- <div class="modal fade modal-p-bottom" id="confirm-delete-old">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body py-5">
-                        <p>您將刪除卡片, 此操作無法回復.</p>
-                        <p>您確定要繼續嗎?</p>
-                        <p class="debug-url"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                        <button type="button" class="btn btn-danger btn-ok">刪除卡片</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
         <!-- Footer -->
         <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
 
@@ -562,11 +433,11 @@
         <c:url var="fubon_logo_url" value="/resources/img/fubon.png" />
         <c:set var="imgUrl_fubon" value="${fubon_logo_url}" />
 
-        <!--masterCard -->
+        <!--masterCard Logo-->
         <c:url var="masterCard_logo_url" value="/resources/img/masterCard.png" />
         <c:set var="imgUrl_masterCard" value="${masterCard_logo_url}" />
 
-        <!--visa -->
+        <!--visa Logo-->
         <c:url var="visa_logo_url" value="/resources/img/visa.png" />
         <c:set var="imgUrl_visa" value="${visa_logo_url}" />
 
@@ -617,7 +488,7 @@
                 $('#nextBtn').hide() //隱藏下一步
             }
 
-            //編輯卡片btn
+            //編輯卡片按鈕渲染
             function modalEditBankBtnInit(status) {
                 if (status) {
                     $('#modalEditBank').show()
@@ -870,10 +741,6 @@
                 console.log('data cardInfo: ' + data)
                 if (typeof data !== 'undefined') {
                     console.log('CARDINFO:' + name)
-                    // var local_bank = data.bank;
-                    // var local_card_numer = data.card_numer;
-                    // var local_user = data.user;
-                    // var local_intitution = data.intitution;
 
                     var local_bank = data.bankCode
                     var local_card_numer = data.bankAddress
@@ -1080,10 +947,6 @@
                 //當form觸發時
                 $('form').on('submit', function (event) {
                     event.preventDefault()
-                    //console.log($(this).serialize());
-                    // console.log($('input[name="bank_Id"]').val())
-                    // console.log($('input[name="birthday"]').val())
-                    // console.log($('input[name="captchaInput"]').val())
 
                     $('.responseBankAccount').html($('input[name="bank_Id"]').val())
 

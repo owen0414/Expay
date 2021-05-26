@@ -16,10 +16,15 @@
 <!-- DatePicker CSS -->
 <link type="text/css" rel="stylesheet"
 	href="<c:url value="/resources/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"/>" />
+<!-- Loader CSS -->
+<link type="text/css" rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/loaders.css/0.1.2/loaders.min.css" />
 <!-- 勾勾 -->
 <link rel="stylesheet/less" type="text/css"
 	href="<c:url value="/resources/css/style.less"/>" />
 <script src="<c:url value="/resources/js/less.min.js"/>"></script>
+
+
 
 <!-- Jquery JS -->
 <script src="<c:url value="/resources/js/jquery-3.3.1.js"/>"></script>
@@ -40,7 +45,8 @@
 <script src="<c:url value="/resources/js/axios.min.js"/>"></script>
 <!-- redux -->
 <script src="<c:url value="/resources/js/redux.min.js"/>"></script>
-
+<!-- loader -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/loaders.css/0.1.2/loaders.css.js"></script>
 <!-- Custom JS -->
 <script type="text/javascript"
 	src="<c:url value="/resources/js/custom.js"/>"></script>

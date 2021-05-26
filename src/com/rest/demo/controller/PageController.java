@@ -122,7 +122,7 @@ public class PageController {
 
 	}
 
-	// 銀行帳戶管理
+	// ��銵董�蝞∠��
 	@GetMapping("/bank")
 	public String Bank() {
 
@@ -133,5 +133,20 @@ public class PageController {
 	@GetMapping("/intro")
 	public String intro() {
 		return "frontend/intro";
+	}
+	
+	@GetMapping("/bookindex")
+	public String bookindex() {
+		return "frontend/bookindex";
+	}
+	
+	@GetMapping("/bookinsert")
+	public String bookinsert() {
+		return "frontend/bookinsert";
+	}
+	
+	@GetMapping("/bookupdate/{isbn}")
+	public String bookupdate() {
+		return "frontend/bookupdate";
 	}
 }

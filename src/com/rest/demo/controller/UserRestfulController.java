@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,16 +26,16 @@ public class UserRestfulController {
 	private UserService userService;
 
 	@GetMapping("/users")
-	public List<Users> getusers() {
+	public List<Users> getusers(HttpServletRequest req) throws Exception{
 		
-		return userService.getAllUser();
+		return userService.getAllUser(req);
 		
 	}
 	
 	@GetMapping("/users/{id}")
-	public List<Users> getuser() {
+	public Users getuser(@PathVariable int id,HttpServletRequest req) throws Exception{
 		
-		return userService.getAllUser();
+		return userService.getUser(id,req);
 		
 	}
 	

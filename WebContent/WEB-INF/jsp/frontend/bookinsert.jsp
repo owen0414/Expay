@@ -45,6 +45,7 @@ contentType="text/html; charset=UTF-8"%>
                   class="form-control"
                   id="isbn"
                   name="isbn"
+                  maxlength="13"
                   placeholder="請輸入ISBN"
                 />
               </div>

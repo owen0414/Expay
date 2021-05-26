@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.rest.demo.dao.BookDao;
 import com.rest.demo.entity.Book;
@@ -70,13 +71,13 @@ public class BookService {
 		
 	}
 
-	public Map<String, Object> editBook(Book book, HttpServletRequest req) throws Exception {
+	public Map<String, Object> editBook(Book book,String isbn, HttpServletRequest req) throws Exception {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		boolean bookexist = bookDao.chkBook(book.getIsbn());
+		boolean bookexist = bookDao.chkBook(isbn);
 
-		if(bookexist && bookDao.updBook(book)){
+		if(bookexist && bookDao.updBook(book,isbn)){
 			map.put("status", 200);
 			map.put("message", "SUCCESS");
 		}else {

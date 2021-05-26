@@ -52,12 +52,12 @@ public class BookDao {
 				isbn, name, author, publish_year,create_time);
 	}
 
-	public boolean updBook(Book book) throws Exception {
+	public boolean updBook(Book book,String isbn) throws Exception {
 		
 		String sql = "UPDATE [EsunTraining].[dbo].[BookRest] SET [name]=?,[author]=?,[publish_year]=? WHERE [isbn]=?";
 
 		if (jdbcTemplate.update(sql, book.getName(), book.getAuthor(), book.getPublish_year(),
-				book.getIsbn()) == 1) {
+				isbn) == 1) {
 			return true;
 		} else {
 			return false;

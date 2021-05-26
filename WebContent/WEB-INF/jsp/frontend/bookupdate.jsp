@@ -302,7 +302,6 @@ contentType="text/html; charset=UTF-8"%>
         var requestURL = `http://172.19.35.31/Expay/api/book/` + isbn.val();
 
         var dataJSON = {};
-        dataJSON["isbn"] = isbn.val();
         dataJSON["name"] = bookname.val();
         dataJSON["author"] = author.val();
         dataJSON["publish_year"] = publish_year.val();
@@ -310,7 +309,7 @@ contentType="text/html; charset=UTF-8"%>
         $.ajax({
           url: requestURL,
           data: JSON.stringify(dataJSON),
-          type: "PUT",
+          type: "PATCH",
           dataType: "json",
           contentType: "application/json;charset=utf-8",
           success: function (returnData) {

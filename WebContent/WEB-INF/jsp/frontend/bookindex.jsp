@@ -6,6 +6,21 @@ contentType="text/html; charset=UTF-8"%>
     <title>首頁</title>
     <%@ include file="/WEB-INF/jsp/frontend/include.jsp"%>
   </head>
+  <style>
+    .ball-spin-fade-loader > div {
+      background-color: rgb(88, 71, 71);
+    }
+
+    .loading {
+      position: relative;
+    }
+
+    .ball-spin-fade-loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+  </style>
   <body>
     <!-- Navigation -->
     <%@ include file="/WEB-INF/jsp/frontend/navigate.jsp"%>

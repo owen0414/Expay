@@ -122,148 +122,6 @@ contentType="text/html; charset=UTF-8"%>
       </div>
     </div>
 
-    <!-- Error Modal -->
-    <div
-      class="modal fade"
-      id="errorModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalScrollableTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalScrollableTitle">提示</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row errorPage">
-              <div class="col-12 d-flex justify-content-center">
-                <div class="m-2 text-center">
-                  <p class="h5 responseMessage" style="font-weight: bold"></p>
-                </div>
-              </div>
-              <div class="col-12 d-flex justify-content-center">
-                <div class="m-2">
-                  <div class="ui-error">
-                    <svg
-                      viewBox="0 0 87 87"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                    >
-                      <g
-                        id="Page-1"
-                        stroke="none"
-                        stroke-width="1"
-                        fill="none"
-                        fill-rule="evenodd"
-                      >
-                        <g
-                          id="Group-2"
-                          transform="translate(2.000000, 2.000000)"
-                        >
-                          <circle
-                            id="Oval-2"
-                            stroke="rgba(252, 191, 191, .5)"
-                            stroke-width="4"
-                            cx="41.5"
-                            cy="41.5"
-                            r="41.5"
-                          ></circle>
-                          <circle
-                            class="ui-error-circle"
-                            stroke="#F74444"
-                            stroke-width="4"
-                            cx="41.5"
-                            cy="41.5"
-                            r="41.5"
-                          ></circle>
-                          <path
-                            class="ui-error-line1"
-                            d="M22.244224,22 L60.4279902,60.1837662"
-                            id="Line"
-                            stroke="#F74444"
-                            stroke-width="3"
-                            stroke-linecap="square"
-                          ></path>
-                          <path
-                            class="ui-error-line2"
-                            d="M60.755776,21 L23.244224,59.8443492"
-                            id="Line"
-                            stroke="#F74444"
-                            stroke-width="3"
-                            stroke-linecap="square"
-                          ></path>
-                        </g>
-                      </g>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div
-      class="modal fade"
-      id="successModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalScrollableTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalScrollableTitle">提示</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row successPage">
-              <div class="col-12 d-flex justify-content-center">
-                <div class="m-2 text-center">
-                  <p class="h5" style="font-weight: bold">修改成功</p>
-                </div>
-              </div>
-              <div class="col-12 d-flex justify-content-center">
-                <div class="m-2">
-                  <div class="success-checkmark">
-                    <div class="check-icon">
-                      <span class="icon-line line-tip"></span>
-                      <span class="icon-line line-long"></span>
-                      <div class="icon-circle"></div>
-                      <div class="icon-fix"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer"></div>
-        </div>
-      </div>
-    </div>
-
     <!-- Footer -->
     <%@ include file="/WEB-INF/jsp/frontend/footer.jsp"%>
     <script>
@@ -314,10 +172,17 @@ contentType="text/html; charset=UTF-8"%>
           contentType: "application/json;charset=utf-8",
           success: function (returnData) {
             if (returnData.status == 200) {
-              $("#successModal").modal("show"); //顯示成功
+              Swal.fire({
+                icon: "success",
+                title: "修改成功",
+              }).then(function () {
+                location.href = `${pageContext.request.contextPath}/bookindex`;
+              });
             } else if (returnData.status == 400) {
-              $(".responseMessage").text(returnData.message);
-              $("#errorModal").modal("show"); //顯示失敗
+              Swal.fire({
+                icon: "error",
+                title: "修改失敗",
+              });
             }
           },
           error: function (xhr, ajaxOptions, thrownError) {
@@ -325,10 +190,6 @@ contentType="text/html; charset=UTF-8"%>
             console.log(thrownError);
           },
         });
-      });
-
-      $("#successModal").on("hidden.bs.modal", function (e) {
-        location.href = `${pageContext.request.contextPath}/bookindex`;
       });
     </script>
   </body>

@@ -47,6 +47,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/loaders.css/0.1.2/loaders.min.css" 
 <script src="<c:url value="/resources/js/redux.min.js"/>"></script>
 <!-- loader -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/loaders.css/0.1.2/loaders.css.js"></script>
+<!-- sweet alert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Custom JS -->
 <script type="text/javascript"
 	src="<c:url value="/resources/js/custom.js"/>"></script>
